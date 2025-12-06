@@ -1,0 +1,21 @@
+<div class="terminal" (click)="cmdInput.focus()">
+  <!-- Affichage des lignes -->
+  @for (line of lines(); track $index) {
+  <div>{{ line }}</div>
+  }
+
+  <!-- Ligne de saisie -->
+  @if (!inputLocked()) {
+  <div class="input-line">{{ promptLabel() }}{{ inputText() }}<span class="cursor">█</span></div>
+  }
+  <!-- Input réel (toujours présent dans le DOM) -->
+  <input
+    #cmdInput
+    type="text"
+    class="hidden-input"
+    [value]="inputText()"
+    [disabled]="inputLocked()"
+    (input)="onInput($event)"
+    (keydown)="onKey($event)"
+  />
+</div>

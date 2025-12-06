@@ -1,0 +1,81 @@
+/* ===========================
+   BOUTONS CRT - MOBILE FIRST
+   =========================== */
+
+.btn {
+  display: inline-block;
+  margin: 12px;
+  padding: 0.6em 1.2em;
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--crt-font-color);
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color-dim);
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  box-shadow: 0 0 0 var(--crt-glow); /* glow initialement éteint */
+}
+
+/* Secondary = moins lumineux */
+.btn-secondary {
+  color: var(--crt-font-color-dim);
+  border-color: var(--crt-font-color-dim);
+}
+
+/* Active = état appuyé */
+.btn-active {
+  color: var(--crt-link-active);
+  border-color: var(--crt-link-active);
+}
+
+.btn:focus {
+  outline: none; /* on supprime le focus par défaut */
+  border-color: var(--crt-glow); /* première bordure */
+  box-shadow: 0 0 0 3px var(--crt-font-color-dim),
+    /* deuxième bordure extérieure */ 0 0 6px transparent,
+    /* deuxième bordure extérieure */ 0 0 12px var(--crt-glow), 0 0 3 px var(--crt-bg-1) inset;
+}
+
+/* ===========================
+   DESKTOP - Hover / Glow
+   =========================== */
+@media (min-width: 800px) {
+  .btn:hover {
+    color: var(--crt-glow);
+    box-shadow: 0 0 8px var(--crt-glow), 0 0 12px var(--crt-glow);
+  }
+
+  .btn-secondary:hover {
+    color: var(--crt-font-color);
+    box-shadow: 0 0 6px var(--crt-font-color);
+  }
+
+  .btn-active:hover {
+    color: var(--crt-link-active);
+    box-shadow: 0 0 10px var(--crt-link-active);
+  }
+}
+
+/* ===========================
+   Optionnel : effet “scanline” sur boutons
+   =========================== */
+.btn::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--crt-scanline) 0px,
+    var(--crt-scanline) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.3;
+}

@@ -1,0 +1,19 @@
+.theme-selector {
+  margin: 20px 0;
+}
+
+button {
+  background: transparent;
+  color: var(--crt-font-color);
+  border: 1px solid var(--crt-font-color);
+  padding: 6px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+button.active {
+  background: var(--crt-font-color);
+  color: black;
+  font-weight: bold;
+}
