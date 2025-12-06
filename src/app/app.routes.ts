@@ -6,6 +6,7 @@ import { LogoutComponent } from './authentication/logout/logout';
 import { Home } from './core/component/home/home';
 import { RegisterTerminalComponent } from './terminal/register.terminal.component';
 import { ProfilTerminal } from './terminal/profil-terminal.component';
+import { AuthGuard } from './core/guard/auth.guard';
 
 
 export const routes: Routes = [
@@ -25,7 +26,7 @@ export const routes: Routes = [
                 path: 'register', component: RegisterTerminalComponent
             },
             {
-                path: 'profil', component: ProfilTerminal
+                path: 'profil', component: ProfilTerminal, canActivate: [AuthGuard]
             }
 
         ]
