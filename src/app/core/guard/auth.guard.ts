@@ -1,32 +1,25 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../service/auth-service';
 
-@Injectable({
-    providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
+/**
+ * Guard standalone pour protéger les routes.
+ * Vérifie si un token valide existe en mémoire, sinon tente un refresh via cookie HttpOnly.
+ */
+export const authGuard: CanActivateFn = () => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
 
-    constructor(private authService: AuthService, private router: Router) { }
-
-    canActivate(): Observable<boolean | UrlTree> {
-        // Si on a déjà un token en mémoire et qu'il est valide → accès autorisé
-        if (this.authService.isTokenValid()) {
-            return of(true);
-        }
-
-        // Sinon, on tente un refresh depuis le cookie HttpOnly
-        return this.authService.refreshToken().pipe(
-            map(() => {
-                // refresh réussi → accès autorisé
-                return true;
-            }),
-            catchError(() => {
-                // refresh échoué → redirige vers login
-                return of(this.router.createUrlTree(['/login']));
-            })
-        );
+    // Si token valide en mémoire → accès autorisé
+    if (authService.isTokenValid()) {
+        return true;
     }
-}
+
+    // Sinon, tenter un refresh
+    return authService.refreshToken().pipe(
+        map(() => true), // refresh réussi → accès autorisé
+        catchError(() => of(router.createUrlTree(['/login']))) // échec → redirection vers login
+    );
+};

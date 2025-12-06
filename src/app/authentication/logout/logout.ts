@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-home-terminal',
+    standalone: true,
     imports: [],
     templateUrl: './logout.html',
     styleUrl: './logout.css',

@@ -5,6 +5,7 @@ import { ProfilChoiceService } from '../service/profil-choice-service';
 
 @Component({
     selector: 'app-terminal-profil',
+    standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
     styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
 })

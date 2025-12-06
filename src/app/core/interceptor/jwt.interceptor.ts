@@ -6,7 +6,7 @@ import {
     HttpRequest,
     HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError, from } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../../service/auth-service';
 
@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = this.authService.getToken();
 
-        // Clone la requête et ajoute le header Authorization si le token existe et est valide
+        // Cloner la requête pour ajouter le token si valide
         let authReq = req;
         if (token && this.authService.isTokenValid()) {
             authReq = req.clone({
@@ -30,16 +30,14 @@ export class JwtInterceptor implements HttpInterceptor {
 
         return next.handle(authReq).pipe(
             catchError(err => {
-                // Si 401, tenter de refresh le token
+                // Si 401, tenter le refresh
                 if (err instanceof HttpErrorResponse && err.status === 401) {
                     return this.authService.refreshToken().pipe(
                         switchMap(() => {
                             const newToken = this.authService.getToken();
                             if (!newToken) {
-                                // Pas de token → logout
                                 return throwError(() => err);
                             }
-
                             // Refaire la requête originale avec le nouveau token
                             const newReq = req.clone({
                                 setHeaders: {
