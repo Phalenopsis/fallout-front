@@ -1,1 +1,139 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('./styles/link.css');
+@import url('./styles/button.css');
+@font-face {
+  font-family: 'ShareTech-Regular';
+  src: url('./assets/fonts/ShareTech-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ================================
+   VARIABLES GLOBALES (couleurs)
+   ================================ */
+:root {
+  --crt-bg-1: #000000; /* bande noire */
+  /* liens */
+  --crt-link: var(--crt-font-color); /* couleur principale du lien */
+  --crt-link-hover: var(--crt-glow); /* survol = glow */
+  --crt-link-active: white; /* activation = flash */
+  --crt-link-underline: var(--crt-green-dim); /* couleur du soulignement */
+}
+:root.green {
+  --crt-bg-2: #001a0d;
+  --crt-font-color: #bcf8d4;
+  --crt-font-color-dim: #0f8a4a;
+  --crt-glow: #25ff7e;
+  --crt-scanline: rgba(0, 255, 80, 0.05);
+}
+
+:root.orange {
+  --crt-font-color: #ff9f2b; /* orange principal (équivalent du #25ff7e) */
+  --crt-bg-2: #1a0d00; /* bande orange très foncée (équiv. #001a0d) */
+  --crt-font-color-dim: #8a4f0f; /* orange atténué (équiv. #0f8a4a) */
+  --crt-glow: #ff9f2b; /* même couleur pour la lueur */
+  --crt-scanline: rgba(255, 140, 0, 0.05); /* scanline orange */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--crt-bg-1) 0px,
+    var(--crt-bg-1) 6px,
+    var(--crt-bg-2) 6px,
+    var(--crt-bg-2) 12px
+  );
+  margin: 1rem;
+}
+/* ================================
+   CONTENEUR CRT (peut être body)
+   ================================ */
+.crt {
+  color: var(--crt-font-color);
+  font-family: 'ShareTech-Regular', monospace;
+
+  text-shadow: 0 0 2px var(--crt-glow), 0 0 4px var(--crt-glow), 0 0 8px var(--crt-glow),
+    0 0 12px var(--crt-glow);
+
+  position: relative;
+  white-space: pre-wrap;
+
+  /* Déformation légère (optionnelle) */
+  animation: crt-bend 6s ease-in-out infinite;
+}
+
+/* ================================
+   SCANLINES ANIMÉES
+   ================================ */
+.crt::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--crt-scanline) 0px,
+    var(--crt-scanline) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  animation: scanlines 6s linear infinite;
+}
+
+@keyframes scanlines {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(4px);
+  }
+}
+
+/* ================================
+   FLICKER LÉGER (vieux écran)
+   ================================ */
+.crt::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+
+  background: black;
+  opacity: 0.03;
+
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.01;
+  }
+  50% {
+    opacity: 0.05;
+  }
+  100% {
+    opacity: 0.02;
+  }
+}
+
+/* ================================
+   LÉGÈRE COURBURE CRT (optionnelle)
+   ================================ */
+@keyframes crt-bend {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: scaleX(1.003) skewX(0.3deg) translateY(-0.5px);
+  }
+}

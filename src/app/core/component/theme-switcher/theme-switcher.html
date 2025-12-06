@@ -1,0 +1,13 @@
+<div class="theme-selector crt">
+  <p>SELECT TERMINAL COLOR:</p>
+
+  @for (theme of themes; track $index) {
+  <button
+    class="btn {{ theme }}"
+    (click)="select(theme)"
+    [class.active]="themeService.currentTheme() === theme"
+  >
+    {{ theme | uppercase }}
+  </button>
+  }
+</div>

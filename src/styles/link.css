@@ -1,0 +1,94 @@
+/* ===========================
+   MOBILE FIRST (défaut)
+   =========================== */
+a {
+  color: var(--crt-link);
+  text-decoration: underline;
+  text-decoration-color: var(--crt-link-underline);
+  text-underline-offset: 4px;
+
+  font-family: inherit;
+  cursor: pointer;
+
+  /* sur mobile, pas d'effets glow : simple et clair */
+  opacity: 0.95;
+}
+
+/* Focus sur mobile (clavier virtuel ou navigation accessibility) */
+a:focus {
+  outline: none;
+  opacity: 1;
+  text-decoration-color: var(--crt-link-hover);
+}
+
+/* Couleur visited (optionnel mais visible sur mobile) */
+a:visited {
+  color: var(--crt-green-dim);
+}
+
+/* ===========================
+   DESKTOP (≥ 800px)
+   =========================== */
+@media (min-width: 800px) {
+  a {
+    text-decoration: none; /* on remplace par le faux trait CRT */
+    opacity: 1;
+    position: relative;
+    transition: color 0.15s ease, text-shadow 0.15s ease;
+  }
+
+  /* Faux underline CRT */
+  a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: var(--crt-link-underline);
+    opacity: 0.6;
+    transition: opacity 0.15s ease, background 0.15s ease;
+  }
+
+  /* Hover Fallout CRT */
+  a:hover {
+    color: var(--crt-link-hover);
+    text-shadow: 0 0 2px var(--crt-glow), 0 0 4px var(--crt-glow), 0 0 6px var(--crt-glow);
+  }
+
+  a:hover::after {
+    opacity: 1;
+    background: var(--crt-link-hover);
+  }
+
+  /* Active : flash blanc */
+  a:active {
+    color: var(--crt-link-active);
+    text-shadow: 0 0 2px var(--crt-link-active), 0 0 6px var(--crt-link-active);
+  }
+
+  a:active::after {
+    background: var(--crt-link-active);
+  }
+
+  /* Visited desktop */
+  a:visited {
+    color: var(--crt-green-dim);
+  }
+
+  a:visited::after {
+    background: var(--crt-green-dim);
+  }
+
+  /* Focus clavier desktop */
+  a:focus {
+    color: var(--crt-link-hover);
+    text-shadow: 0 0 2px var(--crt-glow), 0 0 5px var(--crt-glow), 0 0 8px var(--crt-glow);
+  }
+
+  a:focus::after {
+    opacity: 1;
+    height: 2px; /* plus épais pour focus */
+    background: var(--crt-link-hover);
+  }
+}
