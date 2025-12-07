@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild, sign
 
 @Component({
   selector: 'app-base-terminal', // ne sera jamais utilisé directement
+  standalone: true,
   templateUrl: './base-terminal.component.html',
 })
 export abstract class BaseTerminal implements AfterViewInit, AfterViewChecked {

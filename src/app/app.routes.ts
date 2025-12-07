@@ -1,43 +1,58 @@
 import { Routes } from '@angular/router';
-import { HomeTerminal } from './terminal/home-terminal.component';
-import { LoginTerminalComponent } from './terminal/login.terminal.component';
-import { CharacterPage } from './character/character-page/character-page';
-import { LogoutComponent } from './authentication/logout/logout';
-import { Home } from './core/component/home/home';
-import { RegisterTerminalComponent } from './terminal/register.terminal.component';
-import { ProfilTerminal } from './terminal/profil-terminal.component';
-
+import { authGuard } from './core/guard/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'terminal', pathMatch: 'full' },
     { path: 'home', redirectTo: 'terminal', pathMatch: 'full' },
+
     {
         path: 'terminal',
-        component: Home,
+        loadComponent: () =>
+            import('./core/component/home/home').then((m) => m.Home),
         children: [
             {
-                path: '', component: HomeTerminal
+                path: '',
+                loadComponent: () =>
+                    import('./terminal/home-terminal.component').then(
+                        (m) => m.HomeTerminal
+                    ),
             },
             {
-                path: 'login', component: LoginTerminalComponent
+                path: 'login',
+                loadComponent: () =>
+                    import('./terminal/login.terminal.component').then(
+                        (m) => m.LoginTerminalComponent
+                    ),
             },
             {
-                path: 'register', component: RegisterTerminalComponent
+                path: 'register',
+                loadComponent: () =>
+                    import('./terminal/register.terminal.component').then(
+                        (m) => m.RegisterTerminalComponent
+                    ),
             },
             {
-                path: 'profil', component: ProfilTerminal
-            }
+                path: 'profil',
+                loadComponent: () =>
+                    import('./terminal/profil-terminal.component').then(
+                        (m) => m.ProfilTerminal
+                    ),
+                canActivate: [authGuard],
+            },
+        ],
+    },
 
-        ]
-    },
     {
-        path: 'character', component: CharacterPage
+        path: 'character',
+        loadComponent: () =>
+            import('./character/character-page/character-page').then(
+                (m) => m.CharacterPage
+            ),
     },
+
     {
-        path: 'logout', component: LogoutComponent
-    }
-    /*
-    { path: 'login', loadComponent: () => import('./authentication/login-terminal/login-terminal').then(m => m.TerminalLoginComponent) },
-    { path: 'profil', loadComponent: () => import('./profil/profil/profil').then(m => m.Profil) }
-     */
+        path: 'logout',
+        loadComponent: () =>
+            import('./authentication/logout/logout').then((m) => m.LogoutComponent),
+    },
 ];

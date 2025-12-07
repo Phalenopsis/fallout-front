@@ -5,6 +5,7 @@ import { ChoiceService } from './service/choice-service';
 
 @Component({
     selector: 'app-choice-terminal', // jamais utilisé directement
+    standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
     styleUrls: ['./base-terminal.component.css']
 })

@@ -5,6 +5,7 @@ import { OptionTerminal } from './_option-terminal.abstract';
 
 @Component({
     selector: 'app-terminal-home',
+    standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
     styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
 })

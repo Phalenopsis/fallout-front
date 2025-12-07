@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-terminal-login',
+    standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
     styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
 })

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-home-terminal',
+    standalone: true,
     imports: [],
     templateUrl: './logout.html',
     styleUrl: './logout.css',
@@ -16,8 +17,8 @@ export class LogoutComponent {
         this.logout();
     }
 
-    logout() {
-        this.authService.logout();
+    async logout() {
+        await this.authService.logout();
         this.router.navigateByUrl("/home");
     }
 }
