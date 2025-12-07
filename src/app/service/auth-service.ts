@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError, BehaviorSubject, from } from 'rxjs';
-import { switchMap, catchError, tap, filter, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError, of, firstValueFrom } from 'rxjs';
+import { tap, catchError, map, filter, take, switchMap, finalize } from 'rxjs/operators';
 import { AuthApiService, LoginResponseDTO, UserLoginDTO, UserRegistrationDTO } from './api/auth-api.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,119 +12,124 @@ export class AuthService {
 
   constructor(private authApi: AuthApiService) { }
 
-  /** Connexion utilisateur */
-  login(email: string, password: string): Observable<void> {
+  /** LOGIN */
+  async login(email: string, password: string): Promise<void> {
     const payload: UserLoginDTO = { email, password };
-    return this.authApi.login(payload).pipe(
-      tap((res: LoginResponseDTO) => this.setToken(res.accessToken, res.user)),
-      switchMap(() => of(void 0)),
-      catchError(err => throwError(() => new Error(err?.error?.message || 'Login failed')))
-    );
+
+    try {
+      const res = await firstValueFrom(
+        this.authApi.login(payload).pipe(
+          tap((res) => this.setToken(res.accessToken, res.user)),
+          map(() => void 0)
+        )
+      );
+    } catch (err: any) {
+      throw err;  // important pour que le composant le récupère
+    }
   }
 
-  /** Inscription utilisateur */
-  register(email: string, password: string): Observable<void> {
+  /** REGISTER */
+  async register(email: string, password: string): Promise<void> {
     const payload: UserRegistrationDTO = { email, password };
-    return this.authApi.register(payload).pipe(
-      switchMap(() => of(void 0)),
-      catchError(err => throwError(() => new Error(err?.error?.message || 'Registration failed')))
+
+    await firstValueFrom(
+      this.authApi.register(payload).pipe(
+        tap(res => console.log('API result:', res)),
+        map(() => void 0)
+      )
     );
   }
 
-  /** Déconnexion */
-  logout(): Observable<void> {
-    return this.authApi.logout().pipe(
-      tap(() => this.clearToken()),
-      switchMap(() => of(void 0)),
-      catchError(err => {
-        console.warn('Logout error (ignored)', err);
-        this.clearToken();
-        return of(void 0);
-      })
-    );
+  /** LOGOUT */
+  async logout(): Promise<void> {
+    return firstValueFrom(
+      this.authApi.logout().pipe(
+        tap(() => this.clearToken()),
+        map(() => void 0),
+        catchError(err => {
+          console.warn('Logout error (ignored)', err);
+          this.clearToken();
+          return of(void 0);
+        })
+      ));
   }
 
-  /** Retourne le token JWT actuel */
+  /** TOKEN GETTERS */
   getToken(): string | null {
     return this.accessToken$.value;
   }
 
-  /** Retourne l'utilisateur connecté */
   getUser(): string | null {
     return this.currentUser$.value;
   }
 
-  /** Observable du token */
   token$(): Observable<string | null> {
     return this.accessToken$.asObservable();
   }
 
-  /** Observable de l'utilisateur */
   user$(): Observable<string | null> {
     return this.currentUser$.asObservable();
   }
 
-  /** Vérifie si connecté */
   isLogged(): boolean {
     return !!this.accessToken$.value && !!this.currentUser$.value && this.isTokenValid();
   }
 
-  /** Vérifie la validité du token côté client (exp) */
+  /** Vérifie expiration du JWT */
   isTokenValid(): boolean {
     const token = this.accessToken$.value;
     if (!token) return false;
+
     const payload = this.decodeToken(token);
-    if (!payload || !payload.exp) return false;
-    const now = Math.floor(Date.now() / 1000);
-    return payload.exp > now;
+    if (!payload?.exp) return false;
+
+    return payload.exp * 1000 > Date.now();
   }
 
-  /** Refresh automatique du token si nécessaire */
+  /** Automatic refresh */
   refreshToken(): Observable<void> {
+
+    // Déjà en cours → attendre qu'il finisse
     if (this.refreshing) {
-      // Si déjà en cours, attend que le refresh finisse
       return this.accessToken$.pipe(
         filter(token => token !== null),
         take(1),
-        switchMap(() => of(void 0))
+        map(() => void 0)
       );
     }
 
     this.refreshing = true;
+
     return this.authApi.refresh().pipe(
       tap(res => {
         this.accessToken$.next(res.accessToken);
+
         const payload = this.decodeToken(res.accessToken);
-        if (payload?.sub) {
-          this.currentUser$.next(payload.sub);
-        }
+        if (payload?.sub) this.currentUser$.next(payload.sub);
       }),
-      switchMap(() => of(void 0)),
+      map(() => void 0),
       catchError(err => {
         this.clearToken();
         return throwError(() => new Error('Session expired'));
       }),
-      tap(() => (this.refreshing = false))
+      finalize(() => { this.refreshing = false; })
     );
   }
 
-  /** Décode le JWT */
+  /** Decode JWT */
   private decodeToken(token: string): any | null {
     try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload));
+      return JSON.parse(atob(token.split('.')[1]));
     } catch {
       return null;
     }
   }
 
-  /** Stocke token et utilisateur */
   private setToken(token: string, user: string) {
     this.accessToken$.next(token);
     this.currentUser$.next(user);
   }
 
-  /** Supprime token et utilisateur */
   private clearToken() {
     this.accessToken$.next(null);
     this.currentUser$.next(null);

@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { BaseTerminal } from "./_base-terminal.abstract";
 import { AuthService } from "../service/auth-service";
 import { Router } from "@angular/router";
+import { firstValueFrom } from "rxjs";
 
 @Component({
     selector: 'app-terminal-register',
