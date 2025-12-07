@@ -39,6 +39,22 @@ export const routes: Routes = [
                     ),
                 canActivate: [authGuard],
             },
+            {
+                path: 'creating-character',
+                loadComponent: () =>
+                    import('./terminal/character-creation/character-name-creation.component').then(
+                        (m) => m.CharacterNameCreationTerminalComponent
+                    ),
+                canActivate: [authGuard]
+            },
+            {
+                path: 'creating-special',
+                loadComponent: () =>
+                    import('./terminal/character-creation/special-creation/special-creation').then(
+                        (m) => m.SpecialCreation
+                    ),
+                canActivate: [authGuard]
+            },
         ],
     },
 

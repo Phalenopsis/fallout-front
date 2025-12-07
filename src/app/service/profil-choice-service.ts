@@ -10,7 +10,7 @@ export class ProfilChoiceService extends ChoiceService {
     {
       key: "1",
       value: "Créer un nouveau personnage",
-      link: "/home"
+      link: "/terminal/creating-character"
     },
     {
       "key": "2",

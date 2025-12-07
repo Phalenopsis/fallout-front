@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <section>
+    <div>Points restant à répartir : {{ remainingPoint }}</div>
+
+    @for (stat of stats; track $index) {
+    <article (click)="setActive(stat.key)" [class.active]="activeStat === stat.key">
+      <div class="statistic">{{ stat.label }}</div>
+
+      <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= 1">-</button>
+
+      <div class="value">{{ special[stat.key] }}</div>
+
+      <button (click)="add(stat.key)" [disabled]="remainingPoint <= 0">+</button>
+    </article>
+    }
+  </section>
+
+  <section class="description">
+    @for (line of activeDescription; track $index) {
+    <p>
+      {{ line }}
+    </p>
+    }
+  </section>
+</div>
+<button class="btn" [disabled]="remainingPoint > 0">Suivant</button>
