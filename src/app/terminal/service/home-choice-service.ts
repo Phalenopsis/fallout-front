@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ViewOption } from "../model/view-option";
 import { ChoiceService } from "./choice-service";
+import { Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +20,7 @@ export class HomeChoiceService extends ChoiceService {
         }
     ];
 
-    getPossiblesChoice(): ViewOption[] {
-        return this.choices;
+    getPossiblesChoice$(): Observable<ViewOption[]> {
+        return of(this.choices);
     }
 }

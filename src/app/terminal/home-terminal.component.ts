@@ -20,8 +20,6 @@ export class HomeTerminal extends OptionTerminal {
     }
 
     ngOnInit(): void {
-
-
         this.authApiService.getCurrentUser().subscribe(user => {
             console.log("Utilisateur courant :", user);
             this.router.navigate(['/terminal/profil']);

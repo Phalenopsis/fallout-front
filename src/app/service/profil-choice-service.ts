@@ -3,68 +3,41 @@ import { ViewOption } from '../terminal/model/view-option';
 import { ChoiceService } from '../terminal/service/choice-service';
 import { AuthApiService } from './api/auth-api.service';
 import { CharacterDTO } from '../character/models/character.dto';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ProfilChoiceService extends ChoiceService {
-  authApiService: AuthApiService = inject(AuthApiService);
-  actualKey: number = 1;
 
-  constructor() {
+  private choicesSubject = new BehaviorSubject<ViewOption[]>([]); // hot observable
+  choices$ = this.choicesSubject.asObservable();
+  private actualKey = 1;
+
+  constructor(private authApiService: AuthApiService) {
     super();
-    this.initializeChoices();
+    this.loadChoices(); // lancer dès l'instanciation
   }
 
-  private choices: ViewOption[] = [];
-
-  getPossiblesChoice(): ViewOption[] {
-    return this.choices;
+  getPossiblesChoice$(): Observable<ViewOption[]> {
+    return this.choices$;
   }
 
-  async initializeChoices() {
-    this.addCreationCharacterChoice();
-    await this.addCharacterChoice();
-    this.addLogoutChoice();
-  }
+  private async loadChoices() {
+    const choices: ViewOption[] = [];
 
-  addCharactersChoices(characters: CharacterDTO[]) {
-    characters.forEach((character) => {
-      this.choices.push(
-        {
-          key: this.actualKey.toString(),
-          value: `Jouer avec ${character.name}`,
-          link: `/character/${character.id}`
-        });
-      this.actualKey += 1;
-    });
-  }
+    // Création + logout synchrones
+    choices.push({ key: (this.actualKey++).toString(), value: "Créer un nouveau personnage", link: "/terminal/creation" });
 
-  private async addCharacterChoice() {
-    const user = await firstValueFrom(this.authApiService.getCurrentUser());
-    const characters: CharacterDTO[] = user.characters;
-    this.addCharactersChoices(characters);
-  }
-
-  addCreationCharacterChoice() {
-    this.choices.push(
-      {
-        key: this.actualKey.toString(),
-        value: "Créer un nouveau personnage",
-        link: "/terminal/creation"
+    try {
+      const user = await firstValueFrom(this.authApiService.getCurrentUser());
+      user.characters.forEach(c => {
+        choices.push({ key: (this.actualKey++).toString(), value: `Jouer avec ${c.name}`, link: `/character/${c.id}` });
       });
-    this.actualKey += 1;
-  }
+    } catch (err) {
+      console.error("Impossible de récupérer les personnages", err);
+    }
 
-  addLogoutChoice() {
-    this.choices.push(
-      {
-        key: this.actualKey.toString(),
-        value: "Se déconnecter",
-        link: "/logout"
-      });
-    this.actualKey += 1;
-  }
+    choices.push({ key: (this.actualKey++).toString(), value: "Se déconnecter", link: "/logout" });
 
+    this.choicesSubject.next(choices); // déclenche l'émission
+  }
 }
