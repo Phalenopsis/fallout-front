@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Banner } from "../banner/banner";
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthApiService } from '../../../service/api/auth-api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -11,5 +12,8 @@ import { AuthApiService } from '../../../service/api/auth-api.service';
   styleUrl: './home.css',
 })
 export class Home {
-
+  ngOnInit(): void {
+    console.log(environment.production);
+    console.log(environment.apiUrl);
+  }
 }

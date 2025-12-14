@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserDomainDTO } from '../../core/models/user-domain.dto';
+import { environment } from '../../../environments/environment';
 
 export interface UserRegistrationDTO {
     email: string;
@@ -28,7 +29,7 @@ export interface LoginResponseDTO {
 })
 export class AuthApiService {
 
-    private baseUrl = 'http://localhost:8080/auth';
+    private baseUrl = `${environment.apiUrl}/auth`;
 
     constructor(private http: HttpClient) { }
 
