@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Banner } from "../banner/banner";
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthApiService } from '../../../service/api/auth-api.service';
 
 @Component({
   selector: 'app-home',
@@ -10,4 +11,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './home.css',
 })
 export class Home {
+
 }

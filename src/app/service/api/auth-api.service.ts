@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UserDomainDTO } from '../../core/models/user-domain.dto';
 
 export interface UserRegistrationDTO {
     email: string;
@@ -61,10 +62,9 @@ export class AuthApiService {
 
     /**
      * Récupère l'utilisateur actuellement connecté
-     * (si tu as un endpoint /auth/me côté back)
      */
-    getCurrentUser(): Observable<{ username: string }> {
+    getCurrentUser(): Observable<UserDomainDTO> {
         const userUrl = 'http://localhost:8080/user'
-        return this.http.get<{ username: string }>(`${userUrl}`, { withCredentials: true });
+        return this.http.get<UserDomainDTO>(`${userUrl}`, { withCredentials: true });
     }
 }

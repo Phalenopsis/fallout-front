@@ -40,21 +40,40 @@ export const routes: Routes = [
                 canActivate: [authGuard],
             },
             {
-                path: 'creating-character',
+                path: 'creation',
                 loadComponent: () =>
-                    import('./terminal/character-creation/character-name-creation.component').then(
-                        (m) => m.CharacterNameCreationTerminalComponent
+                    import('./terminal/character-creation/character-creation/character-creation').then(
+                        (m) => m.CharacterCreation
                     ),
-                canActivate: [authGuard]
-            },
-            {
-                path: 'creating-special',
-                loadComponent: () =>
-                    import('./terminal/character-creation/special-creation/special-creation').then(
-                        (m) => m.SpecialCreation
-                    ),
-                canActivate: [authGuard]
-            },
+                canActivate: [authGuard],
+                children: [
+                    {
+                        path: 'name',
+                        loadComponent: () =>
+                            import('./terminal/character-creation/character-name-creation.component').then(
+                                (m) => m.CharacterNameCreationTerminalComponent
+                            ),
+                        canActivate: [authGuard]
+                    },
+                    {
+                        path: 'special',
+                        loadComponent: () =>
+                            import('./terminal/character-creation/special-creation/special-creation').then(
+                                (m) => m.SpecialCreation
+                            ),
+                        canActivate: [authGuard]
+                    },
+                    {
+                        path: 'save',
+                        loadComponent: () =>
+                            import('./terminal/character-creation/save-character/save-character').then(
+                                (m) => m.SaveCharacter
+                            ),
+                        canActivate: [authGuard]
+                    },
+                ]
+            }
+
         ],
     },
 

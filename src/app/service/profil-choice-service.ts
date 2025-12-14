@@ -1,40 +1,70 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ViewOption } from '../terminal/model/view-option';
 import { ChoiceService } from '../terminal/service/choice-service';
+import { AuthApiService } from './api/auth-api.service';
+import { CharacterDTO } from '../character/models/character.dto';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfilChoiceService extends ChoiceService {
-  private choices: ViewOption[] = [
-    {
-      key: "1",
-      value: "Créer un nouveau personnage",
-      link: "/terminal/creating-character"
-    },
-    {
-      "key": "2",
-      "value": "Jouer avec Bob la Goule",
-      link: "/character"
-    },
-    {
-      "key": "3",
-      "value": "Créer une nouvelle campagne en tant que MJ",
-      link: ""
-    },
-    {
-      "key": "4",
-      "value": "Commencer une nouvelle campagne",
-      link: ""
-    },
-    {
-      "key": "5",
-      "value": "Se déconnecter",
-      link: "/logout"
-    }
-  ]
+  authApiService: AuthApiService = inject(AuthApiService);
+  actualKey: number = 1;
+
+  constructor() {
+    super();
+    this.initializeChoices();
+  }
+
+  private choices: ViewOption[] = [];
 
   getPossiblesChoice(): ViewOption[] {
     return this.choices;
   }
+
+  async initializeChoices() {
+    this.addCreationCharacterChoice();
+    await this.addCharacterChoice();
+    this.addLogoutChoice();
+  }
+
+  addCharactersChoices(characters: CharacterDTO[]) {
+    characters.forEach((character) => {
+      this.choices.push(
+        {
+          key: this.actualKey.toString(),
+          value: `Jouer avec ${character.name}`,
+          link: `/character/${character.id}`
+        });
+      this.actualKey += 1;
+    });
+  }
+
+  private async addCharacterChoice() {
+    const user = await firstValueFrom(this.authApiService.getCurrentUser());
+    const characters: CharacterDTO[] = user.characters;
+    this.addCharactersChoices(characters);
+  }
+
+  addCreationCharacterChoice() {
+    this.choices.push(
+      {
+        key: this.actualKey.toString(),
+        value: "Créer un nouveau personnage",
+        link: "/terminal/creation"
+      });
+    this.actualKey += 1;
+  }
+
+  addLogoutChoice() {
+    this.choices.push(
+      {
+        key: this.actualKey.toString(),
+        value: "Se déconnecter",
+        link: "/logout"
+      });
+    this.actualKey += 1;
+  }
+
 }

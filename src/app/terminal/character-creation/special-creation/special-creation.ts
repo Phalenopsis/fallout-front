@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Special } from '../../../character/models/special.class';
+import { CharacterCreationService } from '../character-creation.service';
+import { Router } from '@angular/router';
 
 type SpecialKey = Exclude<keyof Special, 'id'>; // si tu veux exclure id
 
@@ -11,6 +13,8 @@ type SpecialKey = Exclude<keyof Special, 'id'>; // si tu veux exclure id
   styleUrl: './special-creation.css',
 })
 export class SpecialCreation {
+  characterCreationService = inject(CharacterCreationService);
+  router = inject(Router);
 
   special = new Special();
   remainingPoint = 5;
@@ -59,6 +63,9 @@ export class SpecialCreation {
   }
 
   nextStep() {
-
+    this.characterCreationService.character.special = this.special;
+    const route: string = `/terminal/creation/${this.characterCreationService.getNextStep()}`;
+    this.characterCreationService.goToNextStep();
+    this.router.navigate([route]);
   }
 }
