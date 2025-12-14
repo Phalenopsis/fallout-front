@@ -79,3 +79,23 @@
   mix-blend-mode: overlay;
   opacity: 0.3;
 }
+
+/* ===========================
+   BOUTONS DISABLED
+   =========================== */
+.btn:disabled,
+.btn[disabled] {
+  color: var(--crt-font-color-dim);
+  border-color: var(--crt-font-color-dim);
+  background-color: var(--crt-bg-2);
+  cursor: not-allowed;
+  box-shadow: none; /* on désactive la lueur */
+  opacity: 0.6; /* léger effet estompé */
+}
+
+/* Hover ignoré pour disabled */
+.btn:disabled:hover,
+.btn[disabled]:hover {
+  color: var(--crt-font-color-dim);
+  box-shadow: none;
+}
