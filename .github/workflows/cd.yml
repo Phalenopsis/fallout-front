@@ -31,7 +31,7 @@ jobs:
       - name: Set Docker image tag and Dockerfile
         id: set_tag
         run: |
-          if [[ "${{ github.ref_name }} == "production" ]]; then
+          if [[ "${{ github.ref_name }}" == "production" ]]; then
             echo "tag=production" >> "$GITHUB_OUTPUT"
             echo "dockerfile=docker/Dockerfile.production" >> "$GITHUB_OUTPUT"
           else
