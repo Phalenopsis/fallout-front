@@ -6,7 +6,7 @@ WORKDIR /app
 COPY ../package*.json ./
 RUN npm ci
 COPY ../ ./
-RUN npm run build --configuration=staging
+RUN npx ng build --configuration=staging
 
 # Step 2
 FROM nginx:1.27-alpine
