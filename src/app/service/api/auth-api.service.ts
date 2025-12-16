@@ -65,7 +65,7 @@ export class AuthApiService {
      * Récupère l'utilisateur actuellement connecté
      */
     getCurrentUser(): Observable<UserDomainDTO> {
-        const userUrl = 'http://localhost:8080/user'
+        const userUrl = `${environment.apiUrl}/user`
         return this.http.get<UserDomainDTO>(`${userUrl}`, { withCredentials: true });
     }
 }
