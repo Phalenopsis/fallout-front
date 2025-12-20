@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { tap, map, switchMap, catchError, filter, take, finalize } from 'rxjs/operators';
-import { AuthApiService, LoginResponseDTO, UserLoginDTO, UserRegistrationDTO } from './api/auth-api.service';
+import { AuthApiService } from './api/auth-api.service';
 import { UserDomainDTO } from '../core/models/user-domain.dto';
 
 @Injectable({ providedIn: 'root' })
@@ -54,38 +54,46 @@ export class AuthService {
 
   /** Vérifie si l'utilisateur est connecté */
   isLogged(): boolean {
-    return !!this.accessToken$.value && !!this.currentUser$.value && this.isTokenValid();
+    return !!this.currentUser$.value;
   }
+
 
   /** Refresh token automatique */
   refreshToken(): Observable<void> {
     if (this.refreshing) {
-      // si déjà en cours, attend la fin
       return this.accessToken$.pipe(
-        filter(t => t !== null),
+        filter(Boolean),
         take(1),
         map(() => void 0)
       );
     }
 
     this.refreshing = true;
-    return this.api.refresh().pipe(
-      tap(res => {
-        this.accessToken$.next(res.accessToken);
 
-        // on peut récupérer à nouveau l'utilisateur complet si besoin
-        this.api.getCurrentUser$().pipe(
-          tap(user => this.currentUser$.next(user))
-        ).subscribe({
-          error: () => this.clearSession()
-        });
-      }),
+    return this.api.refresh().pipe(
+      tap(res => this.accessToken$.next(res.accessToken)),
+      switchMap(() => this.api.getCurrentUser$()),
+      tap(user => this.currentUser$.next(user)),
       map(() => void 0),
-      catchError(err => {
+      catchError(() => {
         this.clearSession();
         return throwError(() => new Error('Session expired'));
       }),
       finalize(() => (this.refreshing = false))
+    );
+  }
+
+  initSession(): Observable<UserDomainDTO | null> {
+    if (this.currentUser$.value) {
+      return of(this.currentUser$.value);
+    }
+
+    return this.api.getCurrentUser$().pipe(
+      tap(user => this.currentUser$.next(user)),
+      catchError(() => {
+        this.clearSession();
+        return of(null);
+      })
     );
   }
 
@@ -112,13 +120,14 @@ export class AuthService {
     return payload?.exp ? payload.exp * 1000 > Date.now() : false;
   }
 
-  /** Récupère l'utilisateur courant, forcé depuis le serveur si besoin */
+  /** Récupère l'utilisateur courant */
   getCurrentUser$(): Observable<UserDomainDTO | null> {
-    if (this.currentUser$.value) {
-      return of(this.currentUser$.value);
-    }
-    return this.api.getCurrentUser$().pipe(
+    return this.currentUser$.asObservable();
+  }
+
+  refreshCurrentUser(): void {
+    this.api.getCurrentUser$().pipe(
       tap(user => this.currentUser$.next(user))
-    );
+    ).subscribe();
   }
 }
