@@ -16,6 +16,14 @@ bootstrapApplication(App, {
         jwtInterceptor
       ])
     ),
-    provideAppInitializer(() => inject(AuthService).initSession())
+    provideAppInitializer(() => {
+      const authService = inject(AuthService);
+      // On démarre la récupération du current user mais on ne bloque pas le bootstrap
+      authService.initSession().subscribe({
+        error: () => { } // ignore les erreurs
+      });
+      return Promise.resolve(); // Bootstrap continue immédiatement
+    })
+
   ]
 }).catch(err => console.error(err));

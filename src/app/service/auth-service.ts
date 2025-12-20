@@ -83,16 +83,15 @@ export class AuthService {
     );
   }
 
-  initSession(): Observable<UserDomainDTO | null> {
-    if (this.currentUser$.value) {
-      return of(this.currentUser$.value);
-    }
-
+  /** Init session au bootstrap, ne bloque jamais */
+  initSession(): Observable<void> {
     return this.api.getCurrentUser$().pipe(
       tap(user => this.currentUser$.next(user)),
-      catchError(() => {
-        this.clearSession();
-        return of(null);
+      map(() => void 0),
+      catchError(err => {
+        // 401 = non connecté → ok
+        if (err.status === 401) this.clearSession();
+        return of(void 0);
       })
     );
   }
