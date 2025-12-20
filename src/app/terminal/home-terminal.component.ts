@@ -1,28 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HomeChoiceService } from './service/home-choice-service';
 import { OptionTerminal } from './_option-terminal.abstract';
-import { AuthApiService } from '../service/api/auth-api.service';
+import { AsyncPipe } from '@angular/common';
+import { AuthService } from '../service/auth-service';
 
 @Component({
     selector: 'app-terminal-home',
     standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
-    styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
+    styleUrls: ['./base-terminal.component.css'],   // réutilise le CSS commun
 })
 export class HomeTerminal extends OptionTerminal {
+    choiceService: HomeChoiceService = inject(HomeChoiceService)
+    authService: AuthService = inject(AuthService);
+
     constructor(
         protected override router: Router,
-        protected override choiceService: HomeChoiceService,
-        private authApiService: AuthApiService
     ) {
-        super(router, choiceService);
+        super(router);
     }
 
     ngOnInit(): void {
-        this.authApiService.getCurrentUser().subscribe(user => {
+        this.authService.user$().subscribe(user => {
             console.log("Utilisateur courant :", user);
-            this.router.navigate(['/terminal/profil']);
+            if (user) {
+                this.router.navigate(['/terminal/profil']);
+            }
         });
     }
 

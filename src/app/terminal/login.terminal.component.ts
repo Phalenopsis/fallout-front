@@ -1,19 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { BaseTerminal } from './_base-terminal.abstract';
 import { AuthService } from '../service/auth-service';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-terminal-login',
     standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
-    styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
+    styleUrls: ['./base-terminal.component.css'],   // réutilise le CSS commun
 })
 export class LoginTerminalComponent extends BaseTerminal {
 
     private step: 'login' | 'password' = 'login';
     private username = "";
     private passwordBuffer = "";
+    private destroyRef = inject(DestroyRef);
+
+    constructor(
+        private auth: AuthService,
+        private router: Router
+    ) {
+        super();
+    }
 
     protected initTerminal(): void {
         this.pushLine("| WELCOME TO SECURE TERMINAL");
@@ -21,7 +33,7 @@ export class LoginTerminalComponent extends BaseTerminal {
         this.promptLabel.set("ENTER LOGIN: ");
     }
 
-    protected async onEnter(text: string): Promise<void> {
+    protected onEnter(text: string): void {
         if (this.step === 'login') {
             this.username = text;
             this.step = 'password';
@@ -35,30 +47,34 @@ export class LoginTerminalComponent extends BaseTerminal {
             this.pushLine(`| Attempt to log as user '${this.username}...'`);
             this.inputLocked.set(true);
 
-            try {
-                await this.auth.login(this.username, this.passwordBuffer);
 
+            this.auth.login(this.username, this.passwordBuffer).pipe(
+                takeUntilDestroyed(this.destroyRef),
+                catchError((err: HttpErrorResponse) => {
+                    this.handleLoginError(err);
+                    return EMPTY;
+                })
+            ).subscribe(() => {
+                console.log("Login successful");
                 this.pushLine("> ACCESS GRANTED");
                 this.pushLine("> LOADING SYSTEM...");
 
                 setTimeout(() => {
                     this.router.navigate(['/terminal/profil']);
                 }, 1200);
-
-            } catch (e) {
-                this.pushLine("> INCORRECT PASSWORD. TRY AGAIN.");
-                setTimeout(() => {
-                    this.inputLocked.set(false);
-                    this.promptLabel.set("ENTER PASSWORD: ");
-                }, 600);
-            }
+            });
         }
     }
 
-    constructor(
-        private auth: AuthService,
-        private router: Router
-    ) {
-        super();
+    private handleLoginError(err: HttpErrorResponse) {
+        console.log("Login failed", err.error);
+        this.pushLine("> INCORRECT PASSWORD. TRY AGAIN.");
+        this.passwordBuffer = "";
+
+        setTimeout(() => {
+            this.inputLocked.set(false);
+            this.promptLabel.set("ENTER PASSWORD: ");
+        }, 600);
     }
+
 }
