@@ -2,12 +2,13 @@ import { Component, inject } from "@angular/core";
 import { BaseTerminal } from "../_base-terminal.abstract";
 import { Router } from "@angular/router";
 import { CharacterCreationService } from "./character-creation.service";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector: 'app-terminal-creation-name',
     standalone: true,
     templateUrl: '../base-terminal.component.html', // réutilise le template commun
-    styleUrls: ['../base-terminal.component.css']   // réutilise le CSS commun
+    styleUrls: ['../base-terminal.component.css'],   // réutilise le CSS commun
 })
 export class CharacterNameCreationTerminalComponent extends BaseTerminal {
     private characterName = "";

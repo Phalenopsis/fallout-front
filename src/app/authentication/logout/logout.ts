@@ -18,7 +18,7 @@ export class LogoutComponent {
     }
 
     async logout() {
-        await this.authService.logout();
-        this.router.navigateByUrl("/home");
+        this.authService.logout().subscribe(() => this.router.navigateByUrl("/home"));
+
     }
 }

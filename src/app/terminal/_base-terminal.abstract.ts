@@ -1,4 +1,7 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild, signal } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Signal, ViewChild, signal } from '@angular/core';
+import { ViewOption } from './model/view-option';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-base-terminal', // ne sera jamais utilisé directement
@@ -20,6 +23,12 @@ export abstract class BaseTerminal implements AfterViewInit, AfterViewChecked {
 
   /** Label du prompt, ex : ENTER LOGIN: ou ENTER CHOICE: */
   promptLabel = signal("");
+
+  protected get choices$(): Observable<ViewOption[]> | null {
+    return null;
+  }
+
+  protected readonly choices = signal<ViewOption[]>([]);
 
   ngAfterViewInit() {
     this.initTerminal();

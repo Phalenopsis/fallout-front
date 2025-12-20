@@ -1,25 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseTerminal } from './_base-terminal.abstract';
 import { ChoiceService } from './service/choice-service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { ViewOption } from './model/view-option';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-choice-terminal',
     standalone: true,
     templateUrl: './base-terminal.component.html',
-    styleUrls: ['./base-terminal.component.css']
+    styleUrls: ['./base-terminal.component.css'],
 })
 export abstract class OptionTerminal extends BaseTerminal {
 
+
+    protected abstract choiceService: ChoiceService;
+
+    protected override get choices$(): Observable<ViewOption[]> {
+        return this.choiceService.getPossiblesChoice$();
+    }
+
     /** Options possibles affichées dans le terminal */
-    possibleChoices: string[] = [];
-    private rawChoices: ViewOption[] = [];
+
+    private destroyRef = inject(DestroyRef);
 
     constructor(
         protected router: Router,
-        protected choiceService: ChoiceService
     ) {
         super();
     }
@@ -29,16 +37,16 @@ export abstract class OptionTerminal extends BaseTerminal {
         this.pushLine("| WELCOME TO SECURE TERMINAL");
         this.pushLine("| PLEASE ENTER YOUR CHOICE:");
 
-        // On s'abonne à l'Observable au lieu d'attendre
-        this.choiceService.getPossiblesChoice$().subscribe(choices => {
-            this.rawChoices = choices;
-            this.possibleChoices = choices.map(c => `${c.key} : ${c.value}`);
-            this.possibleChoices.forEach(line => this.pushLine(line));
-        });
+        this.choices$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(choices => {
+                this.choices.set(choices);
+            });
 
         this.promptLabel.set("ENTER CHOICE: ");
     }
-    protected async onEnter(value: string): Promise<void> {
+
+    protected onEnter(value: string): void {
         this.inputLocked.set(true);
         this.pushLine(`| Attempt to choose option ${value}...`);
         this.pushLine("| VERIFYING...");
@@ -56,7 +64,7 @@ export abstract class OptionTerminal extends BaseTerminal {
     }
 
     protected verifyChoice(choice: string): string {
-        const found = this.rawChoices.find(c => c.key === choice);
+        const found = this.choices().find(c => c.key === choice);
         if (!found) throw new Error("Bad Request");
         if (!found.link) throw new Error("Not implemented");
         return found.link;

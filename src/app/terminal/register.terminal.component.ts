@@ -1,19 +1,28 @@
-import { Component } from "@angular/core";
+import { Component, DestroyRef, inject } from "@angular/core";
 import { BaseTerminal } from "./_base-terminal.abstract";
 import { AuthService } from "../service/auth-service";
 import { Router } from "@angular/router";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-terminal-register',
     standalone: true,
     templateUrl: './base-terminal.component.html', // réutilise le template commun
-    styleUrls: ['./base-terminal.component.css']   // réutilise le CSS commun
+    styleUrls: ['./base-terminal.component.css'],   // réutilise le CSS commun
 })
 export class RegisterTerminalComponent extends BaseTerminal {
 
     private step: 'register' | 'password' = 'register';
     private username = "";
     private passwordBuffer = "";
+    private destroyRef = inject(DestroyRef);
+
+    constructor(
+        private auth: AuthService,
+        private router: Router
+    ) {
+        super();
+    }
 
     protected initTerminal(): void {
         this.pushLine("| WELCOME TO SECURE TERMINAL");
@@ -36,14 +45,16 @@ export class RegisterTerminalComponent extends BaseTerminal {
             this.inputLocked.set(true);
 
             try {
-                await this.auth.register(this.username, this.passwordBuffer);
+                this.auth.register(this.username, this.passwordBuffer).pipe(
+                    takeUntilDestroyed(this.destroyRef)
+                ).subscribe(() => {
+                    this.pushLine("> ACCESS CREATED");
+                    this.pushLine("> LOADING SYSTEM...");
 
-                this.pushLine("> ACCESS CREATED");
-                this.pushLine("> LOADING SYSTEM...");
-
-                setTimeout(() => {
-                    this.router.navigate(['/terminal']);
-                }, 1200);
+                    setTimeout(() => {
+                        this.router.navigate(['/terminal']);
+                    }, 1200);
+                });
 
             } catch (e) {
                 this.pushLine("> INCORRECT PASSWORD. TRY AGAIN.");
@@ -55,10 +66,5 @@ export class RegisterTerminalComponent extends BaseTerminal {
         }
     }
 
-    constructor(
-        private auth: AuthService,
-        private router: Router
-    ) {
-        super();
-    }
+
 }
