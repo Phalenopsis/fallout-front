@@ -32,13 +32,13 @@ export class SpecialCreation {
   ];
 
   descriptions: { key: SpecialKey; label: string[] }[] = [
-    { key: 'strength', label: ['La force représente la force du personnage, sa capacité à soulever des charges lourdes...'] },
-    { key: 'perception', label: ['La perception représente la capacité du personnage...', 'blabla bla bla'] },
-    { key: 'endurance', label: ['ENDURANCE'] },
-    { key: 'charisma', label: ['CHARISME'] },
-    { key: 'intelligence', label: ['INTELLIGENCE'] },
-    { key: 'agility', label: ['AGILITÉ'] },
-    { key: 'luck', label: ['CHANCE'] },
+    { key: 'strength', label: [`Mesure la force brute, c'est-à-dire la capacité à frapper plus fort au corps à corps et à manipuler des éléments lourds.`] },
+    { key: 'perception', label: [`Indique la capacité du personnage à percevoir son environnement et à comprendre les intentions de ses interlocuteurs.`] },
+    { key: 'endurance', label: [`Mesure la résistances physiques du personnage face à son environnement et lors des affrontements martiales.`] },
+    { key: 'charisma', label: [`Indique la capacité du personnage à manipuler ou convaincre son auditoire par l'éloquence et la façon d'être.`] },
+    { key: 'intelligence', label: [`Désigne la capacité du personnage à comprendre et à apprendre.`] },
+    { key: 'agility', label: [`Indique la manière dont le personnage sait coordonner ses mouvements.`] },
+    { key: 'luck', label: [`Mesure simple du karma d'un personnage.`] },
   ];
 
   add(key: SpecialKey) {
