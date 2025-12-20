@@ -1,24 +1,21 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../../service/auth-service';
-import { catchError, switchMap, take, filter, map } from 'rxjs/operators';
+import { catchError, switchMap, take, filter } from 'rxjs/operators';
 import { throwError, of } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
 
-    // Ne jamais refresh sur login ou register
+    // Ne jamais refresh sur login/register
     const skipRefresh = req.url.endsWith('/auth/login') || req.url.endsWith('/auth/register');
 
     return authService.token$().pipe(
-        take(1), // on prend la valeur actuelle du token
+        take(1),
         switchMap(token => {
             let authReq = req;
-
             if (token) {
-                authReq = req.clone({
-                    setHeaders: { Authorization: `Bearer ${token}` }
-                });
+                authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
             }
 
             return next(authReq).pipe(
@@ -31,9 +28,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
                                 switchMap(newToken => {
                                     if (!newToken) return throwError(() => err);
 
-                                    const retryReq = req.clone({
-                                        setHeaders: { Authorization: `Bearer ${newToken}` }
-                                    });
+                                    const retryReq = req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } });
                                     return next(retryReq);
                                 })
                             ))
