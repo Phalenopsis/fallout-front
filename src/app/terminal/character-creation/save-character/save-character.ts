@@ -16,17 +16,7 @@ export class SaveCharacter {
   characterApiService = inject(CharacterApiService);
 
   saveCharacter() {
-    // Logique pour sauvegarder le personnage
-    this.characterApiService.saveCharacter(this.character).subscribe({
-      next: (savedCharacter) => {
-        console.log("Personnage sauvegardé avec succès :", savedCharacter);
-      },
-      error: (error) => {
-        console.error("Erreur lors de la sauvegarde du personnage :", error);
-      }
-    });
-    console.log("Personnage sauvegardé :", this.characterCreationService.character);
-    // Rediriger ou afficher un message de succès
+    this.characterCreationService.saveCharacter();
   }
 
   cancel() {

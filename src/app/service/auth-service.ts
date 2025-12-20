@@ -1,98 +1,68 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError, of, firstValueFrom } from 'rxjs';
-import { tap, catchError, map, filter, take, switchMap, finalize } from 'rxjs/operators';
-import { AuthApiService, LoginResponseDTO, UserLoginDTO, UserRegistrationDTO } from './api/auth-api.service';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { tap, map, switchMap, catchError, filter, take, finalize } from 'rxjs/operators';
+import { AuthApiService } from './api/auth-api.service';
+import { UserDomainDTO } from '../core/models/user-domain.dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
   private accessToken$ = new BehaviorSubject<string | null>(null);
-  private currentUser$ = new BehaviorSubject<string | null>(null);
+  private currentUser$ = new BehaviorSubject<UserDomainDTO | null>(null);
   private refreshing = false;
-
-  constructor(private authApi: AuthApiService) { }
+  private api: AuthApiService = inject(AuthApiService);
 
   /** LOGIN */
-  async login(email: string, password: string): Promise<void> {
-    const payload: UserLoginDTO = { email, password };
-
-    try {
-      const res = await firstValueFrom(
-        this.authApi.login(payload).pipe(
-          tap((res) => this.setToken(res.accessToken, res.user)),
-          map(() => void 0)
+  login(email: string, password: string): Observable<void> {
+    return this.api.login({ email, password }).pipe(
+      tap(res => this.accessToken$.next(res.accessToken)), // stocke le token
+      switchMap(() =>
+        // récupère l'utilisateur complet après login
+        this.api.getCurrentUser$().pipe(
+          tap(user => this.currentUser$.next(user))
         )
-      );
-    } catch (err: any) {
-      throw err;  // important pour que le composant le récupère
-    }
-  }
-
-  /** REGISTER */
-  async register(email: string, password: string): Promise<void> {
-    const payload: UserRegistrationDTO = { email, password };
-
-    await firstValueFrom(
-      this.authApi.register(payload).pipe(
-        tap(res => console.log('API result:', res)),
-        map(() => void 0)
-      )
+      ),
+      map(() => void 0)
     );
   }
 
+  /** REGISTER */
+  register(email: string, password: string): Observable<void> {
+    return this.api.register({ email, password }).pipe(map(() => void 0));
+  }
+
   /** LOGOUT */
-  async logout(): Promise<void> {
-    return firstValueFrom(
-      this.authApi.logout().pipe(
-        tap(() => this.clearToken()),
-        map(() => void 0),
-        catchError(err => {
-          console.warn('Logout error (ignored)', err);
-          this.clearToken();
-          return of(void 0);
-        })
-      ));
+  logout(): Observable<void> {
+    return this.api.logout().pipe(
+      tap(() => this.clearSession()),
+      map(() => void 0),
+      catchError(err => {
+        this.clearSession();
+        return of(void 0);
+      })
+    );
   }
 
-  /** TOKEN GETTERS */
-  getToken(): string | null {
-    return this.accessToken$.value;
+  /** Observable pour l'utilisateur courant */
+  user$(): Observable<UserDomainDTO | null> {
+    return this.currentUser$.asObservable();
   }
 
-  getUser(): string | null {
-    return this.currentUser$.value;
-  }
-
+  /** Observable pour le token */
   token$(): Observable<string | null> {
     return this.accessToken$.asObservable();
   }
 
-  user$(): Observable<string | null> {
-    return this.currentUser$.asObservable();
-  }
-
+  /** Vérifie si l'utilisateur est connecté */
   isLogged(): boolean {
-    return !!this.accessToken$.value && !!this.currentUser$.value && this.isTokenValid();
+    return !!this.currentUser$.value;
   }
 
-  /** Vérifie expiration du JWT */
-  isTokenValid(): boolean {
-    const token = this.accessToken$.value;
-    if (!token) return false;
 
-    const payload = this.decodeToken(token);
-    if (!payload?.exp) return false;
-
-    return payload.exp * 1000 > Date.now();
-  }
-
-  /** Automatic refresh */
+  /** Refresh token automatique */
   refreshToken(): Observable<void> {
-
-    // Déjà en cours → attendre qu'il finisse
     if (this.refreshing) {
       return this.accessToken$.pipe(
-        filter(token => token !== null),
+        filter(Boolean),
         take(1),
         map(() => void 0)
       );
@@ -100,23 +70,40 @@ export class AuthService {
 
     this.refreshing = true;
 
-    return this.authApi.refresh().pipe(
-      tap(res => {
-        this.accessToken$.next(res.accessToken);
-
-        const payload = this.decodeToken(res.accessToken);
-        if (payload?.sub) this.currentUser$.next(payload.sub);
-      }),
+    return this.api.refresh().pipe(
+      tap(res => this.accessToken$.next(res.accessToken)),
+      switchMap(() => this.api.getCurrentUser$()),
+      tap(user => this.currentUser$.next(user)),
       map(() => void 0),
-      catchError(err => {
-        this.clearToken();
+      catchError(() => {
+        this.clearSession();
         return throwError(() => new Error('Session expired'));
       }),
-      finalize(() => { this.refreshing = false; })
+      finalize(() => (this.refreshing = false))
     );
   }
 
-  /** Decode JWT */
+  initSession(): Observable<UserDomainDTO | null> {
+    if (this.currentUser$.value) {
+      return of(this.currentUser$.value);
+    }
+
+    return this.api.getCurrentUser$().pipe(
+      tap(user => this.currentUser$.next(user)),
+      catchError(() => {
+        this.clearSession();
+        return of(null);
+      })
+    );
+  }
+
+  /** Supprime session */
+  private clearSession() {
+    this.accessToken$.next(null);
+    this.currentUser$.next(null);
+  }
+
+  /** Décode JWT */
   private decodeToken(token: string): any | null {
     try {
       return JSON.parse(atob(token.split('.')[1]));
@@ -125,13 +112,22 @@ export class AuthService {
     }
   }
 
-  private setToken(token: string, user: string) {
-    this.accessToken$.next(token);
-    this.currentUser$.next(user);
+  /** Vérifie expiration du JWT */
+  public isTokenValid(): boolean {
+    const token = this.accessToken$.value;
+    if (!token) return false;
+    const payload = this.decodeToken(token);
+    return payload?.exp ? payload.exp * 1000 > Date.now() : false;
   }
 
-  private clearToken() {
-    this.accessToken$.next(null);
-    this.currentUser$.next(null);
+  /** Récupère l'utilisateur courant */
+  getCurrentUser$(): Observable<UserDomainDTO | null> {
+    return this.currentUser$.asObservable();
+  }
+
+  refreshCurrentUser(): void {
+    this.api.getCurrentUser$().pipe(
+      tap(user => this.currentUser$.next(user))
+    ).subscribe();
   }
 }

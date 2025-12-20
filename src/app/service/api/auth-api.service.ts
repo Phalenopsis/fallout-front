@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, shareReplay, tap } from 'rxjs';
 import { UserDomainDTO } from '../../core/models/user-domain.dto';
 import { environment } from '../../../environments/environment';
+import { LocalStorageService } from '../local-storage-service';
 
 export interface UserRegistrationDTO {
     email: string;
@@ -24,48 +25,33 @@ export interface LoginResponseDTO {
     user: string;
 }
 
-@Injectable({
-    providedIn: 'root'
-})
+export interface ApiErrorDTO {
+    error: string;
+}
+
+
+@Injectable({ providedIn: 'root' })
 export class AuthApiService {
-
     private baseUrl = `${environment.apiUrl}/auth`;
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) { }
-
-    /**
-     * Enregistre un nouvel utilisateur
-     */
-    register(data: UserRegistrationDTO): Observable<UserResponseDTO> {
-        return this.http.post<UserResponseDTO>(`${this.baseUrl}/register`, data);
-    }
-
-    /**
-     * Connecte un utilisateur et récupère l'accessToken + refreshToken dans cookie
-     */
     login(data: UserLoginDTO): Observable<LoginResponseDTO> {
         return this.http.post<LoginResponseDTO>(`${this.baseUrl}/login`, data, { withCredentials: true });
     }
 
-    /**
-     * Renouvelle le token à partir du refreshToken (cookie HttpOnly)
-     */
-    refresh(): Observable<{ accessToken: string }> {
-        return this.http.post<{ accessToken: string }>(`${this.baseUrl}/refresh`, {}, { withCredentials: true });
+    register(data: UserRegistrationDTO): Observable<UserResponseDTO> {
+        return this.http.post<UserResponseDTO>(`${this.baseUrl}/register`, data);
     }
 
-    /**
-     * Déconnexion : supprime le cookie côté serveur
-     */
     logout(): Observable<void> {
         return this.http.post<void>(`${this.baseUrl}/logout`, {}, { withCredentials: true });
     }
 
-    /**
-     * Récupère l'utilisateur actuellement connecté
-     */
-    getCurrentUser(): Observable<UserDomainDTO> {
-        const userUrl = `${environment.apiUrl}/user`
-        return this.http.get<UserDomainDTO>(`${userUrl}`, { withCredentials: true });
+    refresh(): Observable<{ accessToken: string }> {
+        return this.http.post<{ accessToken: string }>(`${this.baseUrl}/refresh`, {}, { withCredentials: true });
+    }
+
+    getCurrentUser$(): Observable<UserDomainDTO> {
+        return this.http.get<UserDomainDTO>(`${environment.apiUrl}/user`, { withCredentials: true });
     }
 }

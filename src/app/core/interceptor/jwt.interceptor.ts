@@ -1,41 +1,47 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../../service/auth-service';
-import { catchError, switchMap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, switchMap, take, filter, map } from 'rxjs/operators';
+import { throwError, of } from 'rxjs';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
-    const token = authService.getToken();
-    let authReq = req;
-
-    // Ajout du token si valide
-    if (token && authService.isTokenValid()) {
-        authReq = req.clone({
-            setHeaders: { Authorization: `Bearer ${token}` }
-        });
-    }
 
     // Ne jamais refresh sur login ou register
     const skipRefresh = req.url.endsWith('/auth/login') || req.url.endsWith('/auth/register');
 
-    return next(authReq).pipe(
-        catchError(err => {
-            if (!skipRefresh && err.status === 401) {
-                return authService.refreshToken().pipe(
-                    switchMap(() => {
-                        const newToken = authService.getToken();
-                        if (!newToken) return throwError(() => err);
+    return authService.token$().pipe(
+        take(1), // on prend la valeur actuelle du token
+        switchMap(token => {
+            let authReq = req;
 
-                        return next(
-                            req.clone({
-                                setHeaders: { Authorization: `Bearer ${newToken}` }
-                            })
-                        );
-                    })
-                );
+            if (token) {
+                authReq = req.clone({
+                    setHeaders: { Authorization: `Bearer ${token}` }
+                });
             }
-            return throwError(() => err);
+
+            return next(authReq).pipe(
+                catchError(err => {
+                    if (!skipRefresh && err.status === 401) {
+                        // Tentative de refresh
+                        return authService.refreshToken().pipe(
+                            switchMap(() => authService.token$().pipe(
+                                take(1),
+                                switchMap(newToken => {
+                                    if (!newToken) return throwError(() => err);
+
+                                    const retryReq = req.clone({
+                                        setHeaders: { Authorization: `Bearer ${newToken}` }
+                                    });
+                                    return next(retryReq);
+                                })
+                            ))
+                        );
+                    }
+                    return throwError(() => err);
+                })
+            );
         })
     );
 };

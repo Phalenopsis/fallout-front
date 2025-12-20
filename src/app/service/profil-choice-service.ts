@@ -3,41 +3,52 @@ import { ViewOption } from '../terminal/model/view-option';
 import { ChoiceService } from '../terminal/service/choice-service';
 import { AuthApiService } from './api/auth-api.service';
 import { CharacterDTO } from '../character/models/character.dto';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, firstValueFrom, map, Observable, of, shareReplay } from 'rxjs';
+import { AuthService } from './auth-service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfilChoiceService extends ChoiceService {
 
-  private choicesSubject = new BehaviorSubject<ViewOption[]>([]); // hot observable
-  choices$ = this.choicesSubject.asObservable();
-  private actualKey = 1;
+  private authService = inject(AuthService);
 
-  constructor(private authApiService: AuthApiService) {
+  constructor() {
     super();
-    this.loadChoices(); // lancer dès l'instanciation
   }
 
   getPossiblesChoice$(): Observable<ViewOption[]> {
-    return this.choices$;
+
+    const baseChoices: ViewOption[] = [
+      { key: '1', value: 'Créer un nouveau personnage', link: '/terminal/creation' }
+    ];
+
+    return this.authService.getCurrentUser$().pipe(
+      map(user => {
+        console.log(user)
+        let key = 2;
+
+        const characterChoices = user?.characters?.map(c => ({
+          key: (key++).toString(),
+          value: `Jouer avec ${c.name}`,
+          link: `/character/${c.id}`
+        })) ?? [];
+
+        return [
+          ...baseChoices,
+          ...characterChoices,
+          { key: (key++).toString(), value: 'Se déconnecter', link: '/logout' }
+        ];
+      }),
+      catchError(err => {
+        console.error('Impossible de récupérer les personnages', err);
+
+        return of([
+          ...baseChoices,
+          { key: '2', value: 'Se déconnecter', link: '/logout' }
+        ]);
+      }),
+      shareReplay(1)
+    );
   }
 
-  private async loadChoices() {
-    const choices: ViewOption[] = [];
 
-    // Création + logout synchrones
-    choices.push({ key: (this.actualKey++).toString(), value: "Créer un nouveau personnage", link: "/terminal/creation" });
-
-    try {
-      const user = await firstValueFrom(this.authApiService.getCurrentUser());
-      user.characters.forEach(c => {
-        choices.push({ key: (this.actualKey++).toString(), value: `Jouer avec ${c.name}`, link: `/character/${c.id}` });
-      });
-    } catch (err) {
-      console.error("Impossible de récupérer les personnages", err);
-    }
-
-    choices.push({ key: (this.actualKey++).toString(), value: "Se déconnecter", link: "/logout" });
-
-    this.choicesSubject.next(choices); // déclenche l'émission
-  }
 }

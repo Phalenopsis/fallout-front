@@ -2,7 +2,9 @@
   <!-- Affichage des lignes -->
   @for (line of lines(); track $index) {
   <div>{{ line }}</div>
-  }
+  } @if(choices() != null && choices().length > 0) { @for (choice of choices(); track choice.key) {
+  <div>{{ choice.key }} : {{ choice.value }}</div>
+  } }
 
   <!-- Ligne de saisie -->
   @if (!inputLocked()) {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserDomainDTO } from '../core/models/user-domain.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -6,12 +7,13 @@ import { Injectable } from '@angular/core';
 export class LocalStorageService {
   private USER = "user";
 
-  setUser(userName: string): void {
-    localStorage.setItem(this.USER, userName);
+  setUser(user: UserDomainDTO): void {
+    localStorage.setItem(this.USER, JSON.stringify(user));
   }
 
-  getUser(): string {
-    return localStorage.getItem(this.USER) as string;
+  getUser(): UserDomainDTO | null {
+    const user = localStorage.getItem(this.USER);
+    return user ? JSON.parse(user) : null;
   }
 
   clear() {
