@@ -9,24 +9,23 @@
 
 @if (origin) {
   <section class="container">
-    <div class="details history">
+    <article class="history details">
       <h2>Détails de l'origine : {{ origin.nom }}</h2>
       @for (line of origin.histoire; track $index) {
         <p>{{ line }}</p>
       }
-    </div>
-    <div class="bonuses">
+    </article>
+
+    <aside class="bonuses">
       @if (originDetails.length) {
         @for (detail of originDetails; track $index) {
-          <app-origin-detail
-            [title]="detail.label"
-            [items]="detail.description"
-          ></app-origin-detail>
+          <app-origin-detail [title]="detail.label" [items]="detail.description">
+          </app-origin-detail>
         }
       } @else {
         <p>Aucun détail disponible pour cette origine.</p>
       }
-    </div>
+    </aside>
   </section>
 }
 
