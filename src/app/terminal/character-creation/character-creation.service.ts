@@ -4,6 +4,7 @@ import { CharacterApiService } from '../../service/api/character-api.service';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { AuthService } from '../../service/auth-service';
+import { SpecialKey } from './special-creation/special-mod-service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,16 +19,16 @@ export class CharacterCreationService {
 
   getNextStep(): string {
     if (this.actualStepIndex + 1 < this.steps.length) {
-      return this.steps[this.actualStepIndex + 1]
-    };
-    throw new Error("No next step available");
+      return this.steps[this.actualStepIndex + 1];
+    }
+    throw new Error('No next step available');
   }
 
   getPreviousStep(): string {
     if (this.actualStepIndex - 1 >= 0) {
-      return this.steps[this.actualStepIndex - 1]
-    };
-    throw new Error("No previous step available");
+      return this.steps[this.actualStepIndex - 1];
+    }
+    throw new Error('No previous step available');
   }
 
   goToNextStep() {
@@ -35,7 +36,7 @@ export class CharacterCreationService {
       this.actualStepIndex += 1;
       return;
     }
-    throw new Error("No next step available");
+    throw new Error('No next step available');
   }
 
   goToPreviousStep() {
@@ -43,7 +44,7 @@ export class CharacterCreationService {
       this.actualStepIndex -= 1;
       return;
     }
-    throw new Error("No previous step available");
+    throw new Error('No previous step available');
   }
 
   getCurrentStep(): string {
@@ -52,21 +53,22 @@ export class CharacterCreationService {
 
   saveCharacter(): void {
     // Logique pour sauvegarder le personnage
-    this.characterApiService.saveCharacter(this.character).pipe(
-
-    )
+    this.characterApiService
+      .saveCharacter(this.character)
+      .pipe()
       .subscribe({
         next: (savedCharacter) => {
-          console.log("Personnage sauvegardé avec succès :", savedCharacter);
+          console.log('Personnage sauvegardé avec succès :', savedCharacter);
           this.authService.refreshCurrentUser();
+          this.actualStepIndex = 0;
           this.character = new Character();
           this.router.navigate([`/character/${savedCharacter.id}`]);
         },
         error: (error) => {
-          console.error("Erreur lors de la sauvegarde du personnage :", error);
-        }
+          console.error('Erreur lors de la sauvegarde du personnage :', error);
+        },
       });
-    console.log("Personnage sauvegardé :", this.character);
+    console.log('Personnage sauvegardé :', this.character);
     // Rediriger ou afficher un message de succès
   }
 }

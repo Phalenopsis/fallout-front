@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Special } from '../../../character/models/special.class';
 import { CharacterCreationService } from '../character-creation.service';
 import { Router } from '@angular/router';
-
-type SpecialKey = Exclude<keyof Special, 'id'>; // si tu veux exclure id
+import { SpecialKey, SpecialModService } from '../special-creation/special-mod-service';
 
 @Component({
   selector: 'app-special-creation',
@@ -15,8 +14,15 @@ type SpecialKey = Exclude<keyof Special, 'id'>; // si tu veux exclure id
 export class SpecialCreation {
   characterCreationService = inject(CharacterCreationService);
   router = inject(Router);
+  specialModService = inject(SpecialModService);
+  baseStats: Record<SpecialKey, number> = this.specialModService.applyOriginModifiers(
+    this.characterCreationService.character.origin?.modificateurStats,
+  );
+  maxStats: Record<SpecialKey, number> = this.specialModService.getMaxStats(
+    this.characterCreationService.character.origin?.maximumStats,
+  );
 
-  special = new Special();
+  special = new Special({ ...this.baseStats });
   remainingPoint = 5;
   activeStat: SpecialKey | null = null;
 
@@ -32,17 +38,44 @@ export class SpecialCreation {
   ];
 
   descriptions: { key: SpecialKey; label: string[] }[] = [
-    { key: 'strength', label: [`Mesure la force brute, c'est-à-dire la capacité à frapper plus fort au corps à corps et à manipuler des éléments lourds.`] },
-    { key: 'perception', label: [`Indique la capacité du personnage à percevoir son environnement et à comprendre les intentions de ses interlocuteurs.`] },
-    { key: 'endurance', label: [`Mesure la résistances physiques du personnage face à son environnement et lors des affrontements martiales.`] },
-    { key: 'charisma', label: [`Indique la capacité du personnage à manipuler ou convaincre son auditoire par l'éloquence et la façon d'être.`] },
-    { key: 'intelligence', label: [`Désigne la capacité du personnage à comprendre et à apprendre.`] },
-    { key: 'agility', label: [`Indique la manière dont le personnage sait coordonner ses mouvements.`] },
+    {
+      key: 'strength',
+      label: [
+        `Mesure la force brute, c'est-à-dire la capacité à frapper plus fort au corps à corps et à manipuler des éléments lourds.`,
+      ],
+    },
+    {
+      key: 'perception',
+      label: [
+        `Indique la capacité du personnage à percevoir son environnement et à comprendre les intentions de ses interlocuteurs.`,
+      ],
+    },
+    {
+      key: 'endurance',
+      label: [
+        `Mesure la résistances physiques du personnage face à son environnement et lors des affrontements martiales.`,
+      ],
+    },
+    {
+      key: 'charisma',
+      label: [
+        `Indique la capacité du personnage à manipuler ou convaincre son auditoire par l'éloquence et la façon d'être.`,
+      ],
+    },
+    {
+      key: 'intelligence',
+      label: [`Désigne la capacité du personnage à comprendre et à apprendre.`],
+    },
+    {
+      key: 'agility',
+      label: [`Indique la manière dont le personnage sait coordonner ses mouvements.`],
+    },
     { key: 'luck', label: [`Mesure simple du karma d'un personnage.`] },
   ];
 
   add(key: SpecialKey) {
     if (this.remainingPoint <= 0) return;
+    if (this.special[key] >= this.maxStats[key]) return;
     this.special[key] += 1;
     this.remainingPoint -= 1;
   }
@@ -59,7 +92,7 @@ export class SpecialCreation {
 
   get activeDescription(): string[] {
     if (!this.activeStat) return [];
-    return this.descriptions.find(d => d.key === this.activeStat)?.label ?? [];
+    return this.descriptions.find((d) => d.key === this.activeStat)?.label ?? [];
   }
 
   nextStep() {
