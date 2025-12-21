@@ -9,7 +9,7 @@ import { AuthService } from '../../service/auth-service';
   providedIn: 'root',
 })
 export class CharacterCreationService {
-  steps = ['/name', '/special', '/save'];
+  steps = ['/name', '/origin', '/special', '/save'];
   actualStepIndex = 0;
   character = new Character();
   private characterApiService = inject(CharacterApiService);

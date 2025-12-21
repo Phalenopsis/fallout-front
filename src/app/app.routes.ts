@@ -71,6 +71,14 @@ export const routes: Routes = [
                             ),
                         canActivate: [authGuard]
                     },
+                    {
+                        path: 'origin',
+                        loadComponent: () =>
+                            import('./terminal/character-creation/origin-creation/origin-creation').then(
+                                (m) => m.OriginCreation
+                            ),
+                        canActivate: [authGuard]
+                    },
                 ]
             }
 
