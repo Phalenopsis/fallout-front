@@ -1,11 +1,13 @@
-<label for="origin">Origine :</label>
-<select id="origin" [(ngModel)]="origin">
-  @for (possibleOrigin of possibleOrigins; track $index) {
-    <option [ngValue]="possibleOrigin">
-      {{ possibleOrigin.nom }}
-    </option>
-  }
-</select>
+<div class="select-wrapper">
+  <label for="origin">Origine</label>
+  <select id="origin" [(ngModel)]="origin">
+    @for (possibleOrigin of possibleOrigins; track $index) {
+      <option [ngValue]="possibleOrigin">
+        {{ possibleOrigin.nom }}
+      </option>
+    }
+  </select>
+</div>
 
 @if (origin) {
   <section class="container">
