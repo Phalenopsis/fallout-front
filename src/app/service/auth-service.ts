@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { tap, map, switchMap, catchError, filter, take, finalize } from 'rxjs/operators';
 import { AuthApiService } from './api/auth-api.service';
 import { UserDomainDTO } from '../core/models/user-domain.dto';
+import { Character } from '../character/models/character.class';
+import { CharacterDTO } from '../character/models/character.dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,14 +16,12 @@ export class AuthService {
   /** LOGIN */
   login(email: string, password: string): Observable<void> {
     return this.api.login({ email, password }).pipe(
-      tap(res => this.accessToken$.next(res.accessToken)), // stocke le token
+      tap((res) => this.accessToken$.next(res.accessToken)), // stocke le token
       switchMap(() =>
         // récupère l'utilisateur complet après login
-        this.api.getCurrentUser$().pipe(
-          tap(user => this.currentUser$.next(user))
-        )
+        this.api.getCurrentUser$().pipe(tap((user) => this.currentUser$.next(user))),
       ),
-      map(() => void 0)
+      map(() => void 0),
     );
   }
 
@@ -35,10 +35,10 @@ export class AuthService {
     return this.api.logout().pipe(
       tap(() => this.clearSession()),
       map(() => void 0),
-      catchError(err => {
+      catchError((err) => {
         this.clearSession();
         return of(void 0);
-      })
+      }),
     );
   }
 
@@ -57,42 +57,41 @@ export class AuthService {
     return !!this.currentUser$.value;
   }
 
-
   /** Refresh token automatique */
   refreshToken(): Observable<void> {
     if (this.refreshing) {
       return this.accessToken$.pipe(
         filter(Boolean),
         take(1),
-        map(() => void 0)
+        map(() => void 0),
       );
     }
 
     this.refreshing = true;
 
     return this.api.refresh().pipe(
-      tap(res => this.accessToken$.next(res.accessToken)),
+      tap((res) => this.accessToken$.next(res.accessToken)),
       switchMap(() => this.api.getCurrentUser$()),
-      tap(user => this.currentUser$.next(user)),
+      tap((user) => this.currentUser$.next(user)),
       map(() => void 0),
       catchError(() => {
         this.clearSession();
         return throwError(() => new Error('Session expired'));
       }),
-      finalize(() => (this.refreshing = false))
+      finalize(() => (this.refreshing = false)),
     );
   }
 
   /** Init session au bootstrap, ne bloque jamais */
   initSession(): Observable<void> {
     return this.api.getCurrentUser$().pipe(
-      tap(user => this.currentUser$.next(user)),
+      tap((user) => this.currentUser$.next(user)),
       map(() => void 0),
-      catchError(err => {
+      catchError((err) => {
         // 401 = non connecté → ok
         if (err.status === 401) this.clearSession();
         return of(void 0);
-      })
+      }),
     );
   }
 
@@ -125,8 +124,28 @@ export class AuthService {
   }
 
   refreshCurrentUser(): void {
-    this.api.getCurrentUser$().pipe(
-      tap(user => this.currentUser$.next(user))
-    ).subscribe();
+    this.api
+      .getCurrentUser$()
+      .pipe(tap((user) => this.currentUser$.next(user)))
+      .subscribe();
+  }
+
+  upsertCharacter(characterDto: CharacterDTO) {
+    const user = this.currentUser$.value;
+    if (!user) return;
+
+    const characters = [...(user.characters ?? [])];
+    const index = characters.findIndex((c) => c.id === characterDto.id);
+
+    if (index >= 0) {
+      characters[index] = characterDto; // update
+    } else {
+      characters.push(characterDto); // insert
+    }
+
+    this.currentUser$.next({
+      ...user,
+      characters,
+    });
   }
 }
