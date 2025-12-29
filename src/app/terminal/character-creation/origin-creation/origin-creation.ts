@@ -33,4 +33,14 @@ export class OriginCreation {
     this.characterCreationService.goToNextStep();
     this.router.navigate([route]);
   }
+
+  saveAndNextStep() {
+    this.characterCreationService.character.origin = this.origin;
+    this.characterCreationService.saveDraft().subscribe({
+      next: () => {
+        this.nextStep();
+      },
+      error: (err) => console.error(err),
+    });
+  }
 }

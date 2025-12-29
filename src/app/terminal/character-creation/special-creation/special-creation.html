@@ -28,4 +28,8 @@
     }
   </section>
 </div>
+
+<button class="btn" [disabled]="remainingPoint > 0" (click)="saveAndNextStep()">
+  Sauver la création
+</button>
 <button class="btn" [disabled]="remainingPoint > 0" (click)="nextStep()">Suivant</button>

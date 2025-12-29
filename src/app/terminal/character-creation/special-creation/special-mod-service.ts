@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Special } from '../../../character/models/special.class';
+import { SpecialKey, SpecialStats } from '../../../character/models/special.type';
 
-export type SpecialKey = Exclude<keyof Special, 'id'>; // si tu veux exclure id
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SpecialModService {
-  // Mapping clé française -> clé anglaise SPECIAL
   statKeyMap: Record<string, SpecialKey> = {
     Force: 'strength',
     Perception: 'perception',
@@ -18,8 +13,7 @@ export class SpecialModService {
     Chance: 'luck',
   };
 
-  // Exemple d'objet d'initialisation des stats
-  initialStats: Record<SpecialKey, number> = {
+  initialStats: SpecialStats = {
     strength: 5,
     perception: 5,
     endurance: 5,
@@ -29,22 +23,16 @@ export class SpecialModService {
     luck: 5,
   };
 
-  applyOriginModifiers(
-    modificateurStats?: Array<Record<string, number>>,
-  ): Record<SpecialKey, number> {
-    if (!modificateurStats) return this.initialStats;
+  applyOriginModifiers(modificateurStats?: Array<Record<string, number>>): SpecialStats {
+    if (!modificateurStats) return { ...this.initialStats };
 
-    // Copie pour ne pas muter l'objet original
-    const updatedStats = { ...this.initialStats };
+    const updatedStats: SpecialStats = { ...this.initialStats };
 
     modificateurStats.forEach((modifier) => {
-      // Chaque modifier est un objet avec une seule propriété
       for (const [statFr, value] of Object.entries(modifier)) {
         const statEn = this.statKeyMap[statFr];
         if (statEn && typeof value === 'number') {
-          updatedStats[statEn] = (updatedStats[statEn] ?? 5) + value;
-          // Optionnel : clamp la valeur max à 10 par défaut, ou gérer maximumStats ailleurs
-          if (updatedStats[statEn] > 10) updatedStats[statEn] = 10;
+          updatedStats[statEn] += value;
         }
       }
     });
@@ -52,23 +40,21 @@ export class SpecialModService {
     return updatedStats;
   }
 
-  getMaxStats(maximumStats?: Array<Record<string, number>>): Record<SpecialKey, number> {
-    // Valeurs max par défaut (ex : 10 partout)
-    const defaultMax = 10;
-    const maxStats: Record<SpecialKey, number> = {
-      strength: defaultMax,
-      perception: defaultMax,
-      endurance: defaultMax,
-      charisma: defaultMax,
-      intelligence: defaultMax,
-      agility: defaultMax,
-      luck: defaultMax,
+  getMaxStats(maximumStats?: Array<Record<string, number>>): SpecialStats {
+    const maxStats: SpecialStats = {
+      strength: 10,
+      perception: 10,
+      endurance: 10,
+      charisma: 10,
+      intelligence: 10,
+      agility: 10,
+      luck: 10,
     };
 
     if (!maximumStats) return maxStats;
 
-    maximumStats.forEach((maxEntry) => {
-      for (const [statFr, maxValue] of Object.entries(maxEntry)) {
+    maximumStats.forEach((entry) => {
+      for (const [statFr, maxValue] of Object.entries(entry)) {
         const statEn = this.statKeyMap[statFr];
         if (statEn && typeof maxValue === 'number') {
           maxStats[statEn] = maxValue;

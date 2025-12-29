@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { Special } from '../../../character/models/special.class';
 import { CharacterCreationService } from '../character-creation.service';
 import { Router } from '@angular/router';
-import { SpecialKey, SpecialModService } from '../special-creation/special-mod-service';
+import { SpecialModService } from '../special-creation/special-mod-service';
+import { SpecialKey } from '../../../character/models/special.type';
 
 @Component({
   selector: 'app-special-creation',
@@ -100,5 +101,15 @@ export class SpecialCreation {
     const route: string = `/terminal/creation/${this.characterCreationService.getNextStep()}`;
     this.characterCreationService.goToNextStep();
     this.router.navigate([route]);
+  }
+
+  saveAndNextStep() {
+    this.characterCreationService.character.special = this.special;
+    this.characterCreationService.saveDraft().subscribe({
+      next: () => {
+        this.nextStep();
+      },
+      error: (err) => console.error(err),
+    });
   }
 }
