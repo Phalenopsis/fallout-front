@@ -1,0 +1,51 @@
+export type TraitDescription = {
+    nom: string;
+    description: string[];
+};
+
+export const necroticPostHuman: TraitDescription = {
+    "nom": "Post-humain nécrotique",
+    "description": [
+        "1pv récupéré tout les 3 points de dégats en rad"
+    ]
+};
+export const improvedPerception: TraitDescription =
+{
+    "nom": "Perception améliorée",
+    "description": [
+        "Difficulté réduite de 1 pour les tests de vue et odorat"
+    ]
+};
+
+export const propulsion: TraitDescription =
+{
+    "nom": "Propulsion",
+    "description": [
+        "les terrains difficiles et les obstacles ne vous affectent pas"
+    ]
+};
+
+export const radiationSponge: TraitDescription =
+{
+    "nom": "Eponge à radiation",
+    "description": [
+        "Une fois par scène, quand quelqu'un situé à portée courte de vous s'apprête à subir des dégâts de radiation, vous pouvez décréter que vous endurez ces dégâts à sa place.",
+        "Chaque fois que vous subissez des dégâts de radiation ( avec un minimum de 0), vous obtenez 1 point de radiation, dans la limite de 5 points, qe vous pouvez dépensé.",
+        "Vous infligez 2d de dégâts énergétiques Radioactifs supplémentaire, que vous appliquez après tous les autres dégâts de l'attaque. Vous perdez 1 point de radiation quand vous dormez."
+    ]
+};
+
+export const protectron: TraitDescription =
+{
+    "nom": "Protectron",
+    "description": [
+        "Pour tout test en lien avec votre spécialisation, le 1er D supplémentaire coûte 0 PA"
+    ]
+};
+export const TraitDescriptions: TraitDescription[] = [
+    necroticPostHuman,
+    improvedPerception,
+    propulsion,
+    radiationSponge,
+    protectron
+];

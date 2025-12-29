@@ -1,0 +1,10 @@
+<article class="details">
+  <h2>{{ title }}</h2>
+  <ul>
+    @for (detail of items; track $index) {
+      <li>
+        {{ detail }}
+      </li>
+    }
+  </ul>
+</article>

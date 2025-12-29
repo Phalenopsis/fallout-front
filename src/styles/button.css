@@ -16,7 +16,10 @@
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
   position: relative;
   box-shadow: 0 0 0 var(--crt-glow); /* glow initialement éteint */
 }
@@ -34,11 +37,14 @@
 }
 
 .btn:focus {
-  outline: none; /* on supprime le focus par défaut */
+  outline: 3px solid var(--crt-glow);
+  outline-offset: 2px; /* décale l'outline pour ne pas superposer la bordure */
   border-color: var(--crt-glow); /* première bordure */
-  box-shadow: 0 0 0 3px var(--crt-font-color-dim),
+  box-shadow:
+    0 0 0 3px var(--crt-font-color-dim),
     /* deuxième bordure extérieure */ 0 0 6px transparent,
-    /* deuxième bordure extérieure */ 0 0 12px var(--crt-glow), 0 0 3 px var(--crt-bg-1) inset;
+    /* deuxième bordure extérieure */ 0 0 12px var(--crt-glow),
+    0 0 3 px var(--crt-bg-1) inset;
 }
 
 /* ===========================
@@ -47,7 +53,9 @@
 @media (min-width: 800px) {
   .btn:hover {
     color: var(--crt-glow);
-    box-shadow: 0 0 8px var(--crt-glow), 0 0 12px var(--crt-glow);
+    box-shadow:
+      0 0 8px var(--crt-glow),
+      0 0 12px var(--crt-glow);
   }
 
   .btn-secondary:hover {
