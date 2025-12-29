@@ -1,4 +1,19 @@
-<p>Voulez-vous savegarder ce personnage ?</p>
-<p>{{ character | json }}</p>
-<button (click)="saveCharacter()">Oui</button>
-<button (click)="cancel()">Non</button>
+<section>
+  <p>Voulez-vous sauvegarder ce personnage ?</p>
+  <ul>
+    <li>Nom : {{ character.name }}</li>
+    <li>Origine : {{ character.origin?.nom }}</li>
+    <li>
+      Special
+      <ul>
+        @for (stat of stats; track $index) {
+          @if (character.special != undefined) {
+            <li>{{ stat.label }} : {{ character.special[stat.key] }}</li>
+          }
+        }
+      </ul>
+    </li>
+  </ul>
+</section>
+<button class="btn" (click)="saveCharacter()">Oui</button>
+<button class="btn btn-secondary" (click)="cancel()">Non</button>

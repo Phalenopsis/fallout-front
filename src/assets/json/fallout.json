@@ -1,0 +1,680 @@
+{
+    "origines": [
+        {
+            "nom": "Initié de la confrérie",
+            "histoire": [
+                "Née des terribles révélations issues de la rébellion à la base militaire de Mariposa, la Confrerie de l'Acier a éfé fondée par Roger Maxson afin que son peuple (et au bout du compte,chaque survivant de ce nouveau monde) ait quelque chose en quoi croire.",
+                "Dotée de sa propre mythologie, de son propre crédo et de sa propre hiérarchie, la Confrérie de l'Acier a un but principal: récupérer et préserver la technologie du monde d'avant-guerre.",
+                "La Grande Guerre a perturbé l'accès de l'humanité à la technologie: les chevaliers et scribes de la Confrérie font tout leur posssible pour sécuriser les progrès du passé,  afin que les générations futures en bénéficient.",
+                "Vous pouvez être le descendant d'un chevalier ou d'un paladin, né dans la Confrerie et fervent défenseur de sa doctrine, ou vous pouvez être une jeune recrue, vouée à sa cause et désireuse de gravir ses échelons",
+                "Bien sur les membres de la Confrérie partagnet un même but, les différents chapitres qui la composent, répartis à travers les Terres désolées, peuvent avoir des croyances et des protocoles distincts, et ils ne sont pas aussi unis qu'il le semble.",
+                "La Confrérie de l'Acier de la côte ouest était en guerre contre la République de Nouvelle Californie pour récupérer des technologies et empêcher la RNC de s'étendre.",
+                "Pendant ce temps, le chapitre de la côte est était isolé et préférait faire preuve de charité plutôt que d'échanger des technologies et préserver l'équipement d'avant-guerre.",
+                "La mission de l'Ainé Lyon devint humanitaire et bien que cela valut au chapitre une marginalisation forcée au début, Arthur Maxson lui permit d'étendre son influence de Washington D.C à toute la côte est, en recentrant ses efforts sur la récupération et le développement de technologies."
+            ],
+            "trait": [
+                "Armes à énergie",
+                "Science",
+                "Réparation"
+            ],
+            "handicap": "quelque chose d'handicapant"
+        },
+        {
+            "nom": "Goule",
+            "histoire": [
+                "Une explosion prolongée aux effets des radiations gamma de fond(une partie des retombées de la Grande Guerre) peut faire muter les humains de manière spontanée.",
+                "Vous êtes l'un de ces mutants. Lentement ou d'une manière aussi spectaculaire que spontanée, votre corps a changé et est devenu celui d'un cadavre ambulant et pourrissant.",
+                "Vous ne viellissez plus comme avant et les radiations ne vous affectent pas. Votre peau pèle et laisse apparaître votre chair, mais votre métabolisme mutant semble suffire à la remplacer",
+                "Vous êtes une goule (un post-humain nécrotique), l'un des nombreux survivants qui n'ont pas eu la chance de pouvoir s'abriter dans l'un des complexes de Vault-tec.",
+                "Etes vous né après la guerre et avez -vous développé la mutation nécrotique au fil du temps? Venez-vous de l'abri 12 à Bakersfield, Californie, dont la porte ne s'est pas fermée, ce qui a exposé la population aux radiations de l'extérieur?",
+                "Avez-vous trouvé refuge dans un campement de goules, comme l'Underworld des Terres désolées de la Capitale et vous êtes-vous aventuré tout récemment à l'extérieur pour explorer ces contrées, les fouiller et y survivre?",
+                "Les goules civilisées telles que vous craignet une possible dégénérescence vers une créature bestiale et violente. Les goules sauvages sont des mutants nécrotiques, comme vous, mais elles ont perdu leurs fonctions cérébrales supérieures et sont retournées à un état de violence primaire.",
+                "Elles attaquent sans distinction toute créature qui n'est pas une goule afin de défendre leur territoire ou se nourrir. Vous ne savez pas si cette perte de contrôle résulte de hauts niveaux de radiation ou, somme toute, de la mutation, ce qui la rend encore plus terrifiante."
+            ],
+            "atout": "Survie",
+            "trait": "Post-humain nécrotique",
+            "bonusCompétence": {
+                "Survie": 2
+            },
+            "immunité": "Radiation",
+            "handicap": "Un malus en Charisme est possible selon la croyance de l'interlocuteur"
+        },
+        {
+            "nom": "Super Mutant",
+            "histoire": [
+                "Vous êtes un humain mutant et brutal, dont l'évolution a été forcée par des expérimentations indélicates menées par les savants fous du monde d'avant ou d'après guerre.",
+                "Infecté par le virus à évolution forcée (V.E.F.), votre corps a muté et est devenu une gigantesque machine à tuer, musculeuse remplie de rage",
+                "Vous pouvez venir de l'armée du Maître, dans la base militaire de Mariposa en Californie, créée lorsqu'il pratiquait ses expériences sur des victimes humaines non consentantes et divisée en plusieurs factions à sa mort (chacun de ses groupes de survivants se consacrant à attaquer ou reconstruire les Terres désolées).",
+                "Ou bien vous êtes issu du programme d'expérimentation évolutionnaire de l'Abri 87, dont les bandes de super mutants terrorisent les Terres désolées de la Capitale.",
+                "Ou encore, vous avez été enlevé dans le Commonwealth et exposé au V.E.F. par l'Institut, avant qu'il vous renvoie dans les Terres désolées vous débrouiller en petits groupes de pillards.",
+                "Enfin, vous pouvez tout aussi bien être un résident de Huntersville, dans les Appalaches, où le virus a contaminé la réserve d'eau, entraînant des mutations non contrôlées.",
+                "Bien que tous les super mutants partagent les mêmes particularités, les groupes formées par ces quatre souches ne se sont jamais mélangés et les preuves d'une rencontre entre membres de bandes différentes restent rares.",
+                "Même si certains d'entre eux ont migré ou voyagé au cours de leur existence, aucun n'est allé assez loin pour croiser l'un de ses homologues. Par conséquent, l'endroit où commence votre quête influencera votre origine."
+            ],
+            "modificateurStats": [
+                {
+                    "Force": 2
+                },
+                {
+                    "Endurance": 2
+                }
+            ],
+            "maximumStats": [
+                {
+                    "Force": 12
+                },
+                {
+                    "Endurance": 12
+                },
+                {
+                    "Intelligence": 6
+                },
+                {
+                    "Charisme": 6
+                }
+            ],
+            "limitateurCompétence": 4,
+            "immunité": "Radiation, Poison",
+            "handicap": "Les seules armures que vous pouvez porter doivent être spécialement conçues pour les super mutants."
+        },
+        {
+            "nom": "Mister Handy",
+            "histoire": [
+                "Le robot de construction Mister Handy, de Général Atomics International, a explosé sur le marché de la robotique grâce à sa fiabilité, sa robustesse et sa facilité d'entretien.",
+                "Néanmoins, son véritable essor découle de la collaboration avec RobCo qui produisit un modèle domestique.",
+                "Vous êtes l'un de ces automates domestiques, produit entre 2037 et 2077 dans le but d'assurer à chaque foyer des Etats-Unis un majordome loyal.",
+                "Equipé d'une programmation à la pointe de la technologie, vous êtes doué d'initiative et pouez adapter votre code pour tirer des leçons de votre environnement.",
+                "Cette capacité à l'autodétermination vous a permis de survivre à la Grande Guerre; contrairement à d'autres robots qui ont pu être détruits, vous avez réussi à vous débarrasser des entraves de botre programmation pour vivre votre vie.",
+                "De nombreux modèles existent et vous pouvez être issu de n'importe quelle série de Mister Handy, Mister Gusty, Miss Nanny ou Mister Orderly. Un réacteur nucléaire vous alimente et vous pouvez vous-même faire le plein de carburant.",
+                "Vous pouvez vous réparer, ainsi que réparer les autres unités Mister Handy. Votre modèle dispose de trois bras mécaniques ainsi que de trois yeux au bout de tiges.",
+                "Votre propulseur vous maintient en l'air, tant que vous avz du carburant. Cette conception robuste vous a permis de survivre jusqu'ici.",
+                "Capacité a modifier l'armure sous réparation avec l'aptitude armurier"
+            ],
+            "trait": "Perception amélioré, Propulsion",
+            "immunité": "Radiation, Poison",
+            "limitation": {
+                "Charge maximale": 75
+            },
+            "accessoireBras": [
+                "Emetteur Laser",
+                "Lance-flammes",
+                "Pince",
+                "Pistolet automatique 10 mm",
+                "Scie circulaire"
+            ]
+        },
+        {
+            "nom": "Survivant",
+            "histoire": [
+                "Vous êtes le descendant de personnes qui se sont préparées seules pour l'Armageddon.",
+                "Vous ne devez votre existence dans le pasage apocalyptique postnucléaire qu'à vos ancêtres, lesqueles se sont retranchée, ont survécu et ont trouvé une communauté suffisamment importante pour perpétuer l'espèce humaine.",
+                "Vous pouvez être originaire d'un des nombreux groupes de voyageurs, colonies ou abris isolés qui peuplent de manière sporadique les Terres désolées entre les côtes est et ouest.",
+                "Vous pouvez venir de la République de Nouvelle Californie, perpétuant l'héritage de l'Abri 15 et des Sables ombragés.",
+                "Vous battez-vous pour protéger autrui, en faisant partie d'un groupe de survivants comme les Miliciens ou les Régulateurs?",
+                "Vous pouvez tout aussi bien être membre d'une bande de pillards sans pitié, ou vous être échappé d'une de ces bandes pour faire amende honorable.",
+                "Quelle que soit votre origine, quelle que soit votre destination, créer des liens et poser vos bagages peut être ardu.",
+                "Naturellement, les survivants se méfient les uns des autres et restent à l'affût du prochain escroc, groupe de pillards ou voleur qui cherchera à s'emparer de leurs ressources acquises à la sueur de leur front.",
+                "Voyager sur de longues distances est tout aussi difficile et de nombreux survivants nomades, en particulier les marchands et leur caravane, se déplacent entre les grandes communautés de leur région, préférant éviter de parcourir le continent de long en large"
+            ],
+            "trait": [
+                "Doué",
+                "Education",
+                "Gringalet",
+                "Main lourde",
+                "Tir rapide"
+            ]
+        },
+        {
+            "nom": "Habitant de l'abri",
+            "histoire": [
+                "Quand les bombes sont tombées, vous ou vos ancêtres avez été assez chanceux pour vous replier en sûreté dans l'un des cent-vingt-deux complexes de Vault-Tec enfouis sous terre et protégés par d'épaisses portes anti-explosion, des couches de roche et des mètres de béton.",
+                "Soit votre famille était assez riche pour se payer une place, soit elle a été tirée au sort pour pouvoir entrer dans l'abri et survivre à la dévastation nucléaire qui se déroulait au-dehors...",
+                "Mais ce n'était peut-être qu'une condamnation à subir les expériences immorales que Vault-Tec conduisit sur des participants involontaires.",
+                "Vous ne connaissez ni les mutations ni la maladie. Le programme Vault-Tec vous a offert une demeure sûre pendant un temps, mais vous avez dû en payer le prix.",
+                "Vous avez été un sujet test et l'on a manipulé votre compréhension du monde ainsi que votre comportement ain de vous étudier.",
+                "Lorsque vous vous comparez aux habitants de la surface que vous avez appris à connaître, vous constatez que vous avez gardé de profondes séquelles psychologiques, ce qui affecte votre parcours dans les Terres désolées.",
+                "A dessein ou à la suite d'une mauvaise organisation préalable, nombre d'Abris ne disposaient pas d'assez de ressources ou n'était pas assez préparés pour attendre de longues années que les retombées nucléaires aient atteint, à l'exterieur, un niveau inoffensif.",
+                "Ainsi, la plupart d'entre eux tombèrent en panne ou à court de ressources. Ces problèmes poussèrent de nombreux habitants d'abri à chercher de l'aide à la surface et maints complexes ouvrirent leur porte pour permettre aux ressources d'entrer.",
+                "Dès lors, ces sociétés isolées se mêlèrent aux survivants de la surface et établirent un lien permanent avec cette dernière.",
+                "L'exemple le plus notable est celui de l'Abri 15, dont les résidents se séparèrent et fondèrent les Sables ombragés, ainsi que les bandes de pillards nommées Jackals, Vipers et Khans."
+            ],
+            "trait": "un atout au choix rang 2",
+            "handicap": "Une expérience malheureuse"
+        },
+        {
+            "nom": "Synthé de 3ème génération",
+            "histoire": [
+                "Vous êtes un humanoïde biosynthétique presque indiscernable d'un humain. Une organisation scientifique secrète nommée l'Institut vous a conçu pour vous intégrer à la société humaine.",
+                "Votre corps, cultivé en laboratoire, est composé de chair, d'os et d'organes humains; un implant cybernétique indéfectable dans votre cerveau contient votre programmation.",
+                "Vos améliorations bioconçues vous rendent plus résistant qu'un humain, et votre âge comme votre corpulence ne changent jamais.",
+                "Vous pouvez rester en activité longtemps sans avoir besoin de repos, ce qui s'avère un excellent avantage dans des Terres désolées si rudes.",
+                "De plus, votre corps accepte les implants synthétiques et les modifications cybernétiques sans complications.",
+                "Les synthés 3G ne forment pas un groupe homogène: vous pouvez en rencontrer d'autres  mais ils ne se montreront pas forcément amicaux",
+                "Peut-être avez-vous échappé à l'Institut pour vivre la vie à votre façon. Ou avez-vous été envoyé dans la société humaine dans un but précis?",
+                "Programmé pour croire sincérement que vous êtes humain? Avez-vous une idée de qui vous êtes? A moins que vous ne souffriez d'amnésie.",
+                "De nombreuses personnes craignent les synthés et l'Institut: préserver votre identité secrète est donc essentiel à votre survie.",
+                "Vous avez peut-être plusieurs noms, comme votre identité humaine et votre numéro de synthétique.",
+                "Votre quête de sens et d'identité dans un monde qui vous redoute ou vous mécomprend est essentielle.",
+                "Vous ne dormez pas, pendant ce temps à la place vous vous lancez dans de petites activités, comme l'artisanat, la lecture ou la reconnaissance légère."
+            ],
+            "trait": "un atout au choix rang 2",
+            "immunité": "Poison, radiation, maladie, soif et faim",
+            "handicap": "Ne bénéficient pas des effets de nourriture et boisson",
+            "malus": "+2 à la difficulté au test de Chr"
+        },
+        {
+            "nom": "Protectron",
+            "histoire": [
+                "Fabriqué par Robco Industries en guise de robot de travail abordable, votre modèle était l'un des automates les plus populaires de la compagnie; il a d'ailleurs mis au chômage bien des Américains avant la Grande Guerre.",
+                "Les protections étaient conçus pour divers taches de construction, de sécurité ou d'administration.",
+                "Les modèles d'usine servaient au travail manuel; les modèles de bureau étaient programmés avec des logiciels administratif intégrés; les modèles de lutte incendie utilisaient des cryojets pour éteindre les feux dangereux;",
+                "les modèles de soins disposaient de défibrillateurs de série; les modèles de police possédaient une meilleure armure et des tasers améliorés afin de maîtriser les foules.",
+                "Vous appartenez à l'une de ces gammes, ou à une tout autre.",
+                "Votre silhouette humanoïde est recouverte d'un blindage léger. Bien que vous n'ayez pas été conçu pour le combat, les Terres désolées regorgent de ressources que vous pouvez utiliser pour vous défendre et protéger autrui.",
+                "Vous parlez avec le timbre monocorde et robotique des autres Protectrons, à moins d'avoir reçu une amélioration logicielle ou matérielle.",
+                "La plupart des protections font tout leur possible ou presque pour défendre celles et ceux qui leur programmation qualifie d'alliés.",
+                "Votre création remonte à bien longtemps. Peut-être étiez-vous un robot ouvrier, mais vous êtes désormais bien plusque cela.",
+                "Votre programmation originelle détermine encore votre attitude et vos actions, mais elle a pu se désagréger ou se corrompre.",
+                "Seriez-vous l'un des rares Protections qui ont atteint la véritable conscience de soi et résistent à leur programmation?",
+                "Dans les terres sauvages et désolées, c'est à vous de décider si votre ancienne programmation vous définit, ou si vous définissez votre identité par vos propres directives.",
+                "Vous ne pouvez pas guérir vos blessures ou récupérer des points de vie sans réparations"
+            ],
+            "trait": "Protectron",
+            "immunité": "Poison, radiation, maladie, soif et faim",
+            "handicap": "Ne bénéficient pas des effets de nourriture et boisson",
+            "amélioration": "Pas plus de 2 mods de robot installés.",
+            "limitation": {
+                "Charge maximale": 113
+            }
+        },
+        {
+            "nom": "Enfant d'Atome",
+            "histoire": [
+                "Les radiations sont un don de votre dieu atomique, et vous vous faites une joie de partager ce don avec le Commonwealth. En tant que membre de l'Eglise d'Atome, votre corps et votre esprit sont bénis par les radiations.",
+                "Même si la plupart des personnes que vous rencontrez s'inquiètent pour vous et considèrent votre bénédiction comme une malédiction, vous vous savez élu.",
+                "Plus vous vous approchez de l'teinte d'Atome, plus vous vous épanouissez face aux épreuves des Terres désolées.",
+                "Vous comprenez que les radiations restent dangereuses pour quiconque n'a pas encore accepté leur vérité divine, et vous ne méprisez personne pour l'utilisation du RadAway ou d'autres traitements.",
+                "Vous cherchez juste à aider le monde à atteindre l'illumination.",
+                "Le dogme de votre religion stipule que chaque masse atomique de la création renferme un univers entier. Quand elle se divise, l'univers qu'll contient fait de même et devient double.",
+                "Atome est révéré comme un dieu bienveillant qui utilise la Division pour créer de nouveaux mondes. Dès lors, les Enfants voient dans la Grande Guerre un événement sacré et merveilleux.",
+                "Ils vénérent Atome en vénérant les radiations -Sa Lueur- et les univers nouvellement nés qu'elle représente. Les Enfants établissent leur foyer dans les régions irradiées et y construisent des colonies et des centres d'adoration.",
+                "L'Eglise, quoique non violente, considère comme un blasphème les tentatives visant à stopper le développement des radiations. Ses membres s'opposent à de tels efforts, même si les tactiques de chaque secte, voire de chaque individu, varient.",
+                "Les Enfants ne s'attachent pas vraiment à leurs possessions ou même à leur corps, et ils sont souvent très généreux envers les personnes dans le besoin.",
+                "Ils respectent la hiérarchie très vague de leur secte, centrée sur des chefs spirituels appelés -Mères- ou -Confesseurs-",
+                "Etes vous né dans l'Eglise, ou viviez-vous une vie totalement différente avant de découvrir la vérité atomique? Peut-être venez-vous d'une secte très éloignée: vous seriez alors en pélerinage saint.",
+                "A moins que vous ne soyez originaire du cratère d'Atome, dans la Mer luminescente?",
+                "Si vous gardez la foi, partagez la Lueur avec les personnes que vous rencontrez et montrez votre dévouement envers Atome, vous prouverez peut-être votre valeur et atteindrez ainsi un rang plus élevé dans la secte."
+            ],
+            "trait": "une aptitude supplémentaire rang 1, Eponge à radiation",
+            "résistanceRadiation": 1,
+            "handicap": "Ne bénéficient pas des effets de nourriture et boisson",
+            "réputation": {
+                "Dernier fils d'Atome": "rang 2"
+            }
+        }
+    ],
+    "aptitudes": [
+        {
+            "nom": "Ami des animaux",
+            "rang": 2,
+            "prérequis": {
+                "Charisme": 6,
+                "Niveau": 1
+            },
+            "description": {
+                "Rang 1": "Au rang 1, quand je croise un animal, s'il m'attaque, je lance 1 D ! Si j'obtiens un effet, il ne m'attaquera pas moi, préférant aller attaquer mes amis",
+                "Rang 2": "Au rang 2, je peux tenter un test de Chr + Survie Difficulté 2 pour une Action capitale. Si je réussis, l'animal me traite en ami et attaquera toute personne qui ose s'en prendre à moi.",
+                "Info complémentaire": "Contrôler les créatures Puissantes ou Légendaires est impossible"
+            }
+        },
+        {
+            "nom": "Amphibie",
+            "rangMax": 2,
+            "prérequis": {
+                "Endurance": 5,
+                "Niveau": 1,
+                "Niveaux entre chaque rang": 3
+            },
+            "description": {
+                "Rang 1": "je n'ai plus à me soucier des radiations dans l'eau qui brille et je peux retenir ma respiration deux fois plus longtemps que la normale.",
+                "Rang 2": "Les ennemis ont +2 à la difficulté de leurs tests pour me repérer lorsque je suis complètement immergé."
+            }
+        },
+        {
+            "nom": "Antiradiations",
+            "rangs": 2,
+            "prérequis": {
+                "Endurance": 8,
+                "Niveau": 1,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": "RD est augmentée partout de +1 à chaque rang."
+        },
+        {
+            "nom": "Armurier",
+            "rangs": 4,
+            "prérequis": {
+                "Force": 5,
+                "Intelligence": 6,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": "Je peux modifier les armures avec des modules. Le rang 1 débloque les modules d'armure de rang 1, le rang 2 débloque les modules d'armure de rang 2, etc."
+        },
+        {
+            "nom": "Barbare",
+            "rangs": 1,
+            "prérequis": {
+                "Force": 7,
+                "Niveau minimum": 4,
+                "Origine": "pas un robot"
+            },
+            "description": [
+                "Comme Grognac, ma RD Balistique est augmentée partout en fonction de ma Force. Je ne gagne pas ce bénéfice quand je suis en armure assistée.",
+                "Force 7-8 : +1 RD, Force 9-10 : +2 RD, Force 11+ : +3 RD "
+            ]
+        },
+        {
+            "nom": "Barycentre",
+            "rangs": 1,
+            "prérequis": {
+                "Agilité": 7
+            },
+            "description": [
+                "Quand je réalise une attaque à distance, je peux choisir de cibler le buste (ou équivalent) sans subir le malus de Difficulté à mon tir.",
+                "Je peux en plus relancer 1d20 de cette attaque si j'ai pas été assez bon·ne."
+            ]
+        },
+        {
+            "nom": "Beau parleur",
+            "rangs": 1,
+            "prérequis": {
+                "Charisme": 6
+            },
+            "description": "Quand je réalise un test de Discours ou de Troc opposé, je peux relancer 1d20."
+        },
+        {
+            "nom": "Blitz",
+            "rangs": 2,
+            "prérequis": {
+                "Agilité": 9,
+                "Niveaux entre chaque rang": 3
+            },
+            "description": "Quand je me déplace à bout portant du méchant pour le taper dans le même tour, je peux relancer 1d20 de mon attaque de mêlée ou à mains nues. Au rang 2, j'inflige même +1 D de Dégât ! "
+        },
+        {
+            "nom": "Boyaux plombés",
+            "rangs": 2,
+            "prérequis": {
+                "Endurance": 6,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": {
+                "Rang 1": "je peux relancer les  pour déterminer si je subis des dégâts de radiations quand je mange des aliments irradiés ou quand je bois de l'eau irradiée.",
+                "Rang 2": "je suis complètement immunisé·e aux radiations de l'eau et de la nourriture !"
+            }
+        },
+        {
+            "nom": "Bricolage",
+            "rangs": 1,
+            "prérequis": "-",
+            "description": "Je peux réparer tous les objets sans dépenser le moindre composant ! Bien sûr, cette réparation est sommaire et l'objet ainsi réparé cassera à la moindre complication qui m'arrivera quand je l'utiliserai. De plus, le rang de complication de l'objet est augmenté de +1."
+        },
+        {
+            "nom": "Canaille",
+            "rangs": 1,
+            "prérequis": {
+                "Charisme": 7
+            },
+            "description": "Quand je réalise des tests de Chr + Discours pour faire de vilains mensonges, j'ignores la première complication de la scène. "
+        },
+        {
+            "nom": "Canigou",
+            "rangs": 1,
+            "prérequis": {
+                "Charisme": 5
+            },
+            "description": [
+                "Je ne suis pas seul dans les Terres désolées ! J'ai mon meilleur ami Canigou avec moi pour me protéger et me tenir compagnie.",
+                "Une fois par jour, Canigou me trouve de l'eau ou de la nourriture, c'est moi qui choisis. Je peux alors lancer les dés sur la table de loot Nourriture ou Boissons.",
+                "Si mon ami à fourrure venait à rejoindre le Paradis des animaux, j'en aurais un nouveau au début de ma prochaine aventure. Sinon je peux choisir un autre aptitude tout de suite et oublier Canigou et son aptitude sans attendre."
+            ]
+        },
+        {
+            "nom": "Chasseur",
+            "rangs": 1,
+            "prérequis": {
+                "Endurance": 6
+            },
+            "description": "Quand j'attaques un animal* ou une créature mutante*, mon arme gagne l'effet d'arme Brutal si elle ne l'a pas déjà."
+        },
+        {
+            "Nom": "Chimiste",
+            "rangs": 1,
+            "prérequis": {
+                "Intelligence": 7
+            },
+            "description": "La durée d'effet des drogues que je crée est doublée, je débloque des recettes en lien avec l'aptitude!"
+        },
+        {
+            "nom": "Chirurgien de la chevrotine",
+            "rangs": 1,
+            "prérequis": {
+                "Force": 5,
+                "Agilité": 7
+            },
+            "description": "Mes attaques à distance avec des fusils à pompe gagnent l'effet d'arme Perforant 1, ou Perforant +1 si mon arme le possède déjà."
+        },
+        {
+            "nom": "Cible mouvante",
+            "rangs": 1,
+            "prérequis": {
+                "Agilité": 6
+            },
+            "description": "Quand je sprinte, ma défense augmente de +1 jusqu'au début de mon prochain tour."
+        },
+        {
+            "nom": "Cogneur",
+            "rangs": 1,
+            "prérequis": {
+                "Force": 6
+            },
+            "description": "Quand je réalise une attaque de corps à corps en cognant avec mon arme à feu, mon attaque gagne l'effet d'arme Brutal."
+        },
+        {
+            "nom": "Commandant laser",
+            "rangs": 2,
+            "prérequis": {
+                "Perception": 8,
+                "Niveau": 2
+            },
+            "description": "Quand je réalise une attaque à distance avec une arme à énergie, mes dégâts sont augmentés de +1 D par rang."
+        },
+        {
+            "nom": "Commando",
+            "rangs": 2,
+            "prérequis": {
+                "Agilité": 8,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 3
+            },
+            "description": "Quand je réalise une attaque à distance avec une arme à feu (sauf armes lourdes) possédant une Cadence de tir de 3+, mon attaque gagne +1 D aux dégats par rang."
+        },
+        {
+            "nom": "Compréhension",
+            "rangs": 1,
+            "prérequis": {
+                "Intelligence": 6
+            },
+            "description": "Après avoir utilisé le bonus temporaire de mon magasine préféré, je lance 1 D. Sur un Effet, je peux utiliser ce bonus une nouvelle fois !"
+        },
+        {
+            "nom": "Concerto de conserves",
+            "rangs": 1,
+            "prérequis": {
+                "Chance": 5
+            },
+            "description": "Quand je fouille un lieu qui contient de la nourriture, je gagne aliment supplémentaire, sans dépenser de PA."
+        },
+        {
+            "Nom": "Coups super critiques",
+            "rangs": 1,
+            "prérequis": {
+                "Chance": 9
+            },
+            "description": "Quand j'inflige au moins 1 point de dégât à un ennemi, je peux dépenser 1 Point de Chance pour lui infliger automatiquement une blessure grave !"
+        },
+        {
+            "Nom": "Dégainage rapide",
+            "rangs": 1,
+            "prérequis": {
+                "Agilité": 6
+            },
+            "description": "Chaque tour je peux dégainer une seule arme ou un seul objet que je possède sans y consacrer une action mineure."
+        },
+        {
+            "nom": "Dénicheur de trésor",
+            "rangs": 3,
+            "prérequis": {
+                "Chance": 5,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": [
+                "L'argent fait le bonheur ! À chaque fois que je trouve des caps, j'en trouve plus que les autres.",
+                {
+                    "Rang 1": "je trouve +3 D de caps.",
+                    "Rang 2": "je trouve +6  caps.",
+                    "Rang 3": "je trouve +10  caps."
+                }
+            ]
+        },
+        {
+            "nom": "Énergie solaire",
+            "rangs": 1,
+            "prérequis": {
+                "Endurance": 7
+            },
+            "description": "Chaque heure que je joue dehors à la lumière directe du soleil, je guéris d'1 point de Radiation."
+        },
+        {
+            "nom": "Entomologiste",
+            "rangs": 1,
+            "prérequis": {
+                "Intelligence": 7
+            },
+            "description": "Quand j'attaque une créature possédant le mot-clé Insecte dans les archives Vault-Tec, mon attaque gagne l'Effet d'arme Perforant 1, ou Perforant +1 si mon arme le possède déjà."
+        },
+        {
+            "nom": "Exercice",
+            "rangs": 10,
+            "prérequis": {
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 2
+            },
+            "description": "J'augmente d'1 point un attribut de mon S.P.E.C.I.A.L. Je ne peux pas dépasser le niveau 10 avec ce perk (ou la limite de mon espèce si j'ai muté)."
+        },
+        {
+            "nom": "Expert en démolition",
+            "rangs": 1,
+            "prérequis": {
+                "Perception": 6,
+                "Chance": 6
+            },
+            "description": " Quand je réalise une attaque avec une arme possédant la qualité zone d'impact, mon attaque gagne l'effet d'arme Brutal. Et je débloque tout plein de recettes que je ne connaissais pas jusqu'ici !"
+        },
+        {
+            "nom": "Expert en robotique",
+            "rangs": 3,
+            "prérequis": {
+                "Intelligence": 8,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": {
+                "Rang 1": "je peux bidouiller les robots : modifier leurs armures, armes et modules de rang 1.",
+                "Rang 2": "j'ai accès aux modules de robots de rang 2 et la Difficulté des tests de Réparation des robots est réduite de 1.",
+                "Rang 3": "j'ai accès aux modules de robots de rang 3 et je peux reprogrammer les robots pour leur donner une autre fonction ou modifier leur comportement, en accord avec le MJ."
+            }
+        },
+        {
+            "nom": "Fana d'armes",
+            "rangs": 4,
+            "prérequis": {
+                "Intelligence": 6,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": [
+                "Je peux modifier les armes légères avec des modules.",
+                "Chaque rang me permet de monter en rang de module : le rang 1 débloque les modules d'arme de rang 1, le rang 2 débloque les modules d'arme de rang 2, etc."
+            ]
+        },
+        {
+            "nom": "Fana de capsules",
+            "rangs": 1,
+            "prérequis": {
+                "Charisme": 5
+            },
+            "description": "Quand je vends ou achète, les prix sont augmentés ou réduits de 10% en ma faveur."
+        },
+        {
+            "nom": "Fantôme",
+            "rangs": 1,
+            "prérequis": {
+                "Perception": 5,
+                "Agilité": 6
+            },
+            "description": " Quand je tente un test d'AGI + Discrétion alors que je me cache dans l'ombre ou l'obscurité, l'achat du premier d20 avec des PA est gratuit pour moi. "
+        },
+        {
+            "nom": "Farfouilleur",
+            "rangs": 3,
+            "prérequis": {
+                "Chance": 6,
+                "Niveaux entre chaque rang": 5
+            },
+            "description": [
+                "Les munitions font mon bonheur ! À chaque fois que j'en trouve, c'est plus que les autres. Quand j'en trouve de plusieurs sortes, la fouille s'applique aux munitions les moins rares.",
+                {
+                    "Rang 1": "je trouve +3 D de munitions.",
+                    "Rang 2": "je trouve +6 D de munitions.",
+                    "Rang 3": "je trouve +10 D de munitions."
+                }
+            ]
+        },
+        {
+            "nom": "Farmer la pharma",
+            "rangs": 1,
+            "prérequis": {
+                "CHANCE": 6
+            },
+            "description": "Quand je trouve des médicaments ou des drogues, j'en trouve un de plus au hasard, sans dépenser de PA !"
+        },
+        {
+            "nom": "Fêtard",
+            "rangs": 1,
+            "prérequis": {
+                "ENDURANCE": 6,
+                "CHARISME": 7
+            },
+            "description": "Je bois tant que je veux, je ne développe pas d'addiction à l'alcool ! En plus, un alcool me soigne de +2 PV."
+        },
+        {
+            "nom": "Finesse",
+            "rangs": 1,
+            "prérequis": {
+                "AGILITÉ": 9
+            },
+            "description": "Une fois par combat, je peux relancer tous les D de dégats de mon attaque, quelle qu'elle soit et ce, sans dépenser mes Points de Chance."
+        },
+        {
+            "nom": "Force de frappe",
+            "rangs": 1,
+            "prérequis": {
+                "FORCE": 8
+            },
+            "description": "Quand je réalise une attaque de mêlée avec une arme à deux mains, mon attaque gagne l'Effet d'arme Brutal. "
+        },
+        {
+            "nom": "Forgeron",
+            "rangs": 3,
+            "prérequis": {
+                "FORCE": 6,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": "Je peux modifier les armes de mêlée avec des modules. Chaque rang me permet de monter en rang de module : le rang 1 débloque les modules de rang 1, le rang 2 débloque les modules de rang 2, etc."
+        },
+        {
+            "nom": "Frappe perforante",
+            "rangs": 1,
+            "prérequis": {
+                "FORCE": 7
+            },
+            "description": "Les attaques avec mes mains ou avec une arme de corps à corps à lames obtiennent l'Effet d'arme Perforant 1, ou Perforant +1 si mon arme le possède déjà."
+        },
+        {
+            "nom": "Fusilier",
+            "rangs": 2,
+            "prérequis": {
+                "AGILITÉ": 7,
+                "Niveau": 2,
+                "Niveaux entre chaque rang": 4
+            },
+            "description": [
+                "Quand je réalise une attaque à distance avec une arme à deux mains (sauf armes lourdes) possédant une Cadence de tir de 2 ou moins, mon attaque gagne +1 D de dégats par rang.",
+                "Au rang 2, mon attaque gagne l'effet d'arme Perforant 1, ou Perforant +1 si mon arme le possède déjà."
+            ]
+        }
+    ],
+    "traits": [
+        {
+            "nom": "Post-humain nécrotique",
+            "description": [
+                "1pv récupéré tout les 3 points de dégats en rad"
+            ]
+        },
+        {
+            "nom": "Perception améliorée",
+            "description": [
+                "Difficulté réduite de 1 pour les tests de vue et odorat"
+            ]
+        },
+        {
+            "nom": "Propulsion",
+            "description": [
+                "les terrains difficiles et les obstacles ne vous affectent pas"
+            ]
+        },
+        {
+            "nom": "Eponge à radiation",
+            "description": [
+                "Une fois par scène, quand quelqu'un situé à portée courte de vous s'apprête à subir des dégâts de radiation, vous pouvez décréter que vous endurez ces dégâts à sa place.",
+                "Chaque fois que vous subissez des dégats de ratiation ( avec un minimum de 0), vous obtenez 1 point de radiation, dans la limite de 5 points, qe vous pouvez dépensé.",
+                "Vous infligez 2d de dégâts énergétiques Radioactifs supplémentaire, que vous appliquez après tous les autres dégâts de l'attaque. Vous perdez 1 point de radiation quand vous dormez."
+            ]
+        },
+        {
+            "nom": "Protectron",
+            "description": [
+                "Pour tout test en lien avec votre spécialisation, le 1er D supplémentaire coûte 0 PA"
+            ]
+        }
+    ],
+    "équipement de départ": [
+        {
+            "Initié de la confrérie": {
+                "choixPossible": [
+                    {
+                        "nom": "Initié de la confrérie de l'acier",
+                        "armure1": "Treillis de la confrérie"
+                    },
+                    "Scribe de la confrérie"
+                ]
+            }
+        }
+    ],
+    "équipement": [
+        {
+            "armures": [
+                {
+                    "Treillis de la confrérie": {
+                        "rd": {
+                            "balistique": 2,
+                            "énergétique": 2,
+                            "radiation": 2
+                        },
+                        "localisations": [
+                            "bras",
+                            "jambes",
+                            "buste"
+                        ],
+                        "poids": 2,
+                        "coût": 20,
+                        "rareté": 3
+                    }
+                }
+            ]
+        }
+    ]
+}
