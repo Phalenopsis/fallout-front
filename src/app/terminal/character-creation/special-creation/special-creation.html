@@ -6,7 +6,7 @@
       <article (click)="setActive(stat.key)" [class.active]="activeStat === stat.key">
         <div class="statistic">{{ stat.label }}</div>
 
-        <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= 1">-</button>
+        <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= specialFloor">-</button>
 
         <div class="value">{{ special[stat.key] }}</div>
 
