@@ -23,6 +23,7 @@ export class SpecialCreation {
     this.characterCreationService.character.origin?.maximumStats,
   );
 
+  specialFloor: number = 4;
   special = new Special({ ...this.baseStats });
   remainingPoint = 5;
   activeStat: SpecialKey | null = null;
