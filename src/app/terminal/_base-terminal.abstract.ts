@@ -1,7 +1,14 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Signal, ViewChild, signal } from '@angular/core';
-import { ViewOption } from './model/view-option';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Signal,
+  ViewChild,
+  signal,
+} from '@angular/core';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { ViewOption } from './model/view-option';
 
 @Component({
   selector: 'app-base-terminal', // ne sera jamais utilisé directement
@@ -9,74 +16,46 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './base-terminal.component.html',
 })
 export abstract class BaseTerminal implements AfterViewInit, AfterViewChecked {
+  @ViewChild('inputBar') inputEl!: ElementRef<HTMLInputElement>;
 
-  @ViewChild('cmdInput') cmdInput!: ElementRef<HTMLInputElement>;
-
-  /** Texte en cours de saisie */
-  inputText = signal("");
-
-  /** Lignes du terminal */
+  // Signals correctement initialisés dans le contexte de la classe
+  inputValue = signal('');
   lines = signal<string[]>([]);
-
-  /** Blocage du clavier */
+  promptLabel = signal('');
   inputLocked = signal(false);
+  choices = signal<ViewOption[]>([]);
 
-  /** Label du prompt, ex : ENTER LOGIN: ou ENTER CHOICE: */
-  promptLabel = signal("");
-
-  protected get choices$(): Observable<ViewOption[]> | null {
-    return null;
-  }
-
-  protected readonly choices = signal<ViewOption[]>([]);
-
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.initTerminal();
   }
 
-  ngAfterViewChecked() {
-    this.focusInputIfAvailable();
-  }
-
-  private focusInputIfAvailable() {
-    if (!this.inputLocked() && this.cmdInput) {
-      setTimeout(() => this.cmdInput.nativeElement.focus());
+  ngAfterViewChecked(): void {
+    // autofocus seulement si input unlocked et présent
+    if (!this.inputLocked() && this.inputEl) {
+      this.inputEl.nativeElement.focus({ preventScroll: true });
     }
   }
 
-  /** Méthode abstraite que chaque terminal concret doit implémenter */
+  /** Méthodes abstraites à implémenter dans chaque terminal concret */
   protected abstract initTerminal(): void;
-
-  /** Méthode appelée quand l’utilisateur valide le champ (ENTER) */
   protected abstract onEnter(value: string): void;
 
-  /** Ajout d’une ligne dans le terminal */
+  /** Soumission de l’input */
+  submit() {
+    if (this.inputLocked()) return;
+
+    const value = this.inputValue().trim();
+    this.inputValue.set('');
+    this.onEnter(value);
+  }
+
+  /** Ajouter une ligne dans le terminal */
   protected pushLine(text: string) {
-    this.lines.update(arr => [...arr, text]);
+    this.lines.update((arr) => [...arr, text]);
   }
 
-  /** Gestion de la saisie */
-  onInput(event: Event) {
-    if (this.inputLocked()) return;
-    this.inputText.set((event.target as HTMLInputElement).value);
-  }
-
-  /** Gestion de la touche Enter */
-  onKey(event: KeyboardEvent) {
-    if (this.inputLocked()) return;
-    if (event.key === "Enter") {
-      const val = this.inputText();
-      this.inputText.set(""); // reset champ
-      this.onEnter(val);
-    }
-  }
-
-  protected unlockInput() {
-    this.inputLocked.set(false);
-
-    // Petite sécurité pour focus après changement de signal
-    setTimeout(() => {
-      this.cmdInput.nativeElement.focus();
-    });
+  /** Observable pour les choix (optionnel) */
+  protected get choices$(): Observable<ViewOption[]> | null {
+    return null;
   }
 }

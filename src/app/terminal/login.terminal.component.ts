@@ -8,73 +8,73 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-terminal-login',
-    standalone: true,
-    templateUrl: './base-terminal.component.html', // réutilise le template commun
-    styleUrls: ['./base-terminal.component.css'],   // réutilise le CSS commun
+  selector: 'app-terminal-login',
+  standalone: true,
+  templateUrl: './base-terminal.component.html', // réutilise le template commun
+  styleUrls: ['./base-terminal.component.css'], // réutilise le CSS commun
 })
 export class LoginTerminalComponent extends BaseTerminal {
+  private step: 'login' | 'password' = 'login';
+  private username = '';
+  private passwordBuffer = '';
+  private destroyRef = inject(DestroyRef);
 
-    private step: 'login' | 'password' = 'login';
-    private username = "";
-    private passwordBuffer = "";
-    private destroyRef = inject(DestroyRef);
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+  ) {
+    super();
+  }
 
-    constructor(
-        private auth: AuthService,
-        private router: Router
-    ) {
-        super();
+  protected initTerminal(): void {
+    this.pushLine('| WELCOME TO SECURE TERMINAL');
+    this.pushLine('| PLEASE ENTER YOUR LOGIN:');
+    this.promptLabel.set('ENTER LOGIN: ');
+  }
+
+  protected onEnter(text: string): void {
+    if (this.step === 'login') {
+      this.username = text;
+      this.step = 'password';
+      this.promptLabel.set('ENTER PASSWORD: ');
+      this.pushLine(`| Attempt to Log as : ${this.username}`);
+      return;
     }
 
-    protected initTerminal(): void {
-        this.pushLine("| WELCOME TO SECURE TERMINAL");
-        this.pushLine("| PLEASE ENTER YOUR LOGIN:");
-        this.promptLabel.set("ENTER LOGIN: ");
+    if (this.step === 'password') {
+      this.passwordBuffer = text;
+      this.pushLine(`| Attempt to log as user '${this.username}...'`);
+      this.inputLocked.set(true);
+
+      this.auth
+        .login(this.username, this.passwordBuffer)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          catchError((err: HttpErrorResponse) => {
+            this.handleLoginError(err);
+            return EMPTY;
+          }),
+        )
+        .subscribe(() => {
+          console.log('Login successful');
+          this.pushLine('> ACCESS GRANTED');
+          this.pushLine('> LOADING SYSTEM...');
+
+          setTimeout(() => {
+            this.router.navigate(['/terminal/profil']);
+          }, 1200);
+        });
     }
+  }
 
-    protected onEnter(text: string): void {
-        if (this.step === 'login') {
-            this.username = text;
-            this.step = 'password';
-            this.promptLabel.set("ENTER PASSWORD: ");
-            this.pushLine(`| Attempt to Log as : ${this.username}`);
-            return;
-        }
+  private handleLoginError(err: HttpErrorResponse) {
+    console.log('Login failed', err.error);
+    this.pushLine('> INCORRECT PASSWORD. TRY AGAIN.');
+    this.passwordBuffer = '';
 
-        if (this.step === 'password') {
-            this.passwordBuffer = text;
-            this.pushLine(`| Attempt to log as user '${this.username}...'`);
-            this.inputLocked.set(true);
-
-
-            this.auth.login(this.username, this.passwordBuffer).pipe(
-                takeUntilDestroyed(this.destroyRef),
-                catchError((err: HttpErrorResponse) => {
-                    this.handleLoginError(err);
-                    return EMPTY;
-                })
-            ).subscribe(() => {
-                console.log("Login successful");
-                this.pushLine("> ACCESS GRANTED");
-                this.pushLine("> LOADING SYSTEM...");
-
-                setTimeout(() => {
-                    this.router.navigate(['/terminal/profil']);
-                }, 1200);
-            });
-        }
-    }
-
-    private handleLoginError(err: HttpErrorResponse) {
-        console.log("Login failed", err.error);
-        this.pushLine("> INCORRECT PASSWORD. TRY AGAIN.");
-        this.passwordBuffer = "";
-
-        setTimeout(() => {
-            this.inputLocked.set(false);
-            this.promptLabel.set("ENTER PASSWORD: ");
-        }, 600);
-    }
-
+    setTimeout(() => {
+      this.inputLocked.set(false);
+      this.promptLabel.set('ENTER PASSWORD: ');
+    }, 600);
+  }
 }

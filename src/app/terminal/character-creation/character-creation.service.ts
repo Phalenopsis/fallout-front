@@ -92,17 +92,17 @@ export class CharacterCreationService {
   }
 
   saveDraft(): Observable<Character> {
-    if (this.character.id) {
-      return this.characterApiService.updateCharacter(this.character).pipe(
-        map((dto) => {
-          this.character = Character.mapFromDto(dto);
-          return this.character;
-        }),
-      );
-    }
-    return this.characterApiService.saveCharacter(this.character).pipe(
+    const save$ = this.character.id
+      ? this.characterApiService.updateCharacter(this.character)
+      : this.characterApiService.saveCharacter(this.character);
+
+    return save$.pipe(
       map((dto) => {
         this.character = Character.mapFromDto(dto);
+
+        // 🔥 synchro locale du user
+        this.authService.upsertCharacter(dto);
+
         return this.character;
       }),
     );
