@@ -1,3 +1,4 @@
+import { CharacterSkills } from '../../terminal/character-creation/skill-creation/model/skill.desc';
 import { CreationStatus } from './creation-status.enum';
 import { ORIGIN_VALUE } from './origin-mapping.map';
 import { SpecialDTO } from './special.dto';
@@ -9,4 +10,5 @@ export interface CharacterDTO {
   special: SpecialDTO | undefined;
   originName: ORIGIN_VALUE | undefined;
   creationStatus: CreationStatus;
+  skills: CharacterSkills | undefined;
 }

@@ -1,4 +1,5 @@
 import { ORIGIN_KEY } from '../../../character/models/origin-mapping.map';
+import { SkillName } from '../skill-creation/model/skill.desc';
 import {
   improvedPerception,
   necroticPostHuman,
@@ -16,6 +17,8 @@ export const STATS = [
   'Agilité',
   'Chance',
 ] as const;
+
+export type SpecialStat = (typeof STATS)[number];
 
 export const REPUTATION = [
   'Héros de la République',
@@ -52,6 +55,9 @@ export type OrigineDescription = {
   nom: ORIGIN_KEY;
   histoire: string[];
   traitAChoisir?: string[];
+  atoutAChoisirParmi?: SkillName[];
+  atoutGratuit?: boolean;
+  aptitudeGratuite?: boolean;
   trait?: TraitDescription[];
   atout?: string;
   bonusCompetence?: BonusCompetence;
@@ -80,6 +86,7 @@ export const InitiateOfTheBrotherhood: OrigineDescription = {
     "Pendant ce temps, le chapitre de la côte est était isolé et préférait faire preuve de charité plutôt que d'échanger des technologies et préserver l'équipement d'avant-guerre.",
     "La mission de l'Ainé Lyon devint humanitaire et bien que cela valut au chapitre une marginalisation forcée au début, Arthur Maxson lui permit d'étendre son influence de Washington D.C à toute la côte est, en recentrant ses efforts sur la récupération et le développement de technologies.",
   ],
+  atoutAChoisirParmi: ['energyWeapons', 'science', 'repair'],
   traitAChoisir: ['Armes à énergie', 'Science', 'Réparation'],
   handicap: "quelque chose d'handicapant",
 };
@@ -202,6 +209,7 @@ export const ShelterDweller: OrigineDescription = {
     'Dès lors, ces sociétés isolées se mêlèrent aux survivants de la surface et établirent un lien permanent avec cette dernière.',
     "L'exemple le plus notable est celui de l'Abri 15, dont les résidents se séparèrent et fondèrent les Sables ombragés, ainsi que les bandes de pillards nommées Jackals, Vipers et Khans.",
   ],
+  atoutGratuit: true,
   traitAChoisir: ['un atout au choix rang 2'],
   handicap: 'Une expérience malheureuse',
 };
@@ -222,6 +230,7 @@ export const ThirdGenerationSynth: OrigineDescription = {
     "Votre quête de sens et d'identité dans un monde qui vous redoute ou vous mécomprend est essentielle.",
     "Vous ne dormez pas, pendant ce temps à la place vous vous lancez dans de petites activités, comme l'artisanat, la lecture ou la reconnaissance légère.",
   ],
+  atoutGratuit: true,
   traitAChoisir: ['un atout au choix rang 2'],
   immunite: ['Poison', 'Radiation', 'Maladie', 'Soif', 'Faim'],
   handicap: 'Ne bénéficient pas des effets de nourriture et boisson',
@@ -272,7 +281,7 @@ export const ChildOfAtom: OrigineDescription = {
     "A moins que vous ne soyez originaire du cratère d'Atome, dans la Mer luminescente?",
     'Si vous gardez la foi, partagez la Lueur avec les personnes que vous rencontrez et montrez votre dévouement envers Atome, vous prouverez peut-être votre valeur et atteindrez ainsi un rang plus élevé dans la secte.',
   ],
-  traitAChoisir: ['une aptitude supplémentaire rang 1'],
+  aptitudeGratuite: true,
   trait: [radiationSponge],
   resistanceRadiation: 1,
   handicap: 'Ne bénéficient pas des effets de nourriture et boisson',

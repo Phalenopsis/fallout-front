@@ -2,6 +2,7 @@ import {
   origineDescription,
   OrigineDescription,
 } from '../../terminal/character-creation/origin-creation/origine.desc';
+import { CharacterSkills } from '../../terminal/character-creation/skill-creation/model/skill.desc';
 import { CharacterDTO } from './character.dto';
 import { CreationStatus } from './creation-status.enum';
 import {
@@ -19,6 +20,7 @@ export class Character {
   special?: Special;
   origin?: OrigineDescription;
   creationStatus: CreationStatus = CreationStatus.DRAFT;
+  skills?: CharacterSkills;
 
   setName(name: string): void {
     this.name = name;
@@ -37,6 +39,7 @@ export class Character {
       special: this.special?.mapToDto(),
       originName: this.origin ? this.mapOrigin(this.origin) : undefined,
       creationStatus: this.creationStatus,
+      skills: this.skills,
     };
   }
 
@@ -53,6 +56,10 @@ export class Character {
 
     if (dto.special) {
       character.special = new Special(dto.special);
+    }
+
+    if (dto.skills) {
+      character.skills = dto.skills;
     }
 
     return character;

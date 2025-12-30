@@ -30,6 +30,10 @@ export class CharacterCreationService {
       isComplete: (c) => !!c.special && c.special.agility > 0, // exemple
     },
     {
+      path: '/skill',
+      isComplete: (c) => !!c.skills, // exemple
+    },
+    {
       path: '/save',
       isComplete: (_) => true, // toujours atteignable
     },

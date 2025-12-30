@@ -1,0 +1,54 @@
+<section>
+  <p>Points d'Atouts : {{ taggedSkillsPoints }}</p>
+  <p>Points de compétences : {{ remainingPoints }}</p>
+  @if (mustTagAnObligatorySkill()) {
+    <p>Vous devez choisir un Atout parmi</p>
+    <ul>
+      @for (label of obligatorySkillLabels; track $index) {
+        <li>{{ label }}</li>
+      }
+    </ul>
+  }
+
+  @for (skill of skills; track $index) {
+    <article (click)="setActive(skill.name)" [class.active]="activeSkill === skill.name">
+      <div class="statistic">{{ skill.nom }}</div>
+      <input
+        type="checkbox"
+        [checked]="skillsCharacter[skill.name].taggedSkill"
+        (change)="toggleTag(skill.name, $event)"
+        [disabled]="!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0"
+        (click)="$event.stopPropagation()"
+      />
+
+      @if (skillsCharacter[skill.name].taggedSkill) {
+        <span>Atout</span>
+      }
+
+      <button (click)="remove(skill.name)" [disabled]="skillsCharacter[skill.name].rank <= 0">
+        -
+      </button>
+
+      <div class="value">{{ skillsCharacter[skill.name].rank }}</div>
+
+      <button
+        (click)="add(skill.name)"
+        [disabled]="remainingPoints <= 0 || skillsCharacter[skill.name].rank >= 3"
+      >
+        +
+      </button>
+    </article>
+  }
+</section>
+
+<button class="btn" (click)="previousStep()">Précédent</button>
+<button
+  class="btn"
+  [disabled]="remainingPoints > 0 && taggedSkillsPoints > 0"
+  (click)="saveAndNextStep()"
+>
+  Sauver la création
+</button>
+<button class="btn" [disabled]="remainingPoints > 0 || taggedSkillsPoints > 0" (click)="nextStep()">
+  Suivant
+</button>
