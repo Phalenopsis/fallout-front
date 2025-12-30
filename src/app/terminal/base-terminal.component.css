@@ -20,18 +20,103 @@
   margin-top: 15px;
 }
 
-.hidden-input {
-  position: absolute;
+/* ===========================
+   TERMINAL INPUT BAR
+   =========================== */
+.input-bar {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.6rem;
+  position: sticky; /* toujours visible en bas du terminal */
   bottom: 0;
-  left: 0;
+  width: 100%;
 
-  width: 1px;
-  height: 1px;
-
-  opacity: 0;
-  pointer-events: none; /* protégé */
+  gap: 0.6rem;
+  z-index: 10;
 }
 
-.hidden-input:not(:disabled) {
-  pointer-events: auto; /* focus via clic terminal */
+/* ===========================
+   INPUT STYLE
+   =========================== */
+.input-bar input {
+  flex: 1; /* prend tout l’espace disponible */
+  background: transparent;
+  border: 1px solid var(--crt-font-color-dim);
+  color: var(--crt-font-color);
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1.5rem;
+  padding: 0.4rem 0.6rem;
+  outline: none;
+  text-shadow:
+    0 0 2px var(--crt-glow),
+    0 0 4px var(--crt-glow);
+  box-shadow: inset 0 0 4px var(--crt-glow);
+  border-radius: 3px;
+}
+
+/* Focus input */
+.input-bar input:focus {
+  border-color: var(--crt-glow);
+  box-shadow:
+    0 0 6px var(--crt-glow),
+    inset 0 0 4px var(--crt-glow);
+}
+
+/* Placeholder optionnel */
+.input-bar input::placeholder {
+  color: var(--crt-font-color-dim);
+  opacity: 0.7;
+}
+
+/* ===========================
+   BOUTON OK
+   =========================== */
+.input-bar button {
+  padding: 0.4rem 0.8rem;
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--crt-font-color);
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color-dim);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+  position: relative;
+  box-shadow: 0 0 0 var(--crt-glow); /* glow initialement éteint */
+}
+
+/* Hover / focus glow */
+.input-bar button:hover,
+.input-bar button:focus {
+  color: var(--crt-glow);
+  box-shadow:
+    0 0 8px var(--crt-glow),
+    0 0 12px var(--crt-glow);
+  outline: none;
+}
+
+/* Disabled */
+.input-bar button:disabled {
+  color: var(--crt-font-color-dim);
+  border-color: var(--crt-font-color-dim);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ===========================
+   MOBILE FIRST - Input + Button responsive
+   =========================== */
+@media (max-width: 600px) {
+  .input-bar {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .input-bar button {
+    width: 100%;
+  }
 }
