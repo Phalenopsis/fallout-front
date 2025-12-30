@@ -16,9 +16,11 @@ export class SpecialCreation {
   characterCreationService = inject(CharacterCreationService);
   router = inject(Router);
   specialModService = inject(SpecialModService);
-  baseStats: Record<SpecialKey, number> = this.specialModService.applyOriginModifiers(
-    this.characterCreationService.character.origin?.modificateurStats,
-  );
+  baseStats: Record<SpecialKey, number> = this.characterCreationService.character.special
+    ? this.characterCreationService.character.special
+    : this.specialModService.applyOriginModifiers(
+        this.characterCreationService.character.origin?.modificateurStats,
+      );
   maxStats: Record<SpecialKey, number> = this.specialModService.getMaxStats(
     this.characterCreationService.character.origin?.maximumStats,
   );
@@ -112,5 +114,12 @@ export class SpecialCreation {
       },
       error: (err) => console.error(err),
     });
+  }
+
+  previousStep() {
+    this.characterCreationService.character.special = undefined;
+    const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
+    this.characterCreationService.goToPreviousStep();
+    this.router.navigate([route]);
   }
 }

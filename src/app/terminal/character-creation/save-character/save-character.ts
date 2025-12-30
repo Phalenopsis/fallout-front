@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CharacterCreationService } from '../character-creation.service';
 import { CharacterApiService } from '../../../service/api/character-api.service';
 import { SpecialKey } from '../../../character/models/special.type';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-save-character',
@@ -14,6 +15,7 @@ export class SaveCharacter {
   characterCreationService = inject(CharacterCreationService);
   character = this.characterCreationService.character;
   characterApiService = inject(CharacterApiService);
+  router: Router = inject(Router);
 
   // Liste des stats pour générer automatiquement le HTML
   stats: { key: SpecialKey; label: string }[] = [
@@ -35,5 +37,11 @@ export class SaveCharacter {
     // Logique pour annuler la sauvegarde
     console.log('Sauvegarde annulée');
     // Rediriger ou afficher un message d'annulation
+  }
+
+  previousStep() {
+    const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
+    this.characterCreationService.goToPreviousStep();
+    this.router.navigate([route]);
   }
 }

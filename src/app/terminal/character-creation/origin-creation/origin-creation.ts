@@ -43,4 +43,10 @@ export class OriginCreation {
       error: (err) => console.error(err),
     });
   }
+
+  previousStep() {
+    const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
+    this.characterCreationService.goToPreviousStep();
+    this.router.navigate([route]);
+  }
 }
