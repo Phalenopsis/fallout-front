@@ -1,23 +1,27 @@
-<div class="terminal" (click)="cmdInput.focus()">
-  <!-- Affichage des lignes -->
+<div class="terminal">
   @for (line of lines(); track $index) {
-  <div>{{ line }}</div>
-  } @if(choices() != null && choices().length > 0) { @for (choice of choices(); track choice.key) {
-  <div>{{ choice.key }} : {{ choice.value }}</div>
-  } }
-
-  <!-- Ligne de saisie -->
-  @if (!inputLocked()) {
-  <div class="input-line">{{ promptLabel() }}{{ inputText() }}<span class="cursor">█</span></div>
+    <div>{{ line }}</div>
   }
-  <!-- Input réel (toujours présent dans le DOM) -->
+
+  @if (choices() != null && choices().length > 0) {
+    @for (choice of choices(); track choice.key) {
+      <div>{{ choice.key }} : {{ choice.value }}</div>
+    }
+  }
+
+  <div class="prompt">
+    {{ promptLabel() }}
+  </div>
+</div>
+
+<div class="input-bar">
   <input
-    #cmdInput
-    type="text"
-    class="hidden-input"
-    [value]="inputText()"
-    [disabled]="inputLocked()"
-    (input)="onInput($event)"
-    (keydown)="onKey($event)"
+    #inputBar
+    class=""
+    [value]="inputValue()"
+    (input)="inputValue.set($any($event.target).value)"
+    (keyup.enter)="submit()"
+    autofocus
   />
+  <button (click)="submit()">OK</button>
 </div>
