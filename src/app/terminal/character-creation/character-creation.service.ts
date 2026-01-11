@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Character } from '../../character/models/character.class';
 import { CharacterApiService } from '../../service/api/character-api.service';
 import { Router } from '@angular/router';
@@ -15,6 +15,7 @@ interface Step {
   providedIn: 'root',
 })
 export class CharacterCreationService {
+  private INITIAL_SPECIAL_POINTS_TO_DISTRIBUTE = 5;
   // Liste des étapes avec leur condition de complétion
   steps: Step[] = [
     {
@@ -44,10 +45,13 @@ export class CharacterCreationService {
   private characterApiService = inject(CharacterApiService);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private _remainingSpecialPoint = signal(this.INITIAL_SPECIAL_POINTS_TO_DISTRIBUTE);
+  public readonly remainingSpecialPoint = this._remainingSpecialPoint.asReadonly();
 
   reset(): void {
     this.character = new Character();
     this.actualStepIndex = 0;
+    this._remainingSpecialPoint.set(this.INITIAL_SPECIAL_POINTS_TO_DISTRIBUTE);
   }
 
   getNextStep(): string {
@@ -129,5 +133,17 @@ export class CharacterCreationService {
         console.error('Erreur lors de la sauvegarde du personnage :', error);
       },
     });
+  }
+
+  resetRemainingSpecialPoints() {
+    this._remainingSpecialPoint.set(this.INITIAL_SPECIAL_POINTS_TO_DISTRIBUTE);
+  }
+
+  addRemainingSpecialPoints() {
+    this._remainingSpecialPoint.update((v) => v + 1);
+  }
+
+  removeRemainingSpecialPoints() {
+    this._remainingSpecialPoint.update((v) => v - 1);
   }
 }
