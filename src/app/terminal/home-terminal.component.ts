@@ -21,7 +21,6 @@ export class HomeTerminal extends OptionTerminal {
 
   ngOnInit(): void {
     this.authService.user$().subscribe((user) => {
-      console.log('Utilisateur courant :', user);
       if (user) {
         this.router.navigate(['/terminal/profil']);
       }

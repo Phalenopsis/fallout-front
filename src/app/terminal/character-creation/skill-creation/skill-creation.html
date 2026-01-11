@@ -1,0 +1,41 @@
+<section>
+  <p>Points d'Atouts : {{ taggedSkillsPoints }}</p>
+  <p>Points de compétences : {{ remainingPoints }}</p>
+
+  @if (fsm.mustTagAnObligatorySkill()) {
+    <p>Vous devez choisir un Atout parmi :</p>
+    <ul>
+      @for (skill of obligatorySkills; track $index) {
+        <li>{{ getSkillLabel(skill) }}</li>
+      }
+    </ul>
+  }
+
+  @for (skill of skills; track $index) {
+    <article (click)="setActive(skill.name)" [class.active]="activeSkill === skill.name">
+      <div class="statistic">{{ skill.nom }}</div>
+
+      <input
+        type="checkbox"
+        [checked]="skillsCharacter[skill.name].taggedSkill"
+        (change)="toggleTag(skill.name, $event)"
+        [disabled]="!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0"
+      />
+      @if (skillsCharacter[skill.name].taggedSkill) {
+        <span>Atout</span>
+      }
+
+      <button (click)="remove(skill.name)" [disabled]="!fsm.canRemove(skill.name)">-</button>
+
+      <div class="value">{{ skillsCharacter[skill.name].rank }}</div>
+
+      <button (click)="add(skill.name)" [disabled]="!fsm.canAdd(skill.name)">+</button>
+    </article>
+  }
+</section>
+
+<div class="navigation">
+  <button class="btn" (click)="previousStep()">Précédent</button>
+  <button class="btn" [disabled]="!canNext" (click)="saveAndNextStep()">Sauver la création</button>
+  <button class="btn" [disabled]="!canNext" (click)="nextStep()">Suivant</button>
+</div>

@@ -4,11 +4,11 @@ import { CharacterApiService } from '../../service/api/character-api.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth-service';
 import { map, Observable } from 'rxjs';
-import { CharacterDTO } from '../../character/models/character.dto';
+import { CharacterFromBackDTO } from '../../character/models/character-from-back.dto';
 
 interface Step {
   path: string;
-  isComplete: (character: CharacterDTO) => boolean;
+  isComplete: (character: CharacterFromBackDTO) => boolean;
 }
 
 @Injectable({
@@ -28,6 +28,10 @@ export class CharacterCreationService {
     {
       path: '/special',
       isComplete: (c) => !!c.special && c.special.agility > 0, // exemple
+    },
+    {
+      path: '/skill',
+      isComplete: (c) => !!c.skills, // exemple
     },
     {
       path: '/save',
@@ -108,7 +112,7 @@ export class CharacterCreationService {
     );
   }
 
-  private computeStepIndex(dto: CharacterDTO): number {
+  private computeStepIndex(dto: CharacterFromBackDTO): number {
     const index = this.steps.findIndex((step) => !step.isComplete(dto));
     return index === -1 ? this.steps.length - 1 : index; // dernière étape si tout est complet
   }

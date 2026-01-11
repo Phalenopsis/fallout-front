@@ -4,7 +4,8 @@ import { tap, map, switchMap, catchError, filter, take, finalize } from 'rxjs/op
 import { AuthApiService } from './api/auth-api.service';
 import { UserDomainDTO } from '../core/models/user-domain.dto';
 import { Character } from '../character/models/character.class';
-import { CharacterDTO } from '../character/models/character.dto';
+import { CharacterToBackDTO } from '../character/models/character.dto';
+import { CharacterFromBackDTO } from '../character/models/character-from-back.dto';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -130,7 +131,7 @@ export class AuthService {
       .subscribe();
   }
 
-  upsertCharacter(characterDto: CharacterDTO) {
+  upsertCharacter(characterDto: CharacterFromBackDTO) {
     const user = this.currentUser$.value;
     if (!user) return;
 
