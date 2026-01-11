@@ -3,7 +3,9 @@ import {
   OrigineDescription,
 } from '../../terminal/character-creation/origin-creation/origine.desc';
 import { CharacterSkills } from '../../terminal/character-creation/skill-creation/model/skill.desc';
-import { CharacterDTO } from './character.dto';
+import { SkillsMapperService } from '../services/skills-mapper.service';
+import { CharacterFromBackDTO } from './character-from-back.dto';
+import { CharacterToBackDTO } from './character.dto';
 import { CreationStatus } from './creation-status.enum';
 import {
   ORIGIN_KEY,
@@ -31,7 +33,7 @@ export class Character {
     return ORIGIN_MAPPING[originDesc.nom as ORIGIN_KEY];
   }
 
-  maptoDto(): CharacterDTO {
+  maptoDto(): CharacterToBackDTO {
     return {
       id: this.id ? this.id : 0,
       name: this.name,
@@ -39,11 +41,11 @@ export class Character {
       special: this.special?.mapToDto(),
       originName: this.origin ? this.mapOrigin(this.origin) : undefined,
       creationStatus: this.creationStatus,
-      skills: this.skills,
+      skills: this.skills ? SkillsMapperService.mapSkillsToBackDto(this.skills) : undefined,
     };
   }
 
-  public static mapFromDto(dto: CharacterDTO): Character {
+  public static mapFromDto(dto: CharacterFromBackDTO): Character {
     const character = new Character();
 
     character.id = dto.id;
@@ -59,7 +61,7 @@ export class Character {
     }
 
     if (dto.skills) {
-      character.skills = dto.skills;
+      character.skills = SkillsMapperService.mapSkillsFromBackDto(dto.skills);
     }
 
     return character;

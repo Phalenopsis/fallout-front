@@ -4,6 +4,7 @@ import { SkillCreationService } from './skill-creation-service';
 import { Character } from '../../../character/models/character.class';
 import { Router } from '@angular/router';
 import { CharacterSkills, SkillName, SKILLS } from './model/skill.desc';
+import { SkillFSM } from './services/skill.final-state-machine';
 
 @Component({
   selector: 'app-skill-creation',
@@ -15,77 +16,67 @@ export class SkillCreation {
   router: Router = inject(Router);
   characterCreationService: CharacterCreationService = inject(CharacterCreationService);
   skillCreationService: SkillCreationService = inject(SkillCreationService);
-
   character: Character = this.characterCreationService.character;
   skillsCharacter: CharacterSkills = this.character.skills
     ? this.character.skills
     : this.skillCreationService.createEmptySkills();
-  taggedSkillsPoints: number =
-    this.character.origin?.atoutGratuit || this.character.origin?.atoutAChoisirParmi ? 4 : 3;
-  remainingPoints: number = 9 + (this.character.special?.intelligence ?? 0);
+
   skills = SKILLS;
   activeSkill: SkillName | null = null;
-
-  obligatorySkills: SkillName[] = this.character.origin?.atoutAChoisirParmi
+  obligatorySkills = this.character.origin?.atoutAChoisirParmi
     ? this.character.origin?.atoutAChoisirParmi
     : [];
 
-  remove(name: SkillName) {
-    if (this.skillsCharacter[name].rank <= 0) return;
-    if (this.skillsCharacter[name].taggedSkill && this.skillsCharacter[name].rank <= 2) return;
-    this.skillsCharacter[name].rank -= 1;
-    this.remainingPoints += 1;
+  fsm!: SkillFSM;
+
+  remainingPoints: number = 0;
+  taggedSkillsPoints: number = 0;
+
+  ngOnInit() {
+    this.fsm = new SkillFSM({
+      skillsCharacter: this.skillsCharacter,
+      remainingPoints: 9 + (this.character.special?.intelligence ?? 0),
+      taggedSkillsPoints:
+        this.character.origin?.atoutGratuit || this.character.origin?.atoutAChoisirParmi ? 4 : 3,
+      obligatorySkills: this.obligatorySkills,
+    });
+
+    this.updateFromFSM();
   }
 
-  add(name: SkillName) {
-    if (this.remainingPoints <= 0) return;
-    if (this.skillsCharacter[name].rank >= 3) return;
-    this.skillsCharacter[name].rank += 1;
-    this.remainingPoints -= 1;
-  }
-
-  tag(name: SkillName) {
-    if (this.taggedSkillsPoints <= 0) return;
-    if (
-      this.obligatorySkills.length > 0 &&
-      !this.obligatorySkills.includes(name) &&
-      this.taggedSkillsPoints > 0
-    ) {
-      if (this.mustTagAnObligatorySkill()) {
-        return;
-      }
-    }
-
-    this.skillsCharacter[name].taggedSkill = true;
-    this.skillsCharacter[name].rank += 2;
-    while (this.skillsCharacter[name].rank > 3) {
-      this.skillsCharacter[name].rank -= 1;
-      this.remainingPoints += 1;
-    }
-    this.taggedSkillsPoints--;
-  }
-
-  untag(name: SkillName) {
-    if (!this.skillsCharacter[name].taggedSkill) return;
-
-    this.skillsCharacter[name].taggedSkill = false;
-    this.taggedSkillsPoints++;
-    this.skillsCharacter[name].rank -= 2;
-    this.remainingPoints += 2;
-  }
-
-  toggleTag(name: SkillName, event: Event) {
+  toggleTag(skill: SkillName, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
+    this.fsm.toggleTag(skill, checked);
+    this.updateFromFSM();
+  }
 
-    if (checked) {
-      this.tag(name);
-    } else {
-      this.untag(name);
-    }
+  add(skill: SkillName) {
+    this.fsm.addPoint(skill);
+    this.updateFromFSM();
+  }
+
+  remove(skill: SkillName) {
+    this.fsm.removePoint(skill);
+    this.updateFromFSM();
+  }
+
+  private updateFromFSM() {
+    const ctx = this.fsm.getContext();
+    this.skillsCharacter = ctx.skillsCharacter;
+    this.remainingPoints = ctx.remainingPoints;
+    this.taggedSkillsPoints = ctx.taggedSkillsPoints;
   }
 
   setActive(skillName: SkillName) {
     this.activeSkill = skillName;
+  }
+
+  getSkillLabel(skillName: SkillName): string {
+    return this.skills.find((s) => s.name === skillName)?.nom ?? skillName;
+  }
+
+  get canNext() {
+    return this.remainingPoints === 0 && this.taggedSkillsPoints === 0;
   }
 
   nextStep() {
@@ -109,20 +100,5 @@ export class SkillCreation {
     const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
     this.characterCreationService.goToPreviousStep();
     this.router.navigate([route]);
-  }
-
-  mustTagAnObligatorySkill(): boolean {
-    if (this.obligatorySkills.length === 0) {
-      return false;
-    }
-
-    return !this.obligatorySkills.some((skill) => this.skillsCharacter[skill].taggedSkill);
-  }
-
-  get obligatorySkillLabels(): string[] {
-    return this.obligatorySkills
-      .map((name) => this.skills.find((s) => s.name === name))
-      .filter(Boolean)
-      .map((s) => s!.nom);
   }
 }
