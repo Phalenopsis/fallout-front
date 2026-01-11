@@ -1,14 +1,17 @@
 import { CreationStatus } from './creation-status.enum';
 import { ORIGIN_VALUE } from './origin-mapping.map';
-import { SkillsToBackDTO } from './skills-back.dto';
 import { SpecialDTO } from './special.dto';
 
-export interface CharacterToBackDTO {
+export type SkillsFromBackDTO = {
+  [key: string]: number | boolean;
+};
+
+export interface CharacterFromBackDTO {
   id: number | undefined;
   name: string | undefined;
   userId: number | undefined;
   special: SpecialDTO | undefined;
   originName: ORIGIN_VALUE | undefined;
   creationStatus: CreationStatus;
-  skills: SkillsToBackDTO | undefined;
+  skills: SkillsFromBackDTO[] | undefined;
 }

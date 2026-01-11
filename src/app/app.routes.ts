@@ -71,6 +71,14 @@ export const routes: Routes = [
             canActivate: [authGuard],
           },
           {
+            path: 'skill',
+            loadComponent: () =>
+              import('./terminal/character-creation/skill-creation/skill-creation').then(
+                (m) => m.SkillCreation,
+              ),
+            canActivate: [authGuard],
+          },
+          {
             path: 'draft/:id',
             loadComponent: () =>
               import('./terminal/character-creation/draft-creation/draft-creation').then(

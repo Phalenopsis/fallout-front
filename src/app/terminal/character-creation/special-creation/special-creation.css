@@ -29,6 +29,11 @@ article {
     height: 1.5rem;
     background-color: var(--crt-bg-2);
     color: var(--crt-font-color);
+
+    &:disabled {
+      color: var(--crt-bg-2);
+      border-color: var(--crt-bg-2);
+    }
   }
 }
 .statistic {
