@@ -1,6 +1,6 @@
 <div class="wrapper">
   <section>
-    <div>Points restant à répartir : {{ remainingPoint }}</div>
+    <div>Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}</div>
 
     @for (stat of stats; track $index) {
       <article (click)="setActive(stat.key)" [class.active]="activeStat === stat.key">
@@ -12,7 +12,10 @@
 
         <button
           (click)="add(stat.key)"
-          [disabled]="remainingPoint <= 0 || special[stat.key] >= maxStats[stat.key]"
+          [disabled]="
+            characterCreationService.remainingSpecialPoint() <= 0 ||
+            special[stat.key] >= maxStats[stat.key]
+          "
         >
           +
         </button>
@@ -29,7 +32,17 @@
   </section>
 </div>
 <button class="btn" (click)="previousStep()">Précédent</button>
-<button class="btn" [disabled]="remainingPoint > 0" (click)="saveAndNextStep()">
+<button
+  class="btn"
+  [disabled]="characterCreationService.remainingSpecialPoint() > 0"
+  (click)="saveAndNextStep()"
+>
   Sauver la création
 </button>
-<button class="btn" [disabled]="remainingPoint > 0" (click)="nextStep()">Suivant</button>
+<button
+  class="btn"
+  [disabled]="characterCreationService.remainingSpecialPoint() > 0"
+  (click)="nextStep()"
+>
+  Suivant
+</button>

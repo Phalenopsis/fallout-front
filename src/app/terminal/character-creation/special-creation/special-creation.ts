@@ -27,7 +27,6 @@ export class SpecialCreation {
 
   specialFloor: number = 4;
   special = new Special({ ...this.baseStats });
-  remainingPoint = 5;
   activeStat: SpecialKey | null = null;
 
   // Liste des stats pour générer automatiquement le HTML
@@ -78,16 +77,16 @@ export class SpecialCreation {
   ];
 
   add(key: SpecialKey) {
-    if (this.remainingPoint <= 0) return;
+    if (this.characterCreationService.remainingSpecialPoint() <= 0) return;
     if (this.special[key] >= this.maxStats[key]) return;
     this.special[key] += 1;
-    this.remainingPoint -= 1;
+    this.characterCreationService.removeRemainingSpecialPoints();
   }
 
   remove(key: SpecialKey) {
     if (this.special[key] <= 1) return;
     this.special[key] -= 1;
-    this.remainingPoint += 1;
+    this.characterCreationService.addRemainingSpecialPoints();
   }
 
   setActive(statKey: SpecialKey) {
@@ -118,6 +117,7 @@ export class SpecialCreation {
 
   previousStep() {
     this.characterCreationService.character.special = undefined;
+    this.characterCreationService.resetRemainingSpecialPoints();
     const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
     this.characterCreationService.goToPreviousStep();
     this.router.navigate([route]);
