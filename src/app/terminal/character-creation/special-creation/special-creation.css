@@ -43,6 +43,10 @@ article {
   width: 2ch;
   text-align: right;
 }
+.description {
+  display: flex;
+  flex-direction: row;
+}
 .description p {
   margin: 0 0 0.5rem 0;
 }

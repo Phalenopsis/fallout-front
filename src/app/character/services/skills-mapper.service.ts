@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
   CharacterSkills,
+  SkillKey,
   SkillLevel,
-  SkillName,
 } from '../../terminal/character-creation/skill-creation/model/skill.desc';
 import { SkillsToBackDTO } from '../models/skills-back.dto';
 import { SkillsFromBackDTO } from '../models/character-from-back.dto';
@@ -91,7 +91,7 @@ export class SkillsMapperService {
     };
   }
 
-  public static mapSkill(name: SkillName, dto: any): SkillLevel {
+  public static mapSkill(name: SkillKey, dto: any): SkillLevel {
     return {
       name,
       rank: dto[name] as number,

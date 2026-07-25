@@ -1,4 +1,4 @@
-import { CharacterSkills, SkillName } from '../model/skill.desc';
+import { CharacterSkills, SkillKey } from '../model/skill.desc';
 
 type SkillState = 'FREE' | 'MUST_TAG_OBLIGATORY' | 'NO_MORE_TAG_POINTS' | 'COMPLETE';
 
@@ -6,7 +6,7 @@ interface SkillContext {
   skillsCharacter: CharacterSkills;
   remainingPoints: number;
   taggedSkillsPoints: number;
-  obligatorySkills: SkillName[];
+  obligatorySkills: SkillKey[];
 }
 
 export class SkillFSM {
@@ -35,7 +35,7 @@ export class SkillFSM {
   }
 
   // --- Taguer un skill ---
-  tag(skill: SkillName) {
+  tag(skill: SkillKey) {
     // si plus de points de tag, ou si un skill obligatoire doit être choisi mais n'est pas celui-ci
     if (this.context.taggedSkillsPoints <= 0) return;
     if (
@@ -59,7 +59,7 @@ export class SkillFSM {
   }
 
   // --- Retirer le tag d’un skill ---
-  untag(skill: SkillName) {
+  untag(skill: SkillKey) {
     const sk = this.context.skillsCharacter[skill];
     if (sk.taggedSkill) {
       sk.taggedSkill = false;
@@ -72,13 +72,13 @@ export class SkillFSM {
   }
 
   // --- Toggle tag depuis checkbox ---
-  toggleTag(skill: SkillName, checked: boolean) {
+  toggleTag(skill: SkillKey, checked: boolean) {
     if (checked) this.tag(skill);
     else this.untag(skill);
   }
 
   // --- Ajouter un point de skill classique ---
-  addPoint(skill: SkillName) {
+  addPoint(skill: SkillKey) {
     if (!this.canAdd(skill)) return;
 
     const sk = this.context.skillsCharacter[skill];
@@ -88,7 +88,7 @@ export class SkillFSM {
     this.state = this.computeState();
   }
 
-  canAdd(skill: SkillName): boolean {
+  canAdd(skill: SkillKey): boolean {
     const sk = this.context.skillsCharacter[skill];
 
     if (this.context.remainingPoints <= 0) return false;
@@ -98,7 +98,7 @@ export class SkillFSM {
   }
 
   // --- Retirer un point de skill classique ---
-  removePoint(skill: SkillName) {
+  removePoint(skill: SkillKey) {
     if (!this.canRemove(skill)) return;
 
     const sk = this.context.skillsCharacter[skill];
@@ -108,7 +108,7 @@ export class SkillFSM {
     this.state = this.computeState();
   }
 
-  canRemove(skill: SkillName): boolean {
+  canRemove(skill: SkillKey): boolean {
     const sk = this.context.skillsCharacter[skill];
 
     if (sk.rank <= 0) return false;

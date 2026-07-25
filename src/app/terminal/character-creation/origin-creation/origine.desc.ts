@@ -1,5 +1,5 @@
 import { ORIGIN_KEY } from '../../../character/models/origin-mapping.map';
-import { SkillName } from '../skill-creation/model/skill.desc';
+import { SkillKey } from '../skill-creation/model/skill.desc';
 import {
   improvedPerception,
   necroticPostHuman,
@@ -55,7 +55,7 @@ export type OrigineDescription = {
   nom: ORIGIN_KEY;
   histoire: string[];
   traitAChoisir?: string[];
-  atoutAChoisirParmi?: SkillName[];
+  atoutAChoisirParmi?: SkillKey[];
   atoutGratuit?: boolean;
   aptitudeGratuite?: boolean;
   trait?: TraitDescription[];

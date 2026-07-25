@@ -19,6 +19,65 @@ import {
   unarmed,
 } from './skills.desc';
 
+export const SKILL_KEYS = [
+  'athletics',
+  'barter',
+  'bigGuns',
+  'energyWeapons',
+  'explosives',
+  'lockpick',
+  'medicine',
+  'meleeWeapons',
+  'pilot',
+  'repair',
+  'science',
+  'smallGuns',
+  'sneak',
+  'speech',
+  'survival',
+  'throwing',
+  'unarmed',
+] as const;
+
+export type SkillKey = (typeof SKILL_KEYS)[number];
+
+export type SkillDefinition = {
+  name: SkillKey; // On utilise SkillKey directement ici !
+  nom: string;
+  SPECIAL: SpecialStat;
+  secondarySPECIAL: SpecialStat[];
+  shortDescription: string[];
+  description: string[];
+};
+
+// Dictionnaire des définitions
+export const SKILL_DEFINITIONS: Record<SkillKey, SkillDefinition> = {
+  athletics,
+  barter,
+  bigGuns,
+  energyWeapons,
+  explosives,
+  lockpick,
+  medicine,
+  meleeWeapons,
+  pilot,
+  repair,
+  science,
+  smallGuns,
+  sneak,
+  speech,
+  survival,
+  throwing,
+  unarmed,
+};
+export type SkillLevel = {
+  name: SkillKey;
+  taggedSkill: boolean;
+  rank: number;
+};
+
+export type CharacterSkills = Record<SkillKey, SkillLevel>;
+
 export const SKILLS = [
   energyWeapons,
   meleeWeapons,
@@ -38,39 +97,3 @@ export const SKILLS = [
   survival,
   barter,
 ];
-
-export type SkillName =
-  | 'survival'
-  | 'barter'
-  | 'speech'
-  | 'science'
-  | 'repair'
-  | 'athletics'
-  | 'sneak'
-  | 'medicine'
-  | 'lockpick'
-  | 'smallGuns'
-  | 'bigGuns'
-  | 'energyWeapons'
-  | 'explosives'
-  | 'meleeWeapons'
-  | 'unarmed'
-  | 'throwing'
-  | 'pilot';
-
-export type SkillDefinition = {
-  name: SkillName;
-  nom: string;
-  SPECIAL: SpecialStat;
-  secondarySPECIAL: SpecialStat[];
-  shortDescription: string[];
-  description: string[];
-};
-
-export type SkillLevel = {
-  name: SkillName;
-  taggedSkill: boolean;
-  rank: number;
-};
-
-export type CharacterSkills = Record<SkillName, SkillLevel>;

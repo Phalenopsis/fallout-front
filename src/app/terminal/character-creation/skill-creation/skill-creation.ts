@@ -3,12 +3,15 @@ import { CharacterCreationService } from '../character-creation.service';
 import { SkillCreationService } from './skill-creation-service';
 import { Character } from '../../../character/models/character.class';
 import { Router } from '@angular/router';
-import { CharacterSkills, SkillName, SKILLS } from './model/skill.desc';
+import { CharacterSkills, SKILL_DEFINITIONS, SkillKey, SKILLS } from './model/skill.desc';
 import { SkillFSM } from './services/skill.final-state-machine';
+import { SrcImage } from '../../../core/models/src-image.model';
+import { SKILL_IMAGES } from '../../../core/component/image/skill.images';
+import { Image } from '../../../core/component/image/image.component';
 
 @Component({
   selector: 'app-skill-creation',
-  imports: [],
+  imports: [Image],
   templateUrl: './skill-creation.html',
   styleUrls: ['./../special-creation/special-creation.css', './skill-creation.css'],
 })
@@ -22,7 +25,7 @@ export class SkillCreation {
     : this.skillCreationService.createEmptySkills();
 
   skills = SKILLS;
-  activeSkill: SkillName | null = null;
+  activeSkill: SkillKey | null = null;
   obligatorySkills = this.character.origin?.atoutAChoisirParmi
     ? this.character.origin?.atoutAChoisirParmi
     : [];
@@ -44,20 +47,29 @@ export class SkillCreation {
     this.updateFromFSM();
   }
 
-  toggleTag(skill: SkillName, event: Event) {
+  toggleTag(skill: SkillKey, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     this.fsm.toggleTag(skill, checked);
     this.updateFromFSM();
   }
 
-  add(skill: SkillName) {
+  add(skill: SkillKey) {
     this.fsm.addPoint(skill);
     this.updateFromFSM();
   }
 
-  remove(skill: SkillName) {
+  remove(skill: SkillKey) {
     this.fsm.removePoint(skill);
     this.updateFromFSM();
+  }
+
+  get activeImage(): SrcImage | null {
+    return this.activeSkill ? SKILL_IMAGES[this.activeSkill] : null;
+  }
+
+  get activeDescription(): string[] {
+    if (!this.activeSkill) return [];
+    return SKILL_DEFINITIONS[this.activeSkill].description;
   }
 
   private updateFromFSM() {
@@ -67,12 +79,12 @@ export class SkillCreation {
     this.taggedSkillsPoints = ctx.taggedSkillsPoints;
   }
 
-  setActive(skillName: SkillName) {
-    this.activeSkill = skillName;
+  setActive(skillKey: SkillKey) {
+    this.activeSkill = skillKey;
   }
 
-  getSkillLabel(skillName: SkillName): string {
-    return this.skills.find((s) => s.name === skillName)?.nom ?? skillName;
+  getSkillLabel(skillKey: SkillKey): string {
+    return SKILL_DEFINITIONS[skillKey].nom;
   }
 
   get canNext() {
