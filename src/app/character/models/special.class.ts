@@ -35,4 +35,16 @@ export class Special {
       luck: this.luck,
     };
   }
+
+  getTotalPoints(): number {
+    return (
+      this.strength +
+      this.perception +
+      this.endurance +
+      this.charisma +
+      this.intelligence +
+      this.agility +
+      this.luck
+    );
+  }
 }
