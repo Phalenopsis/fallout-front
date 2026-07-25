@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DraftCreation } from './draft-creation';
+import { provideRouter } from '@angular/router';
 
 describe('DraftCreation', () => {
   let component: DraftCreation;
@@ -8,9 +9,9 @@ describe('DraftCreation', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DraftCreation]
-    })
-    .compileComponents();
+      imports: [DraftCreation],
+      providers: [provideRouter([])],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DraftCreation);
     component = fixture.componentInstance;
