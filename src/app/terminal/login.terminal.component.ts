@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, EMPTY } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-terminal-login',
@@ -60,9 +59,7 @@ export class LoginTerminalComponent extends BaseTerminal {
           this.pushLine('> ACCESS GRANTED');
           this.pushLine('> LOADING SYSTEM...');
 
-          setTimeout(() => {
-            this.router.navigate(['/terminal/profil']);
-          }, 1200);
+          this.router.navigate(['/terminal/profil']);
         });
     }
   }

@@ -50,10 +50,7 @@ export class RegisterTerminalComponent extends BaseTerminal {
           .subscribe(() => {
             this.pushLine('> ACCESS CREATED');
             this.pushLine('> LOADING SYSTEM...');
-
-            setTimeout(() => {
-              this.router.navigate(['/terminal']);
-            }, 1200);
+            this.router.navigate(['/terminal']);
           });
       } catch (e) {
         this.pushLine('> INCORRECT PASSWORD. TRY AGAIN.');

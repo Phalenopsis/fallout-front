@@ -93,10 +93,18 @@ export class CharacterCreationService {
     return this.characterApiService.getCharacter(characterId).pipe(
       map((dto) => {
         this.character = Character.mapFromDto(dto);
+        this._remainingSpecialPoint.set(this.computeRemainingSpecialPoints());
         this.actualStepIndex = this.computeStepIndex(dto);
         return this.character;
       }),
     );
+  }
+
+  private computeRemainingSpecialPoints() {
+    if (this.character.origin?.nom === 'Super Mutant') {
+      return this.character.special ? 35 + 5 + 4 - this.character.special?.getTotalPoints() : 5;
+    }
+    return this.character.special ? 35 + 5 - this.character.special?.getTotalPoints() : 5;
   }
 
   saveDraft(): Observable<Character> {
