@@ -1,0 +1,34 @@
+<div class="pipboy-layout">
+  <!-- MENU EN HAUT -->
+  <header class="top-nav">
+    <nav>
+      @for (main of menuConfig; track main.path) {
+        <a [routerLink]="[main.path]" routerLinkActive="active" class="nav-tab">
+          {{ main.label }}
+        </a>
+      }
+    </nav>
+  </header>
+
+  <!-- ZONE DE CONTENU CENTRAL (ÉCRAN PIP-BOY) -->
+  <main class="screen-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- SOUS-MENU EN BAS -->
+  <footer class="bottom-nav">
+    @if (activeMainMenu && activeMainMenu.subMenus.length > 0) {
+      <nav>
+        @for (sub of activeMainMenu.subMenus; track sub.path) {
+          <a
+            [routerLink]="[activeMainMenu.path, sub.path]"
+            routerLinkActive="active"
+            class="sub-tab"
+          >
+            {{ sub.label }}
+          </a>
+        }
+      </nav>
+    }
+  </footer>
+</div>

@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  /* On calcule 100vh moins les 2rem de margin du body */
+  height: calc(100vh - 2rem);
+  width: 100%;
+  overflow: hidden;
+}
+
+.pipboy-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ================================
+   NAVIGATION SUPÉRIEURE (Haut)
+   ================================ */
+.top-nav {
+  flex-shrink: 0; /* Ne rétrécit jamais */
+  border-bottom: 2px solid var(--crt-font-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.top-nav nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+/* ================================
+   ÉCRAN CENTRAL (Contenu)
+   ================================ */
+.screen-content {
+  flex: 1; /* Prend tout l'espace disponible au centre */
+  overflow-y: auto; /* Permet le scroll UNIQUEMENT à l'intérieur du contenu si nécessaire */
+  padding: 0.5rem 0;
+
+  /* Masque la barre de défilement tout en gardant le scroll fonctionnel */
+  scrollbar-width: thin;
+  scrollbar-color: var(--crt-font-color-dim) transparent;
+}
+
+/* ================================
+   NAVIGATION INFÉRIEURE (Bas)
+   ================================ */
+.bottom-nav {
+  flex-shrink: 0; /* Ne rétrécit jamais */
+  border-top: 1px dashed var(--crt-font-color-dim);
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  min-height: 2.5rem; /* Réserve l'espace même si le sous-menu est vide (Réglages) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-nav nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* ================================
+   STYLES DES ONGLETS / LIENS
+   ================================ */
+.nav-tab,
+.sub-tab {
+  color: var(--crt-font-color-dim);
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  letter-spacing: 1px;
+  transition: all 0.15s ease;
+}
+
+/* Hover */
+.nav-tab:hover,
+.sub-tab:hover {
+  color: var(--crt-link-hover);
+  text-shadow: 0 0 6px var(--crt-glow);
+}
+
+/* Onglet Actif */
+.nav-tab.active,
+.sub-tab.active {
+  color: var(--crt-font-color);
+  text-shadow:
+    0 0 8px var(--crt-glow),
+    0 0 12px var(--crt-glow);
+  border-bottom: 2px solid var(--crt-font-color);
+  background: rgba(255, 255, 255, 0.05);
+}
