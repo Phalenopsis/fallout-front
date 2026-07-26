@@ -9,6 +9,14 @@ interface SkillContext {
   obligatorySkills: SkillKey[];
 }
 
+export const TAGGED_SKILL_BONUS = 2;
+export const TAGGED_SKILL_MAX_AT_CREATION = 3;
+export const TAGGED_SKILL_MIN = 0;
+export const FSM_SKILL_MUST_TAG_OBLIGATORY = 'MUST_TAG_OBLIGATORY';
+export const FSM_SKILL_NO_MORE_TAG_POINTS = 'NO_MORE_TAG_POINTS';
+export const FSM_SKILL_COMPLETE = 'COMPLETE';
+export const FSM_SKILL_FREE = 'FREE';
+
 export class SkillFSM {
   private context: SkillContext;
   private state: SkillState;
@@ -20,10 +28,10 @@ export class SkillFSM {
 
   // --- Calculer l'état actuel selon les règles ---
   private computeState(): SkillState {
-    if (this.mustTagAnObligatorySkill()) return 'MUST_TAG_OBLIGATORY';
-    if (this.context.taggedSkillsPoints <= 0) return 'NO_MORE_TAG_POINTS';
-    if (this.context.remainingPoints <= 0) return 'COMPLETE';
-    return 'FREE';
+    if (this.mustTagAnObligatorySkill()) return FSM_SKILL_MUST_TAG_OBLIGATORY;
+    if (this.context.taggedSkillsPoints <= 0) return FSM_SKILL_NO_MORE_TAG_POINTS;
+    if (this.context.remainingPoints <= 0) return FSM_SKILL_COMPLETE;
+    return FSM_SKILL_FREE;
   }
 
   // --- Vérifie si un atout obligatoire doit être choisi ---
@@ -38,9 +46,9 @@ export class SkillFSM {
   // --- Taguer un skill ---
   tag(skill: SkillKey) {
     // si plus de points de tag, ou si un skill obligatoire doit être choisi mais n'est pas celui-ci
-    if (this.context.taggedSkillsPoints <= 0) return;
+    if (this.context.taggedSkillsPoints <= TAGGED_SKILL_MIN) return;
     if (
-      this.context.obligatorySkills.length > 0 &&
+      this.context.obligatorySkills.length > TAGGED_SKILL_MIN &&
       !this.context.obligatorySkills.includes(skill) &&
       this.mustTagAnObligatorySkill()
     )
@@ -49,10 +57,10 @@ export class SkillFSM {
     const sk = this.context.skillsCharacter[skill];
     if (!sk.taggedSkill) {
       sk.taggedSkill = true;
-      sk.rank += 2;
-      if (sk.rank > 3) {
-        this.context.remainingPoints += sk.rank - 3;
-        sk.rank = 3;
+      sk.rank += TAGGED_SKILL_BONUS;
+      if (sk.rank > TAGGED_SKILL_MAX_AT_CREATION) {
+        this.context.remainingPoints += sk.rank - TAGGED_SKILL_MAX_AT_CREATION;
+        sk.rank = TAGGED_SKILL_MAX_AT_CREATION;
       }
       this.context.taggedSkillsPoints--;
       this.state = this.computeState();
@@ -64,8 +72,8 @@ export class SkillFSM {
     const sk = this.context.skillsCharacter[skill];
     if (sk.taggedSkill) {
       sk.taggedSkill = false;
-      sk.rank -= 2;
-      if (sk.rank < 0) sk.rank = 0;
+      sk.rank -= TAGGED_SKILL_BONUS;
+      if (sk.rank < TAGGED_SKILL_MIN) sk.rank = TAGGED_SKILL_MIN;
       this.context.taggedSkillsPoints++;
       this.state = this.computeState();
     }
@@ -91,8 +99,8 @@ export class SkillFSM {
   canAdd(skill: SkillKey): boolean {
     const sk = this.context.skillsCharacter[skill];
 
-    if (this.context.remainingPoints <= 0) return false;
-    if (sk.rank >= 3) return false;
+    if (this.context.remainingPoints <= TAGGED_SKILL_MIN) return false;
+    if (sk.rank >= TAGGED_SKILL_MAX_AT_CREATION) return false;
 
     return true;
   }
@@ -114,7 +122,7 @@ export class SkillFSM {
     if (sk.rank <= 0) return false;
 
     // Atout : minimum 2
-    if (sk.taggedSkill && sk.rank <= 2) return false;
+    if (sk.taggedSkill && sk.rank <= TAGGED_SKILL_BONUS) return false;
 
     return true;
   }
