@@ -67,7 +67,6 @@ export class SkillFSM {
       sk.rank -= 2;
       if (sk.rank < 0) sk.rank = 0;
       this.context.taggedSkillsPoints++;
-      this.context.remainingPoints += 2;
       this.state = this.computeState();
     }
   }
