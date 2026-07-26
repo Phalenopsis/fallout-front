@@ -59,6 +59,7 @@ export type OrigineDescription = {
   atoutGratuit?: boolean;
   aptitudeGratuite?: boolean;
   trait?: TraitDescription[];
+  atoutOffert?: SkillKey;
   atout?: string;
   bonusCompetence?: BonusCompetence;
   modificateurStats?: ModStat[];
@@ -103,6 +104,7 @@ export const Ghoul: OrigineDescription = {
     'Les goules civilisées telles que vous craignet une possible dégénérescence vers une créature bestiale et violente. Les goules sauvages sont des mutants nécrotiques, comme vous, mais elles ont perdu leurs fonctions cérébrales supérieures et sont retournées à un état de violence primaire.',
     "Elles attaquent sans distinction toute créature qui n'est pas une goule afin de défendre leur territoire ou se nourrir. Vous ne savez pas si cette perte de contrôle résulte de hauts niveaux de radiation ou, somme toute, de la mutation, ce qui la rend encore plus terrifiante.",
   ],
+  atoutOffert: 'survival',
   atout: 'Survie',
   trait: [necroticPostHuman],
   bonusCompetence: {

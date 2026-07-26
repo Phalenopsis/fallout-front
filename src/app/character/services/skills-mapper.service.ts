@@ -96,6 +96,7 @@ export class SkillsMapperService {
       name,
       rank: dto[name] as number,
       taggedSkill: dto[`is${this.capitalize(name)}TagSkill`] as boolean,
+      isOffered: false,
     };
   }
 

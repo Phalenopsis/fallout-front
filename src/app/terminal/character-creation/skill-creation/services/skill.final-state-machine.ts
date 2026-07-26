@@ -7,6 +7,7 @@ interface SkillContext {
   remainingPoints: number;
   taggedSkillsPoints: number;
   obligatorySkills: SkillKey[];
+  offeredTaggedSkill: SkillKey | null;
 }
 
 export const TAGGED_SKILL_BONUS = 2;

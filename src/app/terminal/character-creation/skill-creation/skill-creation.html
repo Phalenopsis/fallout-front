@@ -21,7 +21,8 @@
           (change)="toggleTag(skill.name, $event)"
           [disabled]="
             (!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0) ||
-            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.name))
+            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.name)) ||
+            skillsCharacter[skill.name].isOffered
           "
         />
         @if (skillsCharacter[skill.name].taggedSkill) {

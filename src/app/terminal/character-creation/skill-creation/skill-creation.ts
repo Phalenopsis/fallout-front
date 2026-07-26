@@ -22,13 +22,16 @@ export class SkillCreation {
   character: Character = this.characterCreationService.character;
   skillsCharacter: CharacterSkills = this.character.skills
     ? this.character.skills
-    : this.skillCreationService.createEmptySkills();
+    : this.skillCreationService.createEmptySkills(
+        this.character.origin?.atoutOffert ? this.character.origin?.atoutOffert : null,
+      );
 
   skills = SKILLS;
   activeSkill: SkillKey | null = null;
   obligatorySkills = this.character.origin?.atoutAChoisirParmi
     ? this.character.origin?.atoutAChoisirParmi
     : [];
+  offeredTaggedSkill: SkillKey | null = null;
 
   fsm!: SkillFSM;
 
@@ -42,6 +45,7 @@ export class SkillCreation {
       taggedSkillsPoints:
         this.character.origin?.atoutGratuit || this.character.origin?.atoutAChoisirParmi ? 4 : 3,
       obligatorySkills: this.obligatorySkills,
+      offeredTaggedSkill: this.character.origin?.atoutOffert || null,
     });
 
     this.updateFromFSM();
