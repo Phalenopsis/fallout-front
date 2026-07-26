@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ChangeDetectorRef, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { SpecialCreation } from './special-creation';
-import { SPECIAL_IMAGES } from '../../../core/component/image/special.images';
+import { SPECIAL_DATA } from '../../../core/constants/special-data.constant';
 import { CharacterCreationService } from '../character-creation.service';
 import { SpecialModService } from './special-mod-service';
 
@@ -62,26 +62,28 @@ describe('SpecialCreation', () => {
     fixture.detectChanges();
   });
 
-  // --- TESTS D'AFFICHAGE D'IMAGE ---
+  // --- TESTS D'AFFICHAGE D'IMAGE ET DESCRIPTION ---
 
   it('devrait être créé', () => {
     expect(component).toBeTruthy();
   });
 
   it("ne devrait pas afficher d'image ni de description si aucune stat n'est active", () => {
-    component.activeStat = null;
+    component.activeStatKey = null;
     fixture.detectChanges();
 
     const imageElement = fixture.nativeElement.querySelector('app-image');
     expect(imageElement).toBeNull();
+    expect(component.activeInfo).toBeUndefined();
   });
 
   it("devrait afficher l'image et charger les données correspondant à la stat active", () => {
-    component.activeStat = 'agility';
-
+    component.setActive('agility');
     fixture.debugElement.injector.get(ChangeDetectorRef).detectChanges();
 
-    expect(component.activeImage).toEqual(SPECIAL_IMAGES['agility']);
+    const expectedAgilityData = SPECIAL_DATA.find((s) => s.key === 'agility');
+
+    expect(component.activeInfo).toEqual(expectedAgilityData);
     const imageElement = fixture.nativeElement.querySelector('app-image');
     expect(imageElement).toBeTruthy();
   });
@@ -89,13 +91,13 @@ describe('SpecialCreation', () => {
   it("devrait mettre à jour l'image lors du changement de stat", () => {
     const cdr = fixture.debugElement.injector.get(ChangeDetectorRef);
 
-    component.activeStat = 'agility';
+    component.setActive('agility');
     cdr.detectChanges();
-    expect(component.activeImage?.name).toBe('Agility');
+    expect(component.activeInfo?.image.name).toBe('Agility');
 
-    component.activeStat = 'strength';
+    component.setActive('strength');
     cdr.detectChanges();
-    expect(component.activeImage?.name).toBe('Strength');
+    expect(component.activeInfo?.image.name).toBe('Strength');
   });
 
   // --- TESTS DES RÈGLES MÉTIER ---
