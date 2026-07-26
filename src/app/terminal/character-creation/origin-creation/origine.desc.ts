@@ -96,7 +96,7 @@ export const Ghoul: OrigineDescription = {
   histoire: [
     'Une explosion prolongée aux effets des radiations gamma de fond(une partie des retombées de la Grande Guerre) peut faire muter les humains de manière spontanée.',
     "Vous êtes l'un de ces mutants. Lentement ou d'une manière aussi spectaculaire que spontanée, votre corps a changé et est devenu celui d'un cadavre ambulant et pourrissant.",
-    'Vous ne viellissez plus comme avant et les radiations ne vous affectent pas. Votre peau pèle et laisse apparaître votre chair, mais votre métabolisme mutant semble suffire à la remplacer',
+    'Vous ne vieillissez plus comme avant et les radiations ne vous affectent pas. Votre peau pèle et laisse apparaître votre chair, mais votre métabolisme mutant semble suffire à la remplacer',
     "Vous êtes une goule (un post-humain nécrotique), l'un des nombreux survivants qui n'ont pas eu la chance de pouvoir s'abriter dans l'un des complexes de Vault-tec.",
     "Etes vous né après la guerre et avez -vous développé la mutation nécrotique au fil du temps? Venez-vous de l'abri 12 à Bakersfield, Californie, dont la porte ne s'est pas fermée, ce qui a exposé la population aux radiations de l'extérieur?",
     "Avez-vous trouvé refuge dans un campement de goules, comme l'Underworld des Terres désolées de la Capitale et vous êtes-vous aventuré tout récemment à l'extérieur pour explorer ces contrées, les fouiller et y survivre?",
