@@ -29,6 +29,10 @@
         {{ line }}
       </p>
     }
+
+    @if (activeImage; as image) {
+      <app-image [image]="image"></app-image>
+    }
   </section>
 </div>
 <button class="btn" (click)="previousStep()">Précédent</button>

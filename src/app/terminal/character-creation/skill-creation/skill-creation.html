@@ -1,38 +1,55 @@
-<section>
-  <p>Points d'Atouts : {{ taggedSkillsPoints }}</p>
-  <p>Points de compétences : {{ remainingPoints }}</p>
+<p>Points d'Atouts : {{ taggedSkillsPoints }}</p>
+<p>Points de compétences : {{ remainingPoints }}</p>
 
-  @if (fsm.mustTagAnObligatorySkill()) {
-    <p>Vous devez choisir un Atout parmi :</p>
-    <ul>
-      @for (skill of obligatorySkills; track $index) {
-        <li>{{ getSkillLabel(skill) }}</li>
+@if (fsm.mustTagAnObligatorySkill()) {
+  <p>Vous devez choisir un Atout parmi :</p>
+  <ul>
+    @for (skill of obligatorySkills; track $index) {
+      <li>{{ getSkillLabel(skill) }}</li>
+    }
+  </ul>
+}
+<div class="wrapper">
+  <section>
+    @for (skill of skills; track $index) {
+      <article (click)="setActive(skill.name)" [class.active]="activeSkill === skill.name">
+        <div class="statistic">{{ skill.nom }}</div>
+
+        <input
+          type="checkbox"
+          [checked]="skillsCharacter[skill.name].taggedSkill"
+          (change)="toggleTag(skill.name, $event)"
+          [disabled]="
+            (!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0) ||
+            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.name)) ||
+            skillsCharacter[skill.name].isOffered
+          "
+        />
+        @if (skillsCharacter[skill.name].taggedSkill) {
+          <span>Atout</span>
+        }
+
+        <button (click)="remove(skill.name)" [disabled]="!fsm.canRemove(skill.name)">-</button>
+
+        <div class="value">{{ skillsCharacter[skill.name].rank }}</div>
+
+        <button (click)="add(skill.name)" [disabled]="!fsm.canAdd(skill.name)">+</button>
+      </article>
+    }
+  </section>
+  <section class="description">
+    <div>
+      @for (line of activeDescription; track $index) {
+        <p>
+          {{ line }}
+        </p>
       }
-    </ul>
-  }
-
-  @for (skill of skills; track $index) {
-    <article (click)="setActive(skill.name)" [class.active]="activeSkill === skill.name">
-      <div class="statistic">{{ skill.nom }}</div>
-
-      <input
-        type="checkbox"
-        [checked]="skillsCharacter[skill.name].taggedSkill"
-        (change)="toggleTag(skill.name, $event)"
-        [disabled]="!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0"
-      />
-      @if (skillsCharacter[skill.name].taggedSkill) {
-        <span>Atout</span>
-      }
-
-      <button (click)="remove(skill.name)" [disabled]="!fsm.canRemove(skill.name)">-</button>
-
-      <div class="value">{{ skillsCharacter[skill.name].rank }}</div>
-
-      <button (click)="add(skill.name)" [disabled]="!fsm.canAdd(skill.name)">+</button>
-    </article>
-  }
-</section>
+    </div>
+    @if (activeImage; as image) {
+      <app-image [image]="activeImage"></app-image>
+    }
+  </section>
+</div>
 
 <div class="navigation">
   <button class="btn" (click)="previousStep()">Précédent</button>

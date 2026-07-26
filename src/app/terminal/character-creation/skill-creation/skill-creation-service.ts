@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CharacterSkills, SKILLS } from './model/skill.desc';
+import { CharacterSkills, SkillKey, SKILLS } from './model/skill.desc';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SkillCreationService {
-  createEmptySkills(): CharacterSkills {
+  createEmptySkills(offeredTaggedSkill: SkillKey | null): CharacterSkills {
     return Object.fromEntries(
       SKILLS.map((skill) => [
         skill.name,
         {
           name: skill.name,
-          taggedSkill: false,
-          rank: 0,
+          taggedSkill: offeredTaggedSkill === skill.name ? true : false,
+          rank: offeredTaggedSkill === skill.name ? 2 : 0,
+          isOffered: offeredTaggedSkill === skill.name ? true : false,
         },
       ]),
     ) as CharacterSkills;

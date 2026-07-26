@@ -4,11 +4,14 @@ import { CharacterCreationService } from '../character-creation.service';
 import { Router } from '@angular/router';
 import { SpecialModService } from '../special-creation/special-mod-service';
 import { SpecialKey } from '../../../character/models/special.type';
+import { SPECIAL_IMAGES } from '../../../core/component/image/special.images';
+import { SrcImage } from '../../../core/models/src-image.model';
+import { Image } from '../../../core/component/image/image.component';
 
 @Component({
   selector: 'app-special-creation',
   standalone: true,
-  imports: [],
+  imports: [Image],
   templateUrl: './special-creation.html',
   styleUrl: './special-creation.css',
 })
@@ -30,6 +33,7 @@ export class SpecialCreation {
   activeStat: SpecialKey | null = null;
 
   // Liste des stats pour générer automatiquement le HTML
+  imagePath: string = 'images/special';
   stats: { key: SpecialKey; label: string }[] = [
     { key: 'strength', label: 'FORCE' },
     { key: 'perception', label: 'PERCEPTION' },
@@ -75,6 +79,10 @@ export class SpecialCreation {
     },
     { key: 'luck', label: [`Mesure simple du karma d'un personnage.`] },
   ];
+
+  get activeImage(): SrcImage | null {
+    return this.activeStat ? SPECIAL_IMAGES[this.activeStat] : null;
+  }
 
   add(key: SpecialKey) {
     if (this.characterCreationService.remainingSpecialPoint() <= 0) return;
