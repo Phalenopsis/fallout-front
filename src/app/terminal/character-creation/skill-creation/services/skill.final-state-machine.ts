@@ -28,6 +28,7 @@ export class SkillFSM {
 
   // --- Vérifie si un atout obligatoire doit être choisi ---
   mustTagAnObligatorySkill(): boolean {
+    if (this.context.obligatorySkills.length === 0) return false;
     for (let skill of this.context.obligatorySkills) {
       if (this.context.skillsCharacter[skill].taggedSkill) return false;
     }

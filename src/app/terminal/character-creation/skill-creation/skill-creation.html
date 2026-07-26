@@ -19,7 +19,10 @@
           type="checkbox"
           [checked]="skillsCharacter[skill.name].taggedSkill"
           (change)="toggleTag(skill.name, $event)"
-          [disabled]="!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0"
+          [disabled]="
+            (!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0) ||
+            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.name))
+          "
         />
         @if (skillsCharacter[skill.name].taggedSkill) {
           <span>Atout</span>
