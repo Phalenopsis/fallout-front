@@ -4,6 +4,7 @@
   height: calc(100vh - 2rem);
   width: 100%;
   overflow: hidden;
+  font-size: 2rem;
 }
 
 .pipboy-layout {

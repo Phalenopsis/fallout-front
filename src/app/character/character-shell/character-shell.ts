@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Router,
   RouterOutlet,
@@ -8,6 +8,7 @@ import {
 } from '@angular/router';
 import { MainMenuItem } from '../models/pipboy-menu.model';
 import { CharacterApiService } from '../../service/api/character-api.service';
+import { CharacterStoreService } from '../services/character-store.service';
 
 @Component({
   selector: 'app-character-shell',
@@ -16,14 +17,10 @@ import { CharacterApiService } from '../../service/api/character-api.service';
   templateUrl: './character-shell.html',
   styleUrls: ['./character-shell.css'],
 })
-export class CharacterShell {
+export class CharacterShell implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private characterApiService = inject(CharacterApiService);
-
-  // L'ID est extrait du paramètre de la route courante
-  id = Number(this.route.snapshot.paramMap.get('id'));
-  character = this.characterApiService.getCharacter(this.id);
+  private characterStore = inject(CharacterStoreService);
 
   readonly menuConfig: MainMenuItem[] = [
     {
@@ -61,6 +58,13 @@ export class CharacterShell {
       subMenus: [],
     },
   ];
+
+  ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.characterStore.loadCharacter(id);
+    }
+  }
 
   // Identifie la section principale active (stats, data, inventory, settings)
   get activeMainMenu(): MainMenuItem | undefined {
