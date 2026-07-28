@@ -1,5 +1,5 @@
 import { ORIGIN_KEY } from '../../../character/models/origin-mapping.map';
-import { SkillKey } from '../skill-creation/model/skill.desc';
+import { SkillKey } from '../../../core/constants/skill-data.constant';
 import {
   improvedPerception,
   necroticPostHuman,
