@@ -1,0 +1,91 @@
+.special-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+/* ================================
+   COLONNE GAUCHE : LISTE
+   ================================ */
+.stats-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  border: 1px transparent solid;
+  transition: all 0.1s ease;
+  /*font-size: 1.2rem;*/
+  font-weight: bold;
+}
+
+.stat-row:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--crt-font-color-dim);
+}
+
+/* EFFET INVERSÉ QUAND SELECTIONNÉ : Texte sombre sur Fond Lumineux */
+.stat-row.active {
+  background-color: var(--crt-font-color);
+  color: var(--crt-bg-1); /* Noir */
+  text-shadow: none; /* Pas de glow sur le texte pour garder la lisibilité */
+  box-shadow: 0 0 10px var(--crt-glow);
+}
+
+.stat-row.active .stat-label,
+.stat-row.active .stat-value {
+  color: var(--crt-bg-1);
+}
+
+/* ================================
+   COLONNE DROITE : DÉTAILS
+   ================================ */
+.stat-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-left: 1px dashed var(--crt-font-color-dim);
+  padding-left: 1.5rem;
+}
+
+.description-box {
+  width: 100%;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  min-height: 4rem;
+
+  /* Adoucissement CRT */
+  color: var(--crt-font-color-dim, var(--crt-font-color));
+  text-shadow: 0 0 2px rgba(var(--crt-font-color-rgb, 0, 255, 0), 0.3);
+  opacity: 0.9;
+}
+
+.image-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.image-box ::ng-deep img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  /* Optionnel : Filtre pour donner un style CRT à l'image */
+  filter: drop-shadow(0 0 6px var(--crt-glow));
+}
