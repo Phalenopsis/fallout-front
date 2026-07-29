@@ -1,0 +1,30 @@
+<div class="special-container">
+  <!-- COLONNE GAUCHE : LISTE DES STATS -->
+  <div class="stats-list">
+    @for (stat of specialData; track stat.key) {
+      <div
+        class="stat-row"
+        [class.active]="activeStat() === stat.key"
+        (click)="selectStat(stat.key)"
+      >
+        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-value">{{ getStatValue(stat.key) }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- COLONNE DROITE : DESCRIPTION & IMAGE -->
+  <div class="stat-details">
+    @if (activeInfo) {
+      <div class="description-box">
+        <p>{{ activeInfo.description }}</p>
+      </div>
+
+      <div class="image-box">
+        @if (activeImage) {
+          <app-image [image]="activeImage" />
+        }
+      </div>
+    }
+  </div>
+</div>

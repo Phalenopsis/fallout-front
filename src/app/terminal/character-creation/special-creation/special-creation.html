@@ -2,8 +2,8 @@
   <section>
     <div>Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}</div>
 
-    @for (stat of stats; track $index) {
-      <article (click)="setActive(stat.key)" [class.active]="activeStat === stat.key">
+    @for (stat of specialData; track stat.key) {
+      <article (click)="setActive(stat.key)" [class.active]="activeStatKey === stat.key">
         <div class="statistic">{{ stat.label }}</div>
 
         <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= specialFloor">-</button>
@@ -24,17 +24,13 @@
   </section>
 
   <section class="description">
-    @for (line of activeDescription; track $index) {
-      <p>
-        {{ line }}
-      </p>
-    }
-
-    @if (activeImage; as image) {
-      <app-image [image]="image"></app-image>
+    @if (activeInfo) {
+      <p>{{ activeInfo.description }}</p>
+      <app-image [image]="activeInfo.image"></app-image>
     }
   </section>
 </div>
+
 <button class="btn" (click)="previousStep()">Précédent</button>
 <button
   class="btn"

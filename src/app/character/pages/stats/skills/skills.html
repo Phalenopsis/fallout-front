@@ -1,0 +1,120 @@
+<div class="skills-container">
+  <!-- COLONNE GAUCHE / LISTE COMPLÈTE SUR MOBILE -->
+  <div class="skills-list">
+    @for (skill of skillList; track skill.key) {
+      <div
+        class="skill-row"
+        [class.active]="selectedSkillKey() === skill.key"
+        (click)="selectSkill(skill.key)"
+      >
+        <div class="skill-main-info">
+          <span class="skill-label">{{ skill.label }}</span>
+          @if (isTaggedSkill(skill.key)) {
+            <span class="tag-badge" title="Atout (Tag Skill)">★</span>
+          }
+        </div>
+        <div class="skill-stats">
+          <span class="skill-special-badge">{{ getSpecialLabel(skill.special) }}</span>
+          <span class="skill-rank">{{ getSkillRank(skill.key) }}</span>
+        </div>
+      </div>
+
+      <!-- ACCORDÉON MOBILE (S'AFFICHE SOUS LA COMPÉTENCE SELECTIONNÉE) -->
+      @if (selectedSkillKey() === skill.key) {
+        <div class="mobile-accordion-panel" (click)="$event.stopPropagation()">
+          <div class="roll-calculator-content">
+            <div class="field-group">
+              <label for="special-select-mobile-{{ skill.key }}">S.P.E.C.I.A.L. utilisé :</label>
+              <select
+                id="special-select-mobile-{{ skill.key }}"
+                [ngModel]="selectedSpecialOverride()"
+                (ngModelChange)="onSpecialChange($event)"
+                class="pipboy-select"
+              >
+                @for (spec of specialList; track spec.key) {
+                  <option [value]="spec.key">
+                    {{ spec.label }} ({{ character?.special?.[spec.key] ?? 0 }})
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="thresholds-summary">
+              <div class="threshold-box">
+                <span class="threshold-label">Seuil de Réussite</span>
+                <span class="threshold-value">{{ successThreshold() }}</span>
+              </div>
+
+              <div class="threshold-box">
+                <span class="threshold-label">Seuil de Critique</span>
+                <span class="threshold-value">&le; {{ criticalThreshold() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- COLONNE DROITE : DÉTAILS ET JETS (DESKTOP ET PAYSAGE) -->
+  <div class="skill-details">
+    @if (activeSkillInfo(); as skill) {
+      <!-- HAUT : CALCULS ET OVERRIDE SPECIAL -->
+      <div class="roll-calculator">
+        <div class="roll-calculator-content">
+          <div class="field-group">
+            <label for="special-select">S.P.E.C.I.A.L. utilisé :</label>
+            <select
+              id="special-select"
+              [ngModel]="selectedSpecialOverride()"
+              (ngModelChange)="onSpecialChange($event)"
+              class="pipboy-select"
+            >
+              @for (spec of specialList; track spec.key) {
+                <option [value]="spec.key">
+                  {{ spec.label }} ({{ character?.special?.[spec.key] ?? 0 }})
+                </option>
+              }
+            </select>
+          </div>
+
+          <div class="thresholds-summary">
+            <div class="threshold-box">
+              <span class="threshold-label">Seuil de Réussite</span>
+              <span class="threshold-value">{{ successThreshold() }}</span>
+            </div>
+
+            <div class="threshold-box">
+              <span class="threshold-label">Seuil de Critique</span>
+              <span class="threshold-value">&le; {{ criticalThreshold() }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="pipboy-divider" />
+
+      <!-- BAS : DESCRIPTION ET IMAGE -->
+      <div class="skill-info-body">
+        <div class="description-box">
+          <p class="short-desc">{{ skill.shortDescription }}</p>
+
+          @for (paragraph of skill.description; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+
+        @if (skill.image) {
+          <div class="image-box">
+            <app-image [image]="skill.image" />
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- SI AUCUNE COMPÉTENCE N'EST SÉLECTIONNÉE -->
+      <div class="empty-selection">
+        <p>SELECTIONNEZ UNE COMPETENCE</p>
+      </div>
+    }
+  </div>
+</div>

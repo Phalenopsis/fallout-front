@@ -1,4 +1,5 @@
-import { CharacterSkills, SkillKey } from '../model/skill.desc';
+import { SkillKey } from '../../../../core/constants/skill-data.constant';
+import { CharacterSkills } from '../model/skill.desc';
 
 type SkillState = 'FREE' | 'MUST_TAG_OBLIGATORY' | 'NO_MORE_TAG_POINTS' | 'COMPLETE';
 

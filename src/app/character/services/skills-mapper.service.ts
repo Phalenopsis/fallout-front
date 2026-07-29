@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
   CharacterSkills,
-  SkillKey,
   SkillLevel,
 } from '../../terminal/character-creation/skill-creation/model/skill.desc';
 import { SkillsToBackDTO } from '../models/skills-back.dto';
 import { SkillsFromBackDTO } from '../models/character-from-back.dto';
+import { SkillKey } from '../../core/constants/skill-data.constant';
 
 @Injectable({
   providedIn: 'root',
