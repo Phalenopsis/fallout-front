@@ -1,13 +1,30 @@
 <div class="pipboy-layout">
   <!-- MENU EN HAUT -->
   <header class="top-nav">
-    <nav>
+    <!-- Vue Desktop Classique -->
+    <nav class="desktop-nav">
       @for (main of menuConfig; track main.path) {
         <a [routerLink]="[main.path]" routerLinkActive="active" class="nav-tab">
           {{ main.label }}
         </a>
       }
     </nav>
+
+    <!-- Vue Mobile (Portrait) -->
+    <div class="mobile-top-nav">
+      <div class="mobile-menu-blocks">
+        @for (main of menuConfig; track main.path) {
+          <a
+            [routerLink]="getMenuTargetUrl(main)"
+            [class.active]="activeMainMenu?.path === main.path"
+            class="menu-block"
+          ></a>
+        }
+      </div>
+      <div class="mobile-active-title">
+        {{ activeMainMenu?.label }}
+      </div>
+    </div>
   </header>
 
   <!-- ZONE DE CONTENU CENTRAL (ÉCRAN PIP-BOY) -->
@@ -17,8 +34,9 @@
 
   <!-- SOUS-MENU EN BAS -->
   <footer class="bottom-nav">
+    <!-- Vue Desktop Classique -->
     @if (activeMainMenu && activeMainMenu.subMenus.length > 0) {
-      <nav>
+      <nav class="desktop-subnav">
         @for (sub of activeMainMenu.subMenus; track sub.path) {
           <a
             [routerLink]="[activeMainMenu.path, sub.path]"
@@ -30,5 +48,21 @@
         }
       </nav>
     }
+
+    <!-- Vue Mobile (Portrait) -->
+    <div class="mobile-bottom-nav">
+      @if (activeMainMenu && activeMainMenu.subMenus.length > 0) {
+        <!-- Traits de progression dynamiques -->
+        <div class="sub-progress-bar">
+          @for (sub of activeMainMenu.subMenus; track sub.path; let i = $index) {
+            <div class="progress-segment" [class.active]="i === activeSubMenuIndex"></div>
+          }
+        </div>
+        <!-- Libellé du sous-menu actif -->
+        <div class="mobile-sub-title">
+          {{ activeSubMenu?.label }}
+        </div>
+      }
+    </div>
   </footer>
 </div>
