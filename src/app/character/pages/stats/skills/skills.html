@@ -1,5 +1,5 @@
 <div class="skills-container">
-  <!-- COLONNE GAUCHE : LISTE DES COMPÉTENCES -->
+  <!-- COLONNE GAUCHE / LISTE COMPLÈTE SUR MOBILE -->
   <div class="skills-list">
     @for (skill of skillList; track skill.key) {
       <div
@@ -18,39 +18,76 @@
           <span class="skill-rank">{{ getSkillRank(skill.key) }}</span>
         </div>
       </div>
+
+      <!-- ACCORDÉON MOBILE (S'AFFICHE SOUS LA COMPÉTENCE SELECTIONNÉE) -->
+      @if (selectedSkillKey() === skill.key) {
+        <div class="mobile-accordion-panel" (click)="$event.stopPropagation()">
+          <div class="roll-calculator-content">
+            <div class="field-group">
+              <label for="special-select-mobile-{{ skill.key }}">S.P.E.C.I.A.L. utilisé :</label>
+              <select
+                id="special-select-mobile-{{ skill.key }}"
+                [ngModel]="selectedSpecialOverride()"
+                (ngModelChange)="onSpecialChange($event)"
+                class="pipboy-select"
+              >
+                @for (spec of specialList; track spec.key) {
+                  <option [value]="spec.key">
+                    {{ spec.label }} ({{ character?.special?.[spec.key] ?? 0 }})
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="thresholds-summary">
+              <div class="threshold-box">
+                <span class="threshold-label">Seuil de Réussite</span>
+                <span class="threshold-value">{{ successThreshold() }}</span>
+              </div>
+
+              <div class="threshold-box">
+                <span class="threshold-label">Seuil de Critique</span>
+                <span class="threshold-value">&le; {{ criticalThreshold() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     }
   </div>
 
-  <!-- COLONNE DROITE : DÉTAILS ET OVERRIDE DU JETS -->
+  <!-- COLONNE DROITE : DÉTAILS ET JETS (DESKTOP ET PAYSAGE) -->
   <div class="skill-details">
     @if (activeSkillInfo(); as skill) {
       <!-- HAUT : CALCULS ET OVERRIDE SPECIAL -->
       <div class="roll-calculator">
-        <div class="field-group">
-          <label for="special-select">S.P.E.C.I.A.L. utilisé :</label>
-          <select
-            id="special-select"
-            [ngModel]="selectedSpecialOverride()"
-            (ngModelChange)="onSpecialChange($event)"
-            class="pipboy-select"
-          >
-            @for (spec of specialList; track spec.key) {
-              <option [value]="spec.key">
-                {{ spec.label }} ({{ character?.special?.[spec.key] ?? 0 }})
-              </option>
-            }
-          </select>
-        </div>
-
-        <div class="thresholds-summary">
-          <div class="threshold-box">
-            <span class="threshold-label">Seuil de Réussite</span>
-            <span class="threshold-value">{{ successThreshold() }}</span>
+        <div class="roll-calculator-content">
+          <div class="field-group">
+            <label for="special-select">S.P.E.C.I.A.L. utilisé :</label>
+            <select
+              id="special-select"
+              [ngModel]="selectedSpecialOverride()"
+              (ngModelChange)="onSpecialChange($event)"
+              class="pipboy-select"
+            >
+              @for (spec of specialList; track spec.key) {
+                <option [value]="spec.key">
+                  {{ spec.label }} ({{ character?.special?.[spec.key] ?? 0 }})
+                </option>
+              }
+            </select>
           </div>
 
-          <div class="threshold-box">
-            <span class="threshold-label">Seuil de Critique</span>
-            <span class="threshold-value">&le; {{ criticalThreshold() }}</span>
+          <div class="thresholds-summary">
+            <div class="threshold-box">
+              <span class="threshold-label">Seuil de Réussite</span>
+              <span class="threshold-value">{{ successThreshold() }}</span>
+            </div>
+
+            <div class="threshold-box">
+              <span class="threshold-label">Seuil de Critique</span>
+              <span class="threshold-value">&le; {{ criticalThreshold() }}</span>
+            </div>
           </div>
         </div>
       </div>

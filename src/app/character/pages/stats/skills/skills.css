@@ -100,6 +100,11 @@
   text-align: right;
 }
 
+/* Masqué sur Desktop, s'affiche uniquement sur mobile */
+.mobile-accordion-panel {
+  display: none;
+}
+
 /* ================================
    COLONNE DROITE : DÉTAILS ET JETS
    ================================ */
@@ -123,7 +128,7 @@
 }
 
 /* CALCULATEUR & OVERRIDE SPECIAL */
-.roll-calculator {
+.roll-calculator-content {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -227,7 +232,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* Max-height ajustée à 400px */
 .image-box {
   flex: 1;
   display: flex;
@@ -243,4 +247,47 @@
   max-width: 100%;
   object-fit: contain;
   filter: drop-shadow(0 0 6px var(--crt-glow));
+}
+
+/* ================================
+   ADAPTATION MOBILE PORTRAIT
+   ================================ */
+@media (max-width: 768px) and (orientation: portrait) {
+  .skills-container {
+    padding: 0.2rem;
+  }
+
+  /* Masquer la colonne de détails à droite */
+  .skill-details {
+    display: none;
+  }
+
+  .skills-list {
+    max-height: 100%;
+    padding-right: 0;
+  }
+
+  /* Style du panneau accordéon déplié sous la ligne active */
+  .mobile-accordion-panel {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--crt-font-color);
+    border-top: none;
+    padding: 0.8rem;
+    margin-top: -0.3rem;
+    margin-bottom: 0.4rem;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8);
+  }
+
+  .mobile-accordion-panel .field-group label {
+    font-size: 1.2rem;
+  }
+
+  .mobile-accordion-panel .threshold-label {
+    font-size: 1rem;
+  }
+
+  .mobile-accordion-panel .threshold-value {
+    font-size: 1.6rem;
+  }
 }
