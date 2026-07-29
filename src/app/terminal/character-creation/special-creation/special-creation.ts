@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Special } from '../../../character/models/special.class';
-import { CharacterCreationService } from '../character-creation.service';
 import { Router } from '@angular/router';
-import { SpecialModService } from '../special-creation/special-mod-service';
+import { Special } from '../../../character/models/special.class';
 import { SpecialKey } from '../../../character/models/special.type';
-import { SPECIAL_IMAGES } from '../../../core/component/image/special.images';
-import { SrcImage } from '../../../core/models/src-image.model';
+import { SPECIAL_DATA, SpecialInfo } from '../../../core/constants/special-data.constant';
 import { Image } from '../../../core/component/image/image.component';
+import { CharacterCreationService } from '../character-creation.service';
+import { SpecialModService } from '../special-creation/special-mod-service';
 
 @Component({
   selector: 'app-special-creation',
@@ -19,69 +18,25 @@ export class SpecialCreation {
   characterCreationService = inject(CharacterCreationService);
   router = inject(Router);
   specialModService = inject(SpecialModService);
+
+  readonly specialData = SPECIAL_DATA;
+
   baseStats: Record<SpecialKey, number> = this.characterCreationService.character.special
     ? this.characterCreationService.character.special
     : this.specialModService.applyOriginModifiers(
         this.characterCreationService.character.origin?.modificateurStats,
       );
+
   maxStats: Record<SpecialKey, number> = this.specialModService.getMaxStats(
     this.characterCreationService.character.origin?.maximumStats,
   );
 
   specialFloor: number = 4;
   special = new Special({ ...this.baseStats });
-  activeStat: SpecialKey | null = null;
+  activeStatKey: SpecialKey | null = null;
 
-  // Liste des stats pour générer automatiquement le HTML
-  imagePath: string = 'images/special';
-  stats: { key: SpecialKey; label: string }[] = [
-    { key: 'strength', label: 'FORCE' },
-    { key: 'perception', label: 'PERCEPTION' },
-    { key: 'endurance', label: 'ENDURANCE' },
-    { key: 'charisma', label: 'CHARISME' },
-    { key: 'intelligence', label: 'INTELLIGENCE' },
-    { key: 'agility', label: 'AGILITÉ' },
-    { key: 'luck', label: 'CHANCE' },
-  ];
-
-  descriptions: { key: SpecialKey; label: string[] }[] = [
-    {
-      key: 'strength',
-      label: [
-        `Mesure la force brute, c'est-à-dire la capacité à frapper plus fort au corps à corps et à manipuler des éléments lourds.`,
-      ],
-    },
-    {
-      key: 'perception',
-      label: [
-        `Indique la capacité du personnage à percevoir son environnement et à comprendre les intentions de ses interlocuteurs.`,
-      ],
-    },
-    {
-      key: 'endurance',
-      label: [
-        `Mesure la résistances physiques du personnage face à son environnement et lors des affrontements martiales.`,
-      ],
-    },
-    {
-      key: 'charisma',
-      label: [
-        `Indique la capacité du personnage à manipuler ou convaincre son auditoire par l'éloquence et la façon d'être.`,
-      ],
-    },
-    {
-      key: 'intelligence',
-      label: [`Désigne la capacité du personnage à comprendre et à apprendre.`],
-    },
-    {
-      key: 'agility',
-      label: [`Indique la manière dont le personnage sait coordonner ses mouvements.`],
-    },
-    { key: 'luck', label: [`Mesure simple du karma d'un personnage.`] },
-  ];
-
-  get activeImage(): SrcImage | null {
-    return this.activeStat ? SPECIAL_IMAGES[this.activeStat] : null;
+  get activeInfo(): SpecialInfo | undefined {
+    return this.specialData.find((s) => s.key === this.activeStatKey);
   }
 
   add(key: SpecialKey) {
@@ -98,12 +53,7 @@ export class SpecialCreation {
   }
 
   setActive(statKey: SpecialKey) {
-    this.activeStat = statKey;
-  }
-
-  get activeDescription(): string[] {
-    if (!this.activeStat) return [];
-    return this.descriptions.find((d) => d.key === this.activeStat)?.label ?? [];
+    this.activeStatKey = statKey;
   }
 
   nextStep() {

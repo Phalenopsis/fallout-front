@@ -93,8 +93,7 @@ export const routes: Routes = [
 
   {
     path: 'character/:id',
-    loadComponent: () =>
-      import('./character/character-page/character-page').then((m) => m.CharacterPage),
+    loadChildren: () => import('./character/character.routes').then((m) => m.CHARACTER_ROUTES),
   },
 
   {

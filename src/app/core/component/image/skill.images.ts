@@ -1,4 +1,4 @@
-import { SkillKey } from '../../../terminal/character-creation/skill-creation/model/skill.desc';
+import { SkillKey } from '../../constants/skill-data.constant';
 import { SrcImage } from '../../models/src-image.model';
 
 export const athletics: SrcImage = {
@@ -121,7 +121,8 @@ export const unarmed: SrcImage = {
   height: 350,
 };
 
-export const SKILL_IMAGES: Record<SkillKey, SrcImage> = {
+// ✅ Après (satisfies garantit le type Record tout en conservant les clés exactes)
+export const SKILL_IMAGES = {
   athletics,
   barter,
   bigGuns,
@@ -139,4 +140,4 @@ export const SKILL_IMAGES: Record<SkillKey, SrcImage> = {
   survival,
   throwing,
   unarmed,
-};
+} satisfies Record<SkillKey, SrcImage>;

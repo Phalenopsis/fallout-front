@@ -1,24 +1,33 @@
-import { Component, inject } from '@angular/core';
-import { CharacterCreationService } from '../character-creation.service';
-import { SkillCreationService } from './skill-creation-service';
-import { Character } from '../../../character/models/character.class';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CharacterSkills, SKILL_DEFINITIONS, SkillKey, SKILLS } from './model/skill.desc';
-import { SkillFSM } from './services/skill.final-state-machine';
-import { SrcImage } from '../../../core/models/src-image.model';
-import { SKILL_IMAGES } from '../../../core/component/image/skill.images';
 import { Image } from '../../../core/component/image/image.component';
+import {
+  SKILL_DATA,
+  SKILL_DATA_MAP,
+  SkillInfo,
+  SkillKey,
+} from '../../../core/constants/skill-data.constant';
+import { Character } from '../../../character/models/character.class';
+import { CharacterCreationService } from '../character-creation.service';
+import { CharacterSkills } from './model/skill.desc';
+import { SkillFSM } from './services/skill.final-state-machine';
+import { SkillCreationService } from './skill-creation-service';
 
 @Component({
   selector: 'app-skill-creation',
+  standalone: true,
   imports: [Image],
   templateUrl: './skill-creation.html',
   styleUrls: ['./../special-creation/special-creation.css', './skill-creation.css'],
 })
-export class SkillCreation {
+export class SkillCreation implements OnInit {
   router: Router = inject(Router);
   characterCreationService: CharacterCreationService = inject(CharacterCreationService);
   skillCreationService: SkillCreationService = inject(SkillCreationService);
+
+  readonly skillData = SKILL_DATA;
+  readonly skillDataMap = SKILL_DATA_MAP;
+
   character: Character = this.characterCreationService.character;
   skillsCharacter: CharacterSkills = this.character.skills
     ? this.character.skills
@@ -26,12 +35,8 @@ export class SkillCreation {
         this.character.origin?.atoutOffert ? this.character.origin?.atoutOffert : null,
       );
 
-  skills = SKILLS;
-  activeSkill: SkillKey | null = null;
-  obligatorySkills = this.character.origin?.atoutAChoisirParmi
-    ? this.character.origin?.atoutAChoisirParmi
-    : [];
-  offeredTaggedSkill: SkillKey | null = null;
+  activeSkillKey: SkillKey | null = null;
+  obligatorySkills: SkillKey[] = this.character.origin?.atoutAChoisirParmi ?? [];
 
   fsm!: SkillFSM;
 
@@ -67,13 +72,8 @@ export class SkillCreation {
     this.updateFromFSM();
   }
 
-  get activeImage(): SrcImage | null {
-    return this.activeSkill ? SKILL_IMAGES[this.activeSkill] : null;
-  }
-
-  get activeDescription(): string[] {
-    if (!this.activeSkill) return [];
-    return SKILL_DEFINITIONS[this.activeSkill].description;
+  get activeInfo(): SkillInfo | undefined {
+    return this.activeSkillKey ? this.skillDataMap[this.activeSkillKey] : undefined;
   }
 
   private updateFromFSM() {
@@ -84,11 +84,7 @@ export class SkillCreation {
   }
 
   setActive(skillKey: SkillKey) {
-    this.activeSkill = skillKey;
-  }
-
-  getSkillLabel(skillKey: SkillKey): string {
-    return SKILL_DEFINITIONS[skillKey].nom;
+    this.activeSkillKey = skillKey;
   }
 
   get canNext() {

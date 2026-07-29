@@ -57,11 +57,13 @@ body {
   color: var(--crt-font-color);
   font-family: 'ShareTech-Regular', monospace;
 
-  text-shadow: 0 0 2px var(--crt-glow), 0 0 4px var(--crt-glow), 0 0 8px var(--crt-glow),
+  text-shadow:
+    0 0 2px var(--crt-glow),
+    0 0 4px var(--crt-glow),
+    0 0 8px var(--crt-glow),
     0 0 12px var(--crt-glow);
 
   position: relative;
-  white-space: pre-wrap;
 
   /* Déformation légère (optionnelle) */
   animation: crt-bend 6s ease-in-out infinite;

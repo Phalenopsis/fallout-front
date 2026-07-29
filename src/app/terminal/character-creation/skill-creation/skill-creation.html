@@ -4,49 +4,49 @@
 @if (fsm.mustTagAnObligatorySkill()) {
   <p>Vous devez choisir un Atout parmi :</p>
   <ul>
-    @for (skill of obligatorySkills; track $index) {
-      <li>{{ getSkillLabel(skill) }}</li>
+    @for (skillKey of obligatorySkills; track skillKey) {
+      <li>{{ skillDataMap[skillKey].label }}</li>
     }
   </ul>
 }
+
 <div class="wrapper">
   <section>
-    @for (skill of skills; track $index) {
-      <article (click)="setActive(skill.name)" [class.active]="activeSkill === skill.name">
-        <div class="statistic">{{ skill.nom }}</div>
+    @for (skill of skillData; track skill.key) {
+      <article (click)="setActive(skill.key)" [class.active]="activeSkillKey === skill.key">
+        <div class="statistic">{{ skill.label }}</div>
 
         <input
           type="checkbox"
-          [checked]="skillsCharacter[skill.name].taggedSkill"
-          (change)="toggleTag(skill.name, $event)"
+          [checked]="skillsCharacter[skill.key].taggedSkill"
+          (change)="toggleTag(skill.key, $event)"
           [disabled]="
-            (!skillsCharacter[skill.name].taggedSkill && taggedSkillsPoints <= 0) ||
-            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.name)) ||
-            skillsCharacter[skill.name].isOffered
+            (!skillsCharacter[skill.key].taggedSkill && taggedSkillsPoints <= 0) ||
+            (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.key)) ||
+            skillsCharacter[skill.key].isOffered
           "
         />
-        @if (skillsCharacter[skill.name].taggedSkill) {
+        @if (skillsCharacter[skill.key].taggedSkill) {
           <span>Atout</span>
         }
 
-        <button (click)="remove(skill.name)" [disabled]="!fsm.canRemove(skill.name)">-</button>
+        <button (click)="remove(skill.key)" [disabled]="!fsm.canRemove(skill.key)">-</button>
 
-        <div class="value">{{ skillsCharacter[skill.name].rank }}</div>
+        <div class="value">{{ skillsCharacter[skill.key].rank }}</div>
 
-        <button (click)="add(skill.name)" [disabled]="!fsm.canAdd(skill.name)">+</button>
+        <button (click)="add(skill.key)" [disabled]="!fsm.canAdd(skill.key)">+</button>
       </article>
     }
   </section>
+
   <section class="description">
-    <div>
-      @for (line of activeDescription; track $index) {
-        <p>
-          {{ line }}
-        </p>
-      }
-    </div>
-    @if (activeImage; as image) {
-      <app-image [image]="activeImage"></app-image>
+    @if (activeInfo) {
+      <div>
+        @for (line of activeInfo.description; track $index) {
+          <p>{{ line }}</p>
+        }
+      </div>
+      <app-image [image]="activeInfo.image"></app-image>
     }
   </section>
 </div>
