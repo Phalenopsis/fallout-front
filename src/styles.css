@@ -40,6 +40,21 @@
   padding: 0;
 }
 
+/* styles.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Empêche le rebond élastique de scroll sur iOS */
+}
+
+app-root {
+  display: block;
+  height: 100dvh;
+  width: 100%;
+}
+
 body {
   background: repeating-linear-gradient(
     to bottom,
