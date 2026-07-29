@@ -1,9 +1,15 @@
 :host {
   display: block;
+  /* 
+     1. Fallback pour les navigateurs plus anciens (100vh ou 100%)
+     2. 100dvh pour les navigateurs mobiles modernes (Safari iOS, Chrome Mobile, Firefox)
+  */
   height: calc(100vh - 2rem);
+  height: calc(100dvh - 2rem);
   width: 100%;
   overflow: hidden;
   font-size: 2rem;
+  box-sizing: border-box; /* S'assure que le padding/margin éventuel n'ajoute pas de scroll */
 }
 
 .pipboy-layout {
