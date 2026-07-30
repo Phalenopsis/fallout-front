@@ -18,7 +18,7 @@ import { SkillCreationService } from './skill-creation-service';
   standalone: true,
   imports: [Image],
   templateUrl: './skill-creation.html',
-  styleUrls: ['./../special-creation/special-creation.css', './skill-creation.css'],
+  styleUrls: ['./skill-creation.css'],
 })
 export class SkillCreation implements OnInit {
   router: Router = inject(Router);

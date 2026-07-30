@@ -1,38 +1,44 @@
-<div class="select-wrapper">
-  <label for="origin">Origine</label>
-  <select id="origin" [(ngModel)]="origin">
-    @for (possibleOrigin of possibleOrigins; track $index) {
-      <option [ngValue]="possibleOrigin">
-        {{ possibleOrigin.nom }}
-      </option>
-    }
-  </select>
-</div>
-
-@if (origin) {
-  <section class="container">
-    <article class="history details">
-      <h2>Détails de l'origine : {{ origin.nom }}</h2>
-      @for (line of origin.histoire; track $index) {
-        <p>{{ line }}</p>
-      }
-    </article>
-
-    <aside class="bonuses">
-      @if (originDetails.length) {
-        @for (detail of originDetails; track $index) {
-          <app-origin-detail [title]="detail.label" [items]="detail.description">
-          </app-origin-detail>
+<div class="origin-creation-container">
+  <!-- ZONE QUI DÉFILE (Select + Détails + Avantages) -->
+  <div class="scrollable-content">
+    <div class="select-wrapper">
+      <label for="origin">Origine</label>
+      <select id="origin" [(ngModel)]="origin">
+        @for (possibleOrigin of possibleOrigins; track $index) {
+          <option [ngValue]="possibleOrigin">
+            {{ possibleOrigin.nom }}
+          </option>
         }
-      } @else {
-        <p>Aucun détail disponible pour cette origine.</p>
-      }
-    </aside>
-  </section>
-}
+      </select>
+    </div>
 
-<button class="btn" (click)="previousStep()">Précédent</button>
+    @if (origin) {
+      <section class="container">
+        <article class="history details">
+          <h2>Détails de l'origine : {{ origin.nom }}</h2>
+          @for (line of origin.histoire; track $index) {
+            <p>{{ line }}</p>
+          }
+        </article>
 
-<button class="btn" (click)="saveAndNextStep()">Sauver la création</button>
+        <aside class="bonuses">
+          @if (originDetails.length) {
+            @for (detail of originDetails; track $index) {
+              <app-origin-detail [title]="detail.label" [items]="detail.description">
+              </app-origin-detail>
+            }
+          } @else {
+            <p>Aucun détail disponible pour cette origine.</p>
+          }
+        </aside>
+      </section>
+    }
+  </div>
 
-<button class="btn" (click)="nextStep()">Étape suivante</button>
+  <!-- ZONE FIXE EN BAS (Boutons toujours visibles) -->
+  <footer class="actions-footer">
+    <button class="btn" (click)="previousStep()">Précédent</button>
+    <button class="btn" (click)="saveAndNextStep()">Sauver la création</button>
+    <button class="btn" (click)="nextStep()">Étape suivante</button>
+  </footer>
+</div>

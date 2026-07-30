@@ -1,22 +1,56 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.special-creation-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+}
+
+/* Zone médiane qui défile */
+.scrollable-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+  -webkit-overflow-scrolling: touch;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+
   @media (width > 756px) {
     flex-direction: row;
   }
 }
+
 section {
   flex: 1;
 }
+
+.points-left {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
 article {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  margin: 0.5rem;
-  padding: 4px;
+  margin: 0.5rem 0;
+  padding: 6px;
 
   &.active {
     background: var(--crt-font-color);
@@ -36,17 +70,44 @@ article {
     }
   }
 }
+
 .statistic {
   flex: 1;
 }
+
 .value {
   width: 2ch;
   text-align: right;
 }
+
 .description {
   display: flex;
-  flex-direction: row;
+  flex-direction: column; /* Passage en column pour que l'image soit sous la description sur mobile */
+  gap: 0.5rem;
+
+  @media (width > 756px) {
+    flex-direction: row;
+  }
 }
+
 .description p {
   margin: 0 0 0.5rem 0;
+}
+
+/* Zone des boutons verrouillée en bas */
+.actions-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.8rem;
+  margin-top: auto;
+  border-top: 1px dashed var(--crt-font-color-dim, #555);
+  background-color: var(--crt-bg-1, #000); /* Évite la transparence */
+  flex-shrink: 0; /* Empêche les boutons d'être écrasés */
+}
+
+.actions-footer .btn {
+  flex: 1;
+  padding: 0.6rem 0.3rem;
+  font-size: 0.9rem;
 }

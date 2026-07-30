@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0; /* Permet la réduction flexbox */
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+/* Cible le composant enfant injecté par router-outlet (ex: origin-creation) */
+:host > router-outlet + * {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

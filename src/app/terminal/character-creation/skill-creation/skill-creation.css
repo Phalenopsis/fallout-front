@@ -1,0 +1,129 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.skill-creation-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+}
+
+/* Zone médiane qui défile */
+.scrollable-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.points-summary {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.points-summary p {
+  margin: 0.2rem 0;
+}
+
+.obligatory-warning {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px dashed var(--crt-font-color-dim, #f00);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (width > 756px) {
+    flex-direction: row;
+  }
+}
+
+section {
+  flex: 1;
+}
+
+article {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+  padding: 6px;
+
+  &.active {
+    background: var(--crt-font-color);
+    color: var(--crt-bg-2);
+  }
+
+  button {
+    border-radius: 16px;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--crt-bg-2);
+    color: var(--crt-font-color);
+
+    &:disabled {
+      color: var(--crt-bg-2);
+      border-color: var(--crt-bg-2);
+    }
+  }
+}
+
+.statistic {
+  flex: 1;
+}
+
+.tag-badge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.value {
+  width: 2ch;
+  text-align: right;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media (width > 756px) {
+    flex-direction: row;
+  }
+}
+
+.description p {
+  margin: 0 0 0.5rem 0;
+}
+
+/* Zone des boutons verrouillée en bas */
+.actions-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.8rem;
+  margin-top: auto;
+  border-top: 1px dashed var(--crt-font-color-dim, #555);
+  background-color: var(--crt-bg-1, #000);
+  flex-shrink: 0;
+}
+
+.actions-footer .btn {
+  flex: 1;
+  padding: 0.6rem 0.3rem;
+  font-size: 0.9rem;
+}

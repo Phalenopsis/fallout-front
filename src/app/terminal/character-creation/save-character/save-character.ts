@@ -3,6 +3,7 @@ import { CharacterCreationService } from '../character-creation.service';
 import { CharacterApiService } from '../../../service/api/character-api.service';
 import { SpecialKey } from '../../../character/models/special.type';
 import { Route, Router } from '@angular/router';
+import { SKILL_DATA, SkillInfo } from '../../../core/constants/skill-data.constant';
 
 @Component({
   selector: 'app-save-character',
@@ -27,6 +28,8 @@ export class SaveCharacter {
     { key: 'agility', label: 'AGILITÉ' },
     { key: 'luck', label: 'CHANCE' },
   ];
+
+  readonly skills: SkillInfo[] = SKILL_DATA;
 
   saveCharacter() {
     this.character.setCreationStatusCompleted();
