@@ -39,6 +39,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
           {
+            path: '',
+            redirectTo: 'name',
+            pathMatch: 'full',
+          },
+          {
             path: 'name',
             loadComponent: () =>
               import('./terminal/character-creation/name-creation/name-creation').then(
