@@ -1,0 +1,80 @@
+.name-creation-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  font-size: 2rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: var(--crt-font-color);
+  text-transform: uppercase;
+}
+
+.subtitle {
+  margin: 0;
+  opacity: 0.85;
+  font-size: 2rem;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--crt-font-color);
+}
+
+input {
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color);
+  color: var(--crt-font-color);
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 2rem;
+  border-radius: 0.25rem;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+input::placeholder {
+  color: var(--crt-font-color-dim, #555);
+}
+
+input:focus {
+  border-color: var(--crt-glow);
+  box-shadow:
+    0 0 0 3px var(--crt-font-color-dim),
+    0 0 12px var(--crt-glow),
+    0 0 3px var(--crt-bg-1) inset;
+  animation: crt-focus 0.15s steps(2) 1;
+}
+
+.warning-text {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--crt-font-color-dim, #f00);
+  font-style: italic;
+}
+
+@keyframes crt-focus {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}

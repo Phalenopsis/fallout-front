@@ -1,27 +1,6 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.special-creation-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  min-height: 0;
-}
-
-/* Zone médiane qui défile */
-.scrollable-content {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: 0.3rem;
-  -webkit-overflow-scrolling: touch;
+.points-left {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
 .wrapper {
@@ -38,76 +17,61 @@ section {
   flex: 1;
 }
 
-.points-left {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
 article {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
   align-items: center;
+  gap: 0.5rem;
   margin: 0.5rem 0;
   padding: 6px;
+  cursor: pointer;
 
   &.active {
     background: var(--crt-font-color);
     color: var(--crt-bg-2);
-  }
 
-  button {
-    border-radius: 16px;
-    width: 1.5rem;
-    height: 1.5rem;
-    background-color: var(--crt-bg-2);
-    color: var(--crt-font-color);
-
-    &:disabled {
-      color: var(--crt-bg-2);
-      border-color: var(--crt-bg-2);
+    /* Adapte la couleur des boutons quand la ligne est active */
+    button {
+      background-color: var(--crt-bg-2);
+      color: var(--crt-font-color);
     }
   }
-}
 
-.statistic {
-  flex: 1;
-}
-
-.value {
-  width: 2ch;
-  text-align: right;
-}
-
-.description {
-  display: flex;
-  flex-direction: column; /* Passage en column pour que l'image soit sous la description sur mobile */
-  gap: 0.5rem;
-
-  @media (width > 756px) {
-    flex-direction: row;
+  /* Le label prend tout l'espace disponible à gauche pour tout pousser à droite */
+  .statistic {
+    flex: 1;
+    font-weight: bold;
   }
-}
 
-.description p {
-  margin: 0 0 0.5rem 0;
-}
+  /* Centrage parfait des symboles dans les boutons */
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    line-height: 1;
+    font-weight: bold;
+    background-color: var(--crt-bg-2);
+    color: var(--crt-font-color);
+    border: 1px solid var(--crt-font-color);
+    cursor: pointer;
 
-/* Zone des boutons verrouillée en bas */
-.actions-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-top: 0.8rem;
-  margin-top: auto;
-  border-top: 1px dashed var(--crt-font-color-dim, #555);
-  background-color: var(--crt-bg-1, #000); /* Évite la transparence */
-  flex-shrink: 0; /* Empêche les boutons d'être écrasés */
-}
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
 
-.actions-footer .btn {
-  flex: 1;
-  padding: 0.6rem 0.3rem;
-  font-size: 0.9rem;
+  /* Largeur fixe et centrage pour la valeur numérique */
+  .value {
+    width: 2ch;
+    text-align: center;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

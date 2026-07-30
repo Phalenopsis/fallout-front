@@ -3,17 +3,52 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  min-height: 0; /* Permet la réduction flexbox */
+  min-height: 0;
   overflow: hidden;
-  box-sizing: border-box;
+}
+
+.wizard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+}
+
+.wizard-header {
+  flex-shrink: 0;
   padding: 0.5rem;
 }
 
-/* Cible le composant enfant injecté par router-outlet (ex: origin-creation) */
-:host > router-outlet + * {
+/* C'est ici que vit l'unique barre de scroll de tout le tunnel de création ! */
+.wizard-content {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Le composant injecté par le router prend toute la largeur */
+.wizard-content > router-outlet + * {
+  display: block;
+  width: 100%;
+}
+
+/* Le footer unique fixé en bas */
+.actions-footer {
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.8rem 0.5rem;
+  margin-top: auto;
+  border-top: 1px dashed var(--crt-font-color-dim, #555);
+  background-color: var(--crt-bg-1, #000);
+  flex-shrink: 0;
+}
+
+.actions-footer .btn {
+  flex: 1;
+  padding: 0.6rem 0.3rem;
+  font-size: 0.9rem;
 }

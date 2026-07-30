@@ -1,60 +1,31 @@
-<div class="special-creation-container">
-  <!-- ZONE QUI DÉFILE (Points + Liste S.P.E.C.I.A.L. + Description/Image) -->
-  <div class="scrollable-content">
-    <div class="wrapper">
-      <section>
-        <div class="points-left">
-          Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}
-        </div>
+<div class="points-left">
+  Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}
+</div>
 
-        @for (stat of specialData; track stat.key) {
-          <article (click)="setActive(stat.key)" [class.active]="activeStatKey === stat.key">
-            <div class="statistic">{{ stat.label }}</div>
+<div class="wrapper">
+  <section>
+    @for (stat of specialData; track stat.key) {
+      <article (click)="setActive(stat.key)" [class.active]="activeStatKey === stat.key">
+        <div class="statistic">{{ stat.label }}</div>
+        <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= specialFloor">-</button>
+        <div class="value">{{ special[stat.key] }}</div>
+        <button
+          (click)="add(stat.key)"
+          [disabled]="
+            characterCreationService.remainingSpecialPoint() <= 0 ||
+            special[stat.key] >= maxStats[stat.key]
+          "
+        >
+          +
+        </button>
+      </article>
+    }
+  </section>
 
-            <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= specialFloor">
-              -
-            </button>
-
-            <div class="value">{{ special[stat.key] }}</div>
-
-            <button
-              (click)="add(stat.key)"
-              [disabled]="
-                characterCreationService.remainingSpecialPoint() <= 0 ||
-                special[stat.key] >= maxStats[stat.key]
-              "
-            >
-              +
-            </button>
-          </article>
-        }
-      </section>
-
-      <section class="description">
-        @if (activeInfo) {
-          <p>{{ activeInfo.description }}</p>
-          <app-image [image]="activeInfo.image"></app-image>
-        }
-      </section>
-    </div>
-  </div>
-
-  <!-- ZONE FIXE EN BAS (Boutons toujours visibles) -->
-  <footer class="actions-footer">
-    <button class="btn" (click)="previousStep()">Précédent</button>
-    <button
-      class="btn"
-      [disabled]="characterCreationService.remainingSpecialPoint() > 0"
-      (click)="saveAndNextStep()"
-    >
-      Sauver la création
-    </button>
-    <button
-      class="btn"
-      [disabled]="characterCreationService.remainingSpecialPoint() > 0"
-      (click)="nextStep()"
-    >
-      Suivant
-    </button>
-  </footer>
+  <section class="description">
+    @if (activeInfo) {
+      <p>{{ activeInfo.description }}</p>
+      <app-image [image]="activeInfo.image"></app-image>
+    }
+  </section>
 </div>
