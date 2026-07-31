@@ -109,4 +109,10 @@ export class SkillCreation implements OnInit, WizardStep {
   onSaveStep(): void {
     this.characterCreationService.character.skills = this.skillsCharacter;
   }
+
+  onPreviousStep(): void {
+    this.character.skills = this.skillCreationService.createEmptySkills(
+      this.character.origin?.atoutOffert ? this.character.origin?.atoutOffert : null,
+    );
+  }
 }
