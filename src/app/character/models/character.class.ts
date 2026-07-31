@@ -56,7 +56,7 @@ export class Character {
       character.origin = origineDescription.find((orig) => orig.nom === originKey);
     }
 
-    if (dto.special) {
+    if (dto.special && dto.special.agility > 0) {
       character.special = new Special(dto.special);
     }
 
