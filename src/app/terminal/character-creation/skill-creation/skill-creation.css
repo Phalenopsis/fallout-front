@@ -31,7 +31,7 @@ article {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   margin: 0.5rem 0;
   padding: 6px;
@@ -74,10 +74,7 @@ article {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-
-  @media (width > 756px) {
-    flex-direction: row;
-  }
+  align-items: center;
 }
 
 .description p {
