@@ -1,13 +1,17 @@
-<p>Points d'Atouts : {{ taggedSkillsPoints }}</p>
-<p>Points de compétences : {{ remainingPoints }}</p>
+<div class="points-summary">
+  <p>Points d'Atouts : {{ taggedSkillsPoints() }}</p>
+  <p>Points de compétences : {{ remainingPoints() }}</p>
+</div>
 
 @if (fsm.mustTagAnObligatorySkill()) {
-  <p>Vous devez choisir un Atout parmi :</p>
-  <ul>
-    @for (skillKey of obligatorySkills; track skillKey) {
-      <li>{{ skillDataMap[skillKey].label }}</li>
-    }
-  </ul>
+  <div class="obligatory-warning">
+    <p>Vous devez choisir un Atout parmi :</p>
+    <ul>
+      @for (skillKey of obligatorySkills; track skillKey) {
+        <li>{{ skillDataMap[skillKey].label }}</li>
+      }
+    </ul>
+  </div>
 }
 
 <div class="wrapper">
@@ -21,13 +25,13 @@
           [checked]="skillsCharacter[skill.key].taggedSkill"
           (change)="toggleTag(skill.key, $event)"
           [disabled]="
-            (!skillsCharacter[skill.key].taggedSkill && taggedSkillsPoints <= 0) ||
+            (!skillsCharacter[skill.key].taggedSkill && taggedSkillsPoints() <= 0) ||
             (fsm.mustTagAnObligatorySkill() && !obligatorySkills.includes(skill.key)) ||
             skillsCharacter[skill.key].isOffered
           "
         />
         @if (skillsCharacter[skill.key].taggedSkill) {
-          <span>Atout</span>
+          <span class="tag-badge">Atout</span>
         }
 
         <button (click)="remove(skill.key)" [disabled]="!fsm.canRemove(skill.key)">-</button>
@@ -49,10 +53,4 @@
       <app-image [image]="activeInfo.image"></app-image>
     }
   </section>
-</div>
-
-<div class="navigation">
-  <button class="btn" (click)="previousStep()">Précédent</button>
-  <button class="btn" [disabled]="!canNext" (click)="saveAndNextStep()">Sauver la création</button>
-  <button class="btn" [disabled]="!canNext" (click)="nextStep()">Suivant</button>
 </div>

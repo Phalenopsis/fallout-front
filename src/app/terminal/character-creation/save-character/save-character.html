@@ -1,10 +1,11 @@
-<section>
-  <p>Voulez-vous sauvegarder ce personnage ?</p>
-  <ul>
-    <li>Nom : {{ character.name }}</li>
-    <li>Origine : {{ character.origin?.nom }}</li>
+<section class="summary-section">
+  <h2>Voulez-vous sauvegarder ce personnage ?</h2>
+
+  <ul class="main-list">
+    <li><strong>Nom :</strong> {{ character.name }}</li>
+    <li><strong>Origine :</strong> {{ character.origin?.nom }}</li>
     <li>
-      Special
+      <strong>S.P.E.C.I.A.L.</strong>
       <ul>
         @for (stat of stats; track $index) {
           @if (character.special != undefined) {
@@ -13,8 +14,21 @@
         }
       </ul>
     </li>
+    <li>
+      <strong>Compétences</strong>
+      <ul>
+        @for (skill of skills; track $index) {
+          @if (character.skills != undefined) {
+            <li>
+              {{ skill.label }} :
+              @if (character.skills[skill.key].taggedSkill) {
+                <span class="star-tag">★</span>
+              }
+              {{ character.skills[skill.key].rank }}
+            </li>
+          }
+        }
+      </ul>
+    </li>
   </ul>
 </section>
-<button class="btn" (click)="previousStep()">Précédent</button>
-<button class="btn" (click)="saveCharacter()">Oui</button>
-<button class="btn btn-secondary" (click)="cancel()">Non</button>

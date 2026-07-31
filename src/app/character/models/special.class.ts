@@ -11,16 +11,18 @@ export class Special {
   public agility: number;
   public luck: number;
 
+  private BASE_VALUE = 5;
+
   constructor(stats?: Partial<SpecialStats> & { id?: number }) {
     this.id = stats?.id;
 
-    this.strength = stats?.strength ?? 5;
-    this.perception = stats?.perception ?? 5;
-    this.endurance = stats?.endurance ?? 5;
-    this.charisma = stats?.charisma ?? 5;
-    this.intelligence = stats?.intelligence ?? 5;
-    this.agility = stats?.agility ?? 5;
-    this.luck = stats?.luck ?? 5;
+    this.strength = stats?.strength ?? this.BASE_VALUE;
+    this.perception = stats?.perception ?? this.BASE_VALUE;
+    this.endurance = stats?.endurance ?? this.BASE_VALUE;
+    this.charisma = stats?.charisma ?? this.BASE_VALUE;
+    this.intelligence = stats?.intelligence ?? this.BASE_VALUE;
+    this.agility = stats?.agility ?? this.BASE_VALUE;
+    this.luck = stats?.luck ?? this.BASE_VALUE;
   }
 
   mapToDto(): SpecialDTO {

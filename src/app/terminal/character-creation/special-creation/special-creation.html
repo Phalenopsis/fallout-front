@@ -1,15 +1,14 @@
+<div class="points-left">
+  Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}
+</div>
+
 <div class="wrapper">
   <section>
-    <div>Points restant à répartir : {{ characterCreationService.remainingSpecialPoint() }}</div>
-
     @for (stat of specialData; track stat.key) {
       <article (click)="setActive(stat.key)" [class.active]="activeStatKey === stat.key">
         <div class="statistic">{{ stat.label }}</div>
-
         <button (click)="remove(stat.key)" [disabled]="special[stat.key] <= specialFloor">-</button>
-
         <div class="value">{{ special[stat.key] }}</div>
-
         <button
           (click)="add(stat.key)"
           [disabled]="
@@ -30,19 +29,3 @@
     }
   </section>
 </div>
-
-<button class="btn" (click)="previousStep()">Précédent</button>
-<button
-  class="btn"
-  [disabled]="characterCreationService.remainingSpecialPoint() > 0"
-  (click)="saveAndNextStep()"
->
-  Sauver la création
-</button>
-<button
-  class="btn"
-  [disabled]="characterCreationService.remainingSpecialPoint() > 0"
-  (click)="nextStep()"
->
-  Suivant
-</button>

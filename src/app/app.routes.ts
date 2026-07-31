@@ -39,10 +39,15 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
           {
+            path: '',
+            redirectTo: 'name',
+            pathMatch: 'full',
+          },
+          {
             path: 'name',
             loadComponent: () =>
-              import('./terminal/character-creation/character-name-creation.component').then(
-                (m) => m.CharacterNameCreationTerminalComponent,
+              import('./terminal/character-creation/name-creation/name-creation').then(
+                (m) => m.NameCreation,
               ),
             canActivate: [authGuard],
           },

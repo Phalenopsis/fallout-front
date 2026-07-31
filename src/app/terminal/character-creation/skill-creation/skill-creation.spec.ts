@@ -89,24 +89,24 @@ describe('SkillCreation', () => {
 
   describe('Règles des compétences (Skills & FSM)', () => {
     it('Règle 1 : devrait initialiser les points de compétence à 9 + Intelligence du personnage', () => {
-      expect(component.remainingPoints).toBe(14);
+      expect(component.remainingPoints()).toBe(14);
 
       mockCharacter.special = { intelligence: 3 };
       const newFixture = TestBed.createComponent(SkillCreation);
       const newComponent = newFixture.componentInstance;
       newFixture.detectChanges();
 
-      expect(newComponent.remainingPoints).toBe(12);
+      expect(newComponent.remainingPoints()).toBe(12);
     });
 
     it('Règle 2 : un personnage standard a droit à 3 atouts et chacun donne 2 points de bonus', () => {
-      expect(component.taggedSkillsPoints).toBe(3);
+      expect(component.taggedSkillsPoints()).toBe(3);
 
       component.toggleTag('smallGuns', { target: { checked: true } } as any);
 
       expect(component.skillsCharacter.smallGuns.taggedSkill).toBe(true);
       expect(component.skillsCharacter.smallGuns.rank).toBe(2);
-      expect(component.taggedSkillsPoints).toBe(2);
+      expect(component.taggedSkillsPoints()).toBe(2);
     });
 
     it("Règles 3 & 4 : max 3 points à la création et remboursement du surplus si tag d'une compétence à 3 points", () => {
@@ -114,14 +114,14 @@ describe('SkillCreation', () => {
       component.add('athletics');
       component.add('athletics');
       expect(component.skillsCharacter.athletics.rank).toBe(3);
-      expect(component.remainingPoints).toBe(11);
+      expect(component.remainingPoints()).toBe(11);
 
       expect(component.fsm.canAdd('athletics')).toBe(false);
 
       component.toggleTag('athletics', { target: { checked: true } } as any);
 
       expect(component.skillsCharacter.athletics.rank).toBe(3);
-      expect(component.remainingPoints).toBe(13);
+      expect(component.remainingPoints()).toBe(13);
     });
 
     it('Règle 5 : décocher un atout diminue son rang de 2 sans impacter le reste des points à répartir', () => {
@@ -134,7 +134,7 @@ describe('SkillCreation', () => {
       expect(component.skillsCharacter.smallGuns.taggedSkill).toBe(false);
       expect(component.skillsCharacter.smallGuns.rank).toBe(0);
       expect(component.remainingPoints).toBe(pointsBeforeUntag);
-      expect(component.taggedSkillsPoints).toBe(3);
+      expect(component.taggedSkillsPoints()).toBe(3);
     });
 
     it('Règle 6 : Origine Initié de la Confrérie -> 1 atout obligatoire à choisir parmi Arme à énergie, Science, Réparation', () => {
@@ -145,7 +145,7 @@ describe('SkillCreation', () => {
       const bhComponent = brotherhoodFixture.componentInstance;
       brotherhoodFixture.detectChanges();
 
-      expect(bhComponent.taggedSkillsPoints).toBe(4);
+      expect(bhComponent.taggedSkillsPoints()).toBe(4);
       expect(bhComponent.fsm.mustTagAnObligatorySkill()).toBe(true);
 
       bhComponent.toggleTag('smallGuns', { target: { checked: true } } as any);
@@ -164,7 +164,7 @@ describe('SkillCreation', () => {
       const dwellerComponent = dwellerFixture.componentInstance;
       dwellerFixture.detectChanges();
 
-      expect(dwellerComponent.taggedSkillsPoints).toBe(4);
+      expect(dwellerComponent.taggedSkillsPoints()).toBe(4);
       expect(dwellerComponent.fsm.mustTagAnObligatorySkill()).toBe(false);
     });
 
@@ -179,7 +179,7 @@ describe('SkillCreation', () => {
       expect(ghoulComponent.skillsCharacter.survival.taggedSkill).toBe(true);
       expect(ghoulComponent.skillsCharacter.survival.rank).toBe(2);
       expect(ghoulComponent.skillsCharacter.survival.isOffered).toBe(true);
-      expect(ghoulComponent.taggedSkillsPoints).toBe(3);
+      expect(ghoulComponent.taggedSkillsPoints()).toBe(3);
     });
   });
 });

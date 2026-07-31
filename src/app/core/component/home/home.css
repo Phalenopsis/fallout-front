@@ -5,6 +5,22 @@
     font-size: 1.5rem;
   }
 }
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; /* Empêche le scroll global de la page */
+}
+
+/* Le composant injecté par router-outlet dans Home doit prendre tout l'espace restant */
+:host > router-outlet + * {
+  flex: 1;
+  min-height: 0; /* CRUCIAL pour autoriser le scroll enfant */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 table {
   font-size: 1.5em;
   border: 2px solid red;

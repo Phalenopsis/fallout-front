@@ -1,3 +1,18 @@
+.summary-section h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
 ul {
-  margin-left: 2rem;
+  margin-left: 1.5rem;
+  padding-left: 0;
+}
+
+li {
+  margin-bottom: 0.4rem;
+}
+
+.star-tag {
+  color: var(--crt-font-color-bright, #ffd700);
 }
