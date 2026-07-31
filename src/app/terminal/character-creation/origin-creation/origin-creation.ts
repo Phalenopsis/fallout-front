@@ -19,7 +19,7 @@ export class OriginCreation implements WizardStep {
   private characterCreationService = inject(CharacterCreationService);
   private wizardService = inject(WizardStepService);
 
-  origin: OrigineDescription = ShelterDweller;
+  origin: OrigineDescription = this.characterCreationService.character.origin || ShelterDweller;
   possibleOrigins: OrigineDescription[] = origineDescription;
 
   constructor() {
