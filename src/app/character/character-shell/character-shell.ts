@@ -41,6 +41,8 @@ export class CharacterShell implements OnInit {
       path: 'data',
       subMenus: [
         { label: 'QUÊTES', path: 'quests' },
+        { label: 'LIEUX', path: 'locations' },
+        { label: 'PERSONNAGES', path: 'npcs' },
         { label: 'RÉPUTATION', path: 'reputation' },
         { label: 'BACKGROUND', path: 'background' },
         { label: 'NOTES', path: 'notes' },
