@@ -42,6 +42,15 @@ export const CHARACTER_ROUTES: Routes = [
             loadComponent: () => import('./pages/data/quests/quests').then((m) => m.Quests),
           },
           {
+            path: 'npcs',
+            loadComponent: () => import('./pages/data/npcs/npcs').then((m) => m.Npcs),
+          },
+          {
+            path: 'locations',
+            loadComponent: () =>
+              import('./pages/data/locations/locations').then((m) => m.Locations),
+          },
+          {
             path: 'reputation',
             loadComponent: () =>
               import('./pages/data/reputation/reputation').then((m) => m.Reputation),
