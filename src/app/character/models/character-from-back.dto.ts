@@ -6,7 +6,7 @@ export type SkillsFromBackDTO = {
   [key: string]: number | boolean;
 };
 
-export interface CharacterFromBackDTO {
+export type CharacterFromBackDTO = {
   id: number | undefined;
   name: string | undefined;
   userId: number | undefined;
@@ -14,4 +14,4 @@ export interface CharacterFromBackDTO {
   originName: ORIGIN_VALUE | undefined;
   creationStatus: CreationStatus;
   skills: SkillsFromBackDTO[] | undefined;
-}
+};
