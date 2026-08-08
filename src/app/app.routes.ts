@@ -99,6 +99,7 @@ export const routes: Routes = [
   {
     path: 'character/:id',
     loadChildren: () => import('./character/character.routes').then((m) => m.CHARACTER_ROUTES),
+    canActivate: [authGuard],
   },
 
   {
