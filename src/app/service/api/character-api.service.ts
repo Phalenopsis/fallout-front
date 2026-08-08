@@ -3,14 +3,13 @@ import { Injectable } from '@angular/core';
 import { Character } from '../../character/models/character.class';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CharacterToBackDTO } from '../../character/models/character.dto';
 import { CharacterFromBackDTO } from '../../character/models/character-from-back.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CharacterApiService {
-  private baseUrl = `${environment.apiUrl}/character`;
+  private baseUrl = `${environment.apiUrl}/api/characters`;
   constructor(private http: HttpClient) {}
 
   saveCharacter(character: Character): Observable<CharacterFromBackDTO> {
