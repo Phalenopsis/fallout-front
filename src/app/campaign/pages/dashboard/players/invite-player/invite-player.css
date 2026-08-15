@@ -1,0 +1,71 @@
+.pipboy-box {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 1.25rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.pipboy-header {
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--crt-font-color);
+  border-bottom: 1px dashed var(--crt-font-color-dim);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.pipboy-header .symbol {
+  color: var(--crt-glow);
+  margin-right: 0.3rem;
+}
+
+.pipboy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pipboy-label {
+  font-size: 0.9rem;
+  color: var(--crt-font-color);
+  letter-spacing: 0.5px;
+}
+
+.pipboy-select {
+  background-color: var(--crt-bg-2);
+  color: var(--crt-font-color);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 0.6rem 0.8rem;
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.pipboy-select:focus {
+  border-color: var(--crt-glow);
+  box-shadow: 0 0 6px var(--crt-glow);
+}
+
+.pipboy-select option {
+  background-color: #111;
+  color: var(--crt-font-color);
+}
+
+.status-msg {
+  font-size: 0.85rem;
+  color: var(--crt-font-color-dim);
+  font-style: italic;
+}
+
+.status-msg.warning {
+  color: #ffaa00;
+}

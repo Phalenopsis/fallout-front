@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MainMenuItem } from '../../core/models/pipboy-menu.model';
 import { PipboyLayoutComponent } from '../../core/component/pipboy-layout/pipboy-layout';
-// import { CampaignStoreService } from '../services/campaign-store.service';
+import { CampaignStoreService } from '../services/campaign-store.service';
 
 @Component({
   selector: 'app-campaign-shell',
@@ -14,7 +14,7 @@ import { PipboyLayoutComponent } from '../../core/component/pipboy-layout/pipboy
 })
 export class CampaignShell implements OnInit {
   private route = inject(ActivatedRoute);
-  // private campaignStore = inject(CampaignStoreService);
+  private campaignStore = inject(CampaignStoreService);
 
   basePath: string[] = [];
 
@@ -36,13 +36,18 @@ export class CampaignShell implements OnInit {
         { label: 'LOOT', path: 'loot' },
       ],
     },
+    {
+      label: 'RÉGLAGES',
+      path: 'settings',
+      subMenus: [],
+    },
   ];
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.basePath = ['/campaign', id];
-      // this.campaignStore.loadCampaign(Number(id));
+      this.campaignStore.loadCampaign(Number(id));
     }
   }
 }

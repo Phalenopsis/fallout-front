@@ -32,4 +32,10 @@ export class CharacterApiService {
       },
     );
   }
+
+  getAvailableCharactersByFriend(friendId: number): Observable<CharacterFromBackDTO[]> {
+    return this.http.get<CharacterFromBackDTO[]>(`${this.baseUrl}/friend/${friendId}/available`, {
+      withCredentials: true,
+    });
+  }
 }
