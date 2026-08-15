@@ -1,0 +1,67 @@
+@if (character(); as char) {
+  <div class="character-preview-card">
+    <!-- En-tête du dossier -->
+    <div class="preview-header">
+      <span class="char-title">{{ char.name }}</span>
+      <span class="char-origin">[{{ char.origin?.nom || 'ORIGINE INCONNUE' }}]</span>
+    </div>
+
+    <!-- Grille principale : 2 colonnes Desktop / 1 colonne Mobile -->
+    <div class="preview-body">
+      <!-- Colonne 1 : S.P.E.C.I.A.L. -->
+      <div class="preview-section special-section">
+        <h4 class="section-title">> S.P.E.C.I.A.L.</h4>
+        @if (char.special; as sp) {
+          <div class="special-list">
+            <div class="stat-row">
+              <span class="lbl">FORCE (S)</span> <span class="val">{{ sp.strength }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">PERCEPTION (P)</span> <span class="val">{{ sp.perception }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">ENDURANCE (E)</span> <span class="val">{{ sp.endurance }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">CHARISME (C)</span> <span class="val">{{ sp.charisma }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">INTELLIGENCE (I)</span>
+              <span class="val">{{ sp.intelligence }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">AGILITÉ (A)</span> <span class="val">{{ sp.agility }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="lbl">CHANCE (L)</span> <span class="val">{{ sp.luck }}</span>
+            </div>
+          </div>
+        } @else {
+          <p class="empty-msg">NON DÉFINI</p>
+        }
+      </div>
+
+      <!-- Colonne 2 : COMPÉTENCES CLÉS -->
+      <div class="preview-section skills-section">
+        <h4 class="section-title">> COMPÉTENCES EN VIGUEUR</h4>
+        @if (displaySkills().length > 0) {
+          <div class="skills-list">
+            @for (skill of displaySkills(); track skill.name) {
+              <div class="skill-row" [class.is-tagged]="skill.taggedSkill">
+                <span class="skill-name">
+                  @if (skill.taggedSkill) {
+                    <span class="star-icon">★</span>
+                  }
+                  {{ skill.label }}
+                </span>
+                <span class="skill-rank">+{{ skill.rank }}</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="empty-msg">AUCUNE COMPÉTENCE REMARQUABLE</p>
+        }
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,139 @@
+.character-preview-card {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--crt-glow);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.2);
+  color: var(--crt-font-color);
+}
+
+/* En-tête */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--crt-font-color-dim);
+  padding-bottom: 0.6rem;
+}
+
+.char-title {
+  font-size: 1.5rem; /* Agrandi */
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 0 0 4px var(--crt-glow);
+}
+
+.char-origin {
+  font-size: 1.1rem; /* Agrandi */
+  color: var(--crt-glow);
+  font-weight: bold;
+}
+
+/* Grille 2 Colonnes Desktop */
+.preview-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.05rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--crt-glow);
+  border-bottom: 1px dashed var(--crt-font-color-dim);
+  padding-bottom: 0.25rem;
+}
+
+/* S.P.E.C.I.A.L. */
+.special-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem; /* Agrandi */
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.3rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-row .lbl {
+  color: var(--crt-font-color);
+}
+
+.stat-row .val {
+  font-weight: bold;
+  color: var(--crt-glow);
+}
+
+/* Compétences */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.skill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem; /* Agrandi */
+  padding: 0.3rem 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid transparent;
+}
+
+.skill-row.is-tagged {
+  border-color: var(--crt-glow);
+  background: rgba(0, 255, 102, 0.08);
+  font-weight: bold;
+}
+
+.star-icon {
+  color: var(--crt-glow);
+  margin-right: 0.4rem;
+  font-size: 1.1rem;
+}
+
+.skill-rank {
+  color: var(--crt-glow);
+}
+
+.empty-msg {
+  font-size: 0.95rem;
+  color: var(--crt-font-color-dim);
+  font-style: italic;
+}
+
+/* Footer / Description origines */
+.preview-footer {
+  font-size: 1rem; /* Agrandi */
+  line-height: 1.4;
+  border-top: 1px dashed var(--crt-font-color-dim);
+  padding-top: 0.75rem;
+  color: var(--crt-font-color-dim);
+}
+
+.origin-desc-title {
+  color: var(--crt-font-color);
+  font-weight: bold;
+}
+
+/* Layout Mobile : passage en 1 colonne */
+@media (max-width: 768px) {
+  .preview-body {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .skills-list {
+    max-height: none; /* Pas de scroll interne sur mobile */
+  }
+}
