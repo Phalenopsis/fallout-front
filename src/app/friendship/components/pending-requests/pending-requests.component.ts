@@ -7,7 +7,7 @@ import { FriendshipService } from '../../models/service/friendship.service';
   standalone: true,
   imports: [],
   templateUrl: './pending-requests.component.html',
-  styleUrl: './pending-requests.component.css',
+  styleUrls: ['./pending-requests.component.css', '../friend.css'],
 })
 export class PendingRequestsComponent implements OnInit {
   // Signal calculé : Demandes REÇUES (où je suis le destinataire, isRequester = false)

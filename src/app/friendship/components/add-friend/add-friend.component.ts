@@ -7,7 +7,7 @@ import { FriendshipService } from '../../models/service/friendship.service';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './add-friend.component.html',
-  styleUrl: './add-friend.component.css',
+  styleUrls: ['./add-friend.component.css', '../friend.css'],
 })
 export class AddFriendComponent {
   username = signal<string>('');

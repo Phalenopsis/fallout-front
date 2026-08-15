@@ -1,83 +1,29 @@
+/* ====================================
+   DEMANDES D'AMIS EN ATTENTE
+   ==================================== */
+
 .pending-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+
+  width: 100%;
   max-width: 550px;
 }
 
-/* Encadré Pip-Boy */
-.pipboy-box {
-  background-color: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--crt-font-color-dim);
-  padding: 1.25rem;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-.pipboy-header {
-  font-size: 1.05rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  color: var(--crt-font-color);
-  border-bottom: 1px dashed var(--crt-font-color-dim);
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-}
-
-.pipboy-header .symbol {
-  color: var(--crt-glow);
-  margin-right: 0.3rem;
-}
-
-.empty-msg {
-  color: var(--crt-font-color-dim);
-  font-style: italic;
-  font-size: 0.9rem;
-  padding: 0.5rem 0;
-  text-shadow: none;
-}
-
-/* Liste des éléments */
-.request-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.request-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.6rem 0.8rem;
-  background-color: var(--crt-bg-2);
-  border: 1px solid var(--crt-font-color-dim);
-}
-
-.friend-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--crt-font-color);
-  text-shadow:
-    0 0 2px var(--crt-glow),
-    0 0 4px var(--crt-glow);
-}
-
-.status-badge {
-  font-size: 0.85rem;
-  color: var(--crt-font-color-dim);
-  letter-spacing: 0.5px;
-  text-shadow: none;
-}
+/* ------------------------------------
+   ACTIONS
+   ------------------------------------ */
 
 .actions {
   display: flex;
   gap: 0.5rem;
 }
 
-/* Ajustement des boutons réutilisés */
+/* ------------------------------------
+   BOUTONS
+   ------------------------------------ */
+
 .request-item .btn {
   margin: 0;
   padding: 0.3em 0.8em;
@@ -96,15 +42,4 @@
 .btn-decline:hover {
   color: #ff4444;
   box-shadow: 0 0 6px rgba(255, 68, 68, 0.6);
-}
-
-/* ====================================
-   DESKTOP (≥ 800px)
-   ==================================== */
-@media (min-width: 800px) {
-  .request-item {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
 }

@@ -6,7 +6,7 @@ import { FriendshipService } from '../../models/service/friendship.service';
   standalone: true,
   imports: [],
   templateUrl: './friends-list.component.html',
-  styleUrl: './friends-list.component.css',
+  styleUrls: ['./friends-list.component.css', '../friend.css'],
 })
 export class FriendsListComponent implements OnInit {
   constructor(public friendshipService: FriendshipService) {}

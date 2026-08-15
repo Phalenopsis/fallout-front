@@ -6,10 +6,10 @@
     @if (receivedRequests().length === 0) {
       <p class="empty-msg">AUCUNE TRANSMISSION EN ATTENTE DE VALIDATION.</p>
     } @else {
-      <ul class="request-list">
+      <ul class="pipboy-list">
         @for (req of receivedRequests(); track req.friendshipId) {
-          <li class="request-item">
-            <span class="friend-name">{{ req.friendUsername }}</span>
+          <li class="pipboy-list-item">
+            <span class="pipboy-name">{{ req.friendUsername }}</span>
             <div class="actions">
               <button type="button" class="btn btn-accept" (click)="onAccept(req)">
                 [ ACCEPTER ]
@@ -33,11 +33,11 @@
     @if (sentRequests().length === 0) {
       <p class="empty-msg">AUCUNE DEMANDE ENVOYÉE EN ATTENTE.</p>
     } @else {
-      <ul class="request-list">
+      <ul class="pipboy-list">
         @for (req of sentRequests(); track req.friendshipId) {
-          <li class="request-item">
-            <span class="friend-name">{{ req.friendUsername }}</span>
-            <span class="status-badge">[ EN ATTENTE DE REPONSE ]</span>
+          <li class="pipboy-list-item">
+            <span class="pipboy-name">{{ req.friendUsername }}</span>
+            <span class="pipboy-badge">[ EN ATTENTE DE REPONSE ]</span>
           </li>
         }
       </ul>
