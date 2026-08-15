@@ -1,0 +1,21 @@
+<div class="pipboy-box">
+  <div class="pipboy-header">
+    <span class="symbol">></span> REGISTRE DES HABITANTS DES TERRES DÉSOLÉES (AMIS)
+  </div>
+
+  @if (friendshipService.friends().length === 0) {
+    <p class="empty-msg">AUCUN CONTACT REGISTRÉ DANS LA BASE DE DONNÉES.</p>
+  } @else {
+    <ul class="friends-list">
+      @for (friend of friendshipService.friends(); track friend.friendshipId) {
+        <li class="friend-item">
+          <div class="friend-info">
+            <span class="status-indicator">●</span>
+            <span class="friend-name">{{ friend.friendUsername }}</span>
+          </div>
+          <span class="friend-badge">[ CONTACT LIKÉ ]</span>
+        </li>
+      }
+    </ul>
+  }
+</div>

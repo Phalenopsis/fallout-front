@@ -1,0 +1,90 @@
+/* Encadré Pip-Boy */
+.pipboy-box {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 1.25rem;
+  max-width: 550px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.pipboy-header {
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--crt-font-color);
+  border-bottom: 1px dashed var(--crt-font-color-dim);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.pipboy-header .symbol {
+  color: var(--crt-glow);
+  margin-right: 0.3rem;
+}
+
+.empty-msg {
+  color: var(--crt-font-color-dim);
+  font-style: italic;
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+  text-shadow: none;
+}
+
+/* Liste des amis */
+.friends-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.friend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color-dim);
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.status-indicator {
+  color: var(--crt-glow);
+  font-size: 0.8rem;
+  text-shadow: 0 0 4px var(--crt-glow);
+}
+
+.friend-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--crt-font-color);
+  text-shadow:
+    0 0 2px var(--crt-glow),
+    0 0 4px var(--crt-glow);
+}
+
+.friend-badge {
+  font-size: 0.85rem;
+  color: var(--crt-font-color-dim);
+  letter-spacing: 0.5px;
+  text-shadow: none;
+}
+
+/* ====================================
+   DESKTOP (≥ 800px)
+   ==================================== */
+@media (min-width: 800px) {
+  .friend-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
