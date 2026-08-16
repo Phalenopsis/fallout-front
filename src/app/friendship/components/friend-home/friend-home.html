@@ -1,16 +1,34 @@
-<section>
-  <h2>Demander un nouvel ami</h2>
-  <app-add-friend></app-add-friend>
-</section>
-<section>
-  <h2>Mes demandes en cours</h2>
-  <app-pending-requests></app-pending-requests>
-</section>
-<section>
-  <h2>Mes amis</h2>
-  <app-friends-list></app-friends-list>
-</section>
-<section>
-  <h2>Retour au profil</h2>
-  <a href="/">Retour au profil</a>
-</section>
+<div class="friend-home">
+  <section class="friends-section">
+    <h2>Amis</h2>
+
+    <article>
+      <h3>Demander un nouvel ami</h3>
+      <app-add-friend></app-add-friend>
+    </article>
+
+    <article>
+      <h3>Mes demandes en cours</h3>
+      <app-pending-requests></app-pending-requests>
+    </article>
+
+    <article>
+      <h3>Mes amis</h3>
+      <app-friends-list></app-friends-list>
+    </article>
+  </section>
+
+  <section class="characters-section">
+    <h2>Personnages</h2>
+
+    <article>
+      <h3>Mes invitations de campagnes</h3>
+      <app-pending-campaign-invitation></app-pending-campaign-invitation>
+    </article>
+  </section>
+
+  <section class="back-section">
+    <h2>Retour au profil</h2>
+    <a href="/">Retour au profil</a>
+  </section>
+</div>
