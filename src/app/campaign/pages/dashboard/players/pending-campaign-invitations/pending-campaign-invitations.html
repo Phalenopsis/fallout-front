@@ -1,1 +1,78 @@
-<p>pending-campaign-invitations works!</p>
+<div class="pipboy-box invitations-container">
+  <div class="pipboy-header">
+    <span class="symbol">></span> SUIVI DES RECRUTEMENTS / INVITATIONS
+  </div>
+
+  <!-- Section 1 : Invitations en attente -->
+  <div class="invitation-section">
+    <div class="section-subtitle crt-light">
+      > INVITATIONS EN ATTENTE ({{ pendingInvitations().length }})
+    </div>
+
+    @if (pendingInvitations().length === 0) {
+      <p class="status-msg">AUCUNE INVITATION EN ATTENTE DE CONFIRMATION.</p>
+    } @else {
+      <div class="invitations-list">
+        @for (inv of pendingInvitations(); track inv.campaignCharacterId) {
+          <ng-container
+            *ngTemplateOutlet="invitationCardTpl; context: { $implicit: inv, isDeclined: false }"
+          />
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Section 2 : Invitations refusées -->
+  @if (declinedInvitations().length > 0) {
+    <div class="invitation-section declined-section">
+      <div class="section-subtitle warning">
+        > RECRUTEMENTS REFUSÉS ({{ declinedInvitations().length }})
+      </div>
+
+      <div class="invitations-list">
+        @for (inv of declinedInvitations(); track inv.campaignCharacterId) {
+          <ng-container
+            *ngTemplateOutlet="invitationCardTpl; context: { $implicit: inv, isDeclined: true }"
+          />
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<!-- TEMPLATE REUTILISABLE DE CARTE D'INVITATION -->
+<ng-template #invitationCardTpl let-inv let-isDeclined="isDeclined">
+  <div
+    class="invitation-card"
+    [class.pending]="!isDeclined"
+    [class.declined]="isDeclined"
+    [class.expanded]="expandedInviteId() === inv.campaignCharacterId"
+    (click)="togglePreview(inv)"
+  >
+    <div class="inv-header-row">
+      <div class="inv-info">
+        <span class="toggle-icon">{{
+          expandedInviteId() === inv.campaignCharacterId ? '[-]' : '[+]'
+        }}</span>
+        <span class="char-name crt-light">{{ inv.characterName || 'PERSONNAGE INCONNU' }}</span>
+        <span class="owner-tag crt-light">(Joueur : {{ inv.ownerEmail }})</span>
+      </div>
+
+      <span class="badge" [class.badge-pending]="!isDeclined" [class.badge-declined]="isDeclined">
+        {{ isDeclined ? '[ REFUSÉ ]' : '[ EN ATTENTE ]' }}
+      </span>
+    </div>
+
+    @if (expandedInviteId() === inv.campaignCharacterId) {
+      <div class="preview-accordion" (click)="$event.stopPropagation()">
+        @if (isLoadingCharacter()) {
+          <p class="status-msg">INTERROGATION DU TERMINAL...</p>
+        } @else if (expandedCharacter(); as char) {
+          <app-character-preview [character]="char" />
+        } @else {
+          <p class="status-msg warning">IMPOSSIBLE DE RECUPERER LE DOSSIER DU SUJET.</p>
+        }
+      </div>
+    }
+  </div>
+</ng-template>

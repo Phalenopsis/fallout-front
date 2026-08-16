@@ -1,6 +1,7 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { CampaignApiService } from '../../service/api/campaign-api.service';
 import { CampaignResponseDto } from '../models/campaign-response.dto';
+import { CampaignCharacterDto } from '../models/campaign-character.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,13 @@ export class CampaignStoreService {
 
   // States
   readonly campaign = signal<CampaignResponseDto | null>(null);
+  readonly characters = signal<CampaignCharacterDto[]>([]); // <- NOUVEAU
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
+
+  readonly activeCharacters = computed(() =>
+    this.characters().filter((c) => c.status === 'ACCEPTED'),
+  );
 
   /**
    * Charge la campagne courante en fonction de son ID
@@ -28,6 +34,7 @@ export class CampaignStoreService {
         if (found) {
           this.campaign.set(found);
           this.isLoading.set(false);
+          this.loadCampaignCharacters(campaignId);
         } else {
           // Si non trouvee dans le registre MJ, on cherche cote Joueurs
           this.fetchPlayerCampaign(campaignId);
@@ -104,5 +111,21 @@ export class CampaignStoreService {
     this.campaign.set(null);
     this.isLoading.set(false);
     this.error.set(null);
+  }
+
+  /**
+   * Récupère la liste des personnages pour la campagne
+   */
+  private loadCampaignCharacters(campaignId: number): void {
+    this.campaignApiService.getCharacters(campaignId).subscribe({
+      next: (chars) => {
+        this.characters.set(chars);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        this.error.set(err?.error?.message || 'Erreur lors du chargement des personnages.');
+        this.isLoading.set(false);
+      },
+    });
   }
 }

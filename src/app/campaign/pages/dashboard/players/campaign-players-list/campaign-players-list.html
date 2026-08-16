@@ -1,1 +1,42 @@
-<p>campaign-players-list works!</p>
+<div class="pipboy-box players-container">
+  <div class="pipboy-header">
+    <span class="symbol">></span> EFFECTIF DE L'ESCOUADE ({{ characters().length }})
+  </div>
+
+  @if (characters().length === 0) {
+    <p class="status-msg">AUCUN JOUEUR RECRUTÉ DANS CETTE CAMPAGNE.</p>
+  } @else {
+    <div class="pipboy-list">
+      @for (player of characters(); track player.campaignCharacterId) {
+        <div
+          class="pipboy-card"
+          [class.expanded]="expandedPlayerId() === player.campaignCharacterId"
+          (click)="togglePreview(player)"
+        >
+          <div class="card-header-row">
+            <div class="card-info">
+              <span class="toggle-icon">{{
+                expandedPlayerId() === player.campaignCharacterId ? '[-]' : '[+]'
+              }}</span>
+              <span class="char-name">{{ player.characterName || 'PERSONNAGE INCONNU' }}</span>
+              <span class="owner-tag">(Joueur : {{ player.ownerEmail }})</span>
+            </div>
+            <span class="badge badge-active">[ ACTIF ]</span>
+          </div>
+
+          @if (expandedPlayerId() === player.campaignCharacterId) {
+            <div class="preview-accordion" (click)="$event.stopPropagation()">
+              @if (isLoadingCharacter()) {
+                <p class="status-msg">INTERROGATION DU TERMINAL...</p>
+              } @else if (expandedCharacter(); as char) {
+                <app-character-preview [character]="char" />
+              } @else {
+                <p class="status-msg warning">IMPOSSIBLE DE RECUPERER LE DOSSIER DU SUJET.</p>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

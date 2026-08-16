@@ -61,4 +61,10 @@ export class CampaignApiService {
       withCredentials: true,
     });
   }
+
+  getCharacters(campaignId: number): Observable<CampaignCharacterDto[]> {
+    return this.http.get<CampaignCharacterDto[]>(`${this.baseUrl}/${campaignId}/characters`, {
+      withCredentials: true,
+    });
+  }
 }

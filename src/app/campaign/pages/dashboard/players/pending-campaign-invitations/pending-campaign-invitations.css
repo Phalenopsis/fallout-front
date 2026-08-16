@@ -1,0 +1,113 @@
+.invitations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.invitation-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--crt-glow);
+  letter-spacing: 1px;
+}
+
+.section-subtitle.warning {
+  color: #ffaa00;
+}
+
+.invitations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.invitation-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.invitation-card:hover {
+  background-color: rgba(0, 255, 100, 0.05);
+  border-color: var(--crt-glow);
+}
+
+.invitation-card.pending {
+  border-left: 4px solid var(--crt-glow);
+}
+
+.invitation-card.declined {
+  border-left: 4px solid #ffaa00;
+  opacity: 0.85;
+}
+
+.invitation-card.expanded {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-color: var(--crt-glow);
+}
+
+.inv-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.inv-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.toggle-icon {
+  color: var(--crt-glow);
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.char-name {
+  color: var(--crt-font-color);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.owner-tag {
+  color: var(--crt-font-color-dim);
+  font-size: 1rem;
+}
+
+.badge {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.badge-pending {
+  color: var(--crt-glow);
+}
+
+.badge-declined {
+  color: #ffaa00;
+}
+
+.preview-accordion {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--crt-font-color-dim);
+  cursor: default;
+}

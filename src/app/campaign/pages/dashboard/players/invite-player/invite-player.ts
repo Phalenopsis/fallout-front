@@ -11,7 +11,7 @@ import { CharacterPreview } from '../../../../../core/component/character-previe
   standalone: true,
   imports: [FormsModule, CharacterPreview],
   templateUrl: './invite-player.html',
-  styleUrl: './invite-player.css',
+  styleUrls: ['./invite-player.css', '../../../../../core/component/pipboy-layout/pipboy-page.css'],
 })
 export class InvitePlayer implements OnInit {
   public friendshipService = inject(FriendshipService);
