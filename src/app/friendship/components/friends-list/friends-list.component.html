@@ -6,14 +6,14 @@
   @if (friendshipService.friends().length === 0) {
     <p class="empty-msg">AUCUN CONTACT REGISTRÉ DANS LA BASE DE DONNÉES.</p>
   } @else {
-    <ul class="friends-list">
+    <ul class="pipboy-list">
       @for (friend of friendshipService.friends(); track friend.friendshipId) {
-        <li class="friend-item">
+        <li class="pipboy-list-item">
           <div class="friend-info">
             <span class="status-indicator">●</span>
-            <span class="friend-name">{{ friend.friendUsername }}</span>
+            <span class="pipboy-name">{{ friend.friendUsername }}</span>
           </div>
-          <span class="friend-badge">[ CONTACT LIKÉ ]</span>
+          <span class="pipboy-badge">[ CONTACT LIKÉ ]</span>
         </li>
       }
     </ul>
