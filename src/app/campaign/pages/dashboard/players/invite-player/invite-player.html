@@ -1,0 +1,61 @@
+<div class="pipboy-box">
+  <div class="pipboy-header"><span class="symbol">></span> RECRUTEMENT DE SUJET / PROSPECTUS</div>
+
+  <form (ngSubmit)="onSubmit()" class="pipboy-form">
+    <!-- Etape 1 : Sélection de l'ami -->
+    <div class="form-group">
+      <label for="friend-select" class="pipboy-label">1. HABITANT CIBLE :</label>
+      <select
+        id="friend-select"
+        class="pipboy-select"
+        [value]="selectedFriendUserId() ?? ''"
+        (change)="onFriendChange($any($event.target).value)"
+        name="friendUserId"
+      >
+        <option value="">-- SELECTIONNER UN CONTACT --</option>
+        @for (friend of friendshipService.friends(); track friend.friendshipId) {
+          <option [value]="friend.friendUserId">{{ friend.friendUsername }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Etape 2 : Sélection du personnage -->
+    @if (selectedFriendUserId()) {
+      <div class="form-group">
+        <label for="character-select" class="pipboy-label">2. DOSSIER PERSONNAGE :</label>
+        @if (isLoadingCharacters()) {
+          <p class="status-msg">INTERROGATION DU TERMINAL...</p>
+        } @else if (friendCharacters().length === 0) {
+          <p class="status-msg warning">AUCUN SUJET VALIDE OU DISPONIBLE SANS CAMPAGNE.</p>
+        } @else {
+          <select
+            id="character-select"
+            class="pipboy-select"
+            [value]="selectedCharacterId() ?? ''"
+            (change)="onCharacterSelect($any($event.target).value)"
+            name="characterId"
+          >
+            <option value="">-- INSPECTER UN DOSSIER --</option>
+            @for (char of friendCharacters(); track char.id) {
+              <option [value]="char.id">{{ char.name }}</option>
+            }
+          </select>
+        }
+      </div>
+    }
+
+    <!-- Etape 3 : Aperçu de la Fiche du Personnage via le nouveau composant -->
+    @if (previewCharacter(); as char) {
+      <app-character-preview [character]="char" />
+    }
+
+    <!-- Bouton d'envoi -->
+    <button
+      type="submit"
+      class="btn"
+      [disabled]="!selectedCharacterId() || campaignStore.isLoading()"
+    >
+      [ TRANSMETTRE L'INVITATION DE CAMPAGNE ]
+    </button>
+  </form>
+</div>

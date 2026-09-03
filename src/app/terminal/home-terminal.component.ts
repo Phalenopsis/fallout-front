@@ -4,6 +4,8 @@ import { HomeChoiceService } from './service/home-choice-service';
 import { OptionTerminal } from './_option-terminal.abstract';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '../service/auth-service';
+import { CampaignStoreService } from '../campaign/services/campaign-store.service';
+import { CharacterStoreService } from '../character/services/character-store.service';
 
 @Component({
   selector: 'app-terminal-home',
@@ -14,6 +16,8 @@ import { AuthService } from '../service/auth-service';
 export class HomeTerminal extends OptionTerminal {
   choiceService: HomeChoiceService = inject(HomeChoiceService);
   authService: AuthService = inject(AuthService);
+  campaignStore: CampaignStoreService = inject(CampaignStoreService);
+  characterStore: CharacterStoreService = inject(CharacterStoreService);
 
   constructor(protected override router: Router) {
     super(router);
@@ -25,5 +29,7 @@ export class HomeTerminal extends OptionTerminal {
         this.router.navigate(['/terminal/profil']);
       }
     });
+    this.campaignStore.clear();
+    this.characterStore.clear();
   }
 }

@@ -3,7 +3,7 @@
   <header class="top-nav">
     <!-- Vue Desktop Classique -->
     <nav class="desktop-nav">
-      @for (main of menuConfig; track main.path) {
+      @for (main of menus(); track main.path) {
         <a [routerLink]="[main.path]" routerLinkActive="active" class="nav-tab">
           {{ main.label }}
         </a>
@@ -13,7 +13,7 @@
     <!-- Vue Mobile (Portrait) -->
     <div class="mobile-top-nav">
       <div class="mobile-menu-blocks">
-        @for (main of menuConfig; track main.path) {
+        @for (main of menus(); track main.path) {
           <a
             [routerLink]="getMenuTargetUrl(main)"
             [class.active]="activeMainMenu?.path === main.path"

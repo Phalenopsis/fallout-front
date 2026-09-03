@@ -1,0 +1,111 @@
+:host {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  min-height: 0;
+}
+
+.friend-home {
+  display: grid;
+
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'friends characters'
+    'back back';
+
+  gap: 2rem;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  padding: 2rem;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ====================================
+   SECTIONS
+   ==================================== */
+
+.friend-home > section {
+  min-width: 0;
+}
+
+.friends-section {
+  grid-area: friends;
+}
+
+.characters-section {
+  grid-area: characters;
+}
+
+.back-section {
+  grid-area: back;
+}
+
+/* ====================================
+   TITRES
+   ==================================== */
+
+.friend-home h2 {
+  margin: 0 0 1.5rem;
+
+  color: var(--crt-font-color);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 2px var(--crt-glow),
+    0 0 5px var(--crt-glow);
+}
+
+.friend-home h3 {
+  margin: 0 0 0.75rem;
+
+  color: var(--crt-font-color-dim);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ====================================
+   ARTICLES
+   ==================================== */
+
+.friend-home article {
+  margin-bottom: 1.5rem;
+}
+
+/* ====================================
+   RETOUR
+   ==================================== */
+
+.back-section {
+  padding-top: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+/* ====================================
+   MOBILE
+   ==================================== */
+
+@media (max-width: 799px) {
+  .friend-home {
+    grid-template-columns: 1fr;
+
+    grid-template-areas:
+      'back'
+      'characters'
+      'friends';
+
+    gap: 1.5rem;
+
+    padding: 1rem;
+  }
+}

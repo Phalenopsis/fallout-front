@@ -29,7 +29,6 @@ export class Character {
   }
 
   mapOrigin(originDesc: OrigineDescription): ORIGIN_VALUE {
-    console.log('in mapOrigin : ', ORIGIN_MAPPING[originDesc.nom as ORIGIN_KEY]);
     return ORIGIN_MAPPING[originDesc.nom as ORIGIN_KEY];
   }
 
@@ -56,7 +55,7 @@ export class Character {
       character.origin = origineDescription.find((orig) => orig.nom === originKey);
     }
 
-    if (dto.special) {
+    if (dto.special && dto.special.agility > 0) {
       character.special = new Special(dto.special);
     }
 

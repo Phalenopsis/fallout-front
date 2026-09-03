@@ -1,52 +1,77 @@
+.points-left {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+
   @media (width > 756px) {
     flex-direction: row;
   }
 }
+
 section {
   flex: 1;
 }
+
 article {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
   align-items: center;
-  margin: 0.5rem;
-  padding: 4px;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  padding: 6px;
+  cursor: pointer;
 
   &.active {
     background: var(--crt-font-color);
     color: var(--crt-bg-2);
-  }
 
-  button {
-    border-radius: 16px;
-    width: 1.5rem;
-    height: 1.5rem;
-    background-color: var(--crt-bg-2);
-    color: var(--crt-font-color);
-
-    &:disabled {
-      color: var(--crt-bg-2);
-      border-color: var(--crt-bg-2);
+    /* Adapte la couleur des boutons quand la ligne est active */
+    button {
+      background-color: var(--crt-bg-2);
+      color: var(--crt-font-color);
     }
   }
-}
-.statistic {
-  flex: 1;
-}
-.value {
-  width: 2ch;
-  text-align: right;
-}
-.description {
-  display: flex;
-  flex-direction: row;
-}
-.description p {
-  margin: 0 0 0.5rem 0;
+
+  /* Le label prend tout l'espace disponible à gauche pour tout pousser à droite */
+  .statistic {
+    flex: 1;
+    font-weight: bold;
+  }
+
+  /* Centrage parfait des symboles dans les boutons */
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    line-height: 1;
+    font-weight: bold;
+    background-color: var(--crt-bg-2);
+    color: var(--crt-font-color);
+    border: 1px solid var(--crt-font-color);
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  /* Largeur fixe et centrage pour la valeur numérique */
+  .value {
+    width: 2ch;
+    text-align: center;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

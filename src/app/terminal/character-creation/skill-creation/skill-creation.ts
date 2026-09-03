@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Image } from '../../../core/component/image/image.component';
 import {
@@ -12,18 +12,21 @@ import { CharacterCreationService } from '../character-creation.service';
 import { CharacterSkills } from './model/skill.desc';
 import { SkillFSM } from './services/skill.final-state-machine';
 import { SkillCreationService } from './skill-creation-service';
+import { WizardStep } from '../wizard-step.interface';
+import { WizardStepService } from '../wizard-step.service';
 
 @Component({
   selector: 'app-skill-creation',
   standalone: true,
   imports: [Image],
   templateUrl: './skill-creation.html',
-  styleUrls: ['./../special-creation/special-creation.css', './skill-creation.css'],
+  styleUrls: ['./skill-creation.css'],
 })
-export class SkillCreation implements OnInit {
+export class SkillCreation implements OnInit, WizardStep {
   router: Router = inject(Router);
   characterCreationService: CharacterCreationService = inject(CharacterCreationService);
   skillCreationService: SkillCreationService = inject(SkillCreationService);
+  wizardService: WizardStepService = inject(WizardStepService);
 
   readonly skillData = SKILL_DATA;
   readonly skillDataMap = SKILL_DATA_MAP;
@@ -40,8 +43,22 @@ export class SkillCreation implements OnInit {
 
   fsm!: SkillFSM;
 
-  remainingPoints: number = 0;
-  taggedSkillsPoints: number = 0;
+  remainingPoints = signal<number>(0);
+  taggedSkillsPoints = signal<number>(0);
+
+  // 2. Transformer canNext en Computed (Signal réactif dérivé)
+  canNext = computed(() => {
+    return this.remainingPoints() === 0 && this.taggedSkillsPoints() === 0;
+  });
+
+  constructor() {
+    // Met à jour la possibilité d'avancer selon la condition métier (canNext)
+    effect(() => {
+      const isReady = this.canNext();
+      this.wizardService.canNext.set(isReady);
+      this.wizardService.canSave.set(isReady);
+    });
+  }
 
   ngOnInit() {
     this.fsm = new SkillFSM({
@@ -79,38 +96,23 @@ export class SkillCreation implements OnInit {
   private updateFromFSM() {
     const ctx = this.fsm.getContext();
     this.skillsCharacter = ctx.skillsCharacter;
-    this.remainingPoints = ctx.remainingPoints;
-    this.taggedSkillsPoints = ctx.taggedSkillsPoints;
+
+    // Mettre à jour les Signals (ce qui va notifier canNext et donc l'effect !)
+    this.remainingPoints.set(ctx.remainingPoints);
+    this.taggedSkillsPoints.set(ctx.taggedSkillsPoints);
   }
 
   setActive(skillKey: SkillKey) {
     this.activeSkillKey = skillKey;
   }
 
-  get canNext() {
-    return this.remainingPoints === 0 && this.taggedSkillsPoints === 0;
-  }
-
-  nextStep() {
+  onSaveStep(): void {
     this.characterCreationService.character.skills = this.skillsCharacter;
-    const route: string = `/terminal/creation/${this.characterCreationService.getNextStep()}`;
-    this.characterCreationService.goToNextStep();
-    this.router.navigate([route]);
   }
 
-  saveAndNextStep() {
-    this.characterCreationService.character.skills = this.skillsCharacter;
-    this.characterCreationService.saveDraft().subscribe({
-      next: () => {
-        this.nextStep();
-      },
-      error: (err) => console.error(err),
-    });
-  }
-
-  previousStep() {
-    const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
-    this.characterCreationService.goToPreviousStep();
-    this.router.navigate([route]);
+  onPreviousStep(): void {
+    this.character.skills = this.skillCreationService.createEmptySkills(
+      this.character.origin?.atoutOffert ? this.character.origin?.atoutOffert : null,
+    );
   }
 }

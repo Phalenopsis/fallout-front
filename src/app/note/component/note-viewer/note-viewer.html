@@ -1,0 +1,11 @@
+<div class="pipboy-note-viewer">
+  @for (segment of segments(); track $index) {
+    @if (segment.isLink && segment.type && segment.id) {
+      <button type="button" class="pipboy-link" (click)="onLinkClick(segment.type, segment.id)">
+        [{{ segment.text }}]
+      </button>
+    } @else {
+      <span class="raw-text">{{ segment.text }}</span>
+    }
+  }
+</div>

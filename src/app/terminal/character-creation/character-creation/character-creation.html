@@ -1,2 +1,15 @@
-Création de personnage
-<router-outlet></router-outlet>
+<div class="wizard-container">
+  <main class="wizard-content">
+    <router-outlet (activate)="onRouteActivate($event)"></router-outlet>
+  </main>
+
+  <footer class="actions-footer">
+    <button class="btn" (click)="previousStep()">Précédent</button>
+    <button class="btn" [disabled]="!wizardStepService.canSave()" (click)="saveAndNextStep()">
+      Sauver la création
+    </button>
+    <button class="btn" [disabled]="!wizardStepService.canNext()" (click)="nextStep()">
+      Suivant
+    </button>
+  </footer>
+</div>

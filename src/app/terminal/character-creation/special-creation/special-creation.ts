@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Special } from '../../../character/models/special.class';
 import { SpecialKey } from '../../../character/models/special.type';
@@ -6,6 +6,8 @@ import { SPECIAL_DATA, SpecialInfo } from '../../../core/constants/special-data.
 import { Image } from '../../../core/component/image/image.component';
 import { CharacterCreationService } from '../character-creation.service';
 import { SpecialModService } from '../special-creation/special-mod-service';
+import { WizardStep } from '../wizard-step.interface';
+import { WizardStepService } from '../wizard-step.service';
 
 @Component({
   selector: 'app-special-creation',
@@ -14,10 +16,11 @@ import { SpecialModService } from '../special-creation/special-mod-service';
   templateUrl: './special-creation.html',
   styleUrl: './special-creation.css',
 })
-export class SpecialCreation {
+export class SpecialCreation implements WizardStep {
   characterCreationService = inject(CharacterCreationService);
   router = inject(Router);
   specialModService = inject(SpecialModService);
+  wizardService: WizardStepService = inject(WizardStepService);
 
   readonly specialData = SPECIAL_DATA;
 
@@ -34,6 +37,14 @@ export class SpecialCreation {
   specialFloor: number = 4;
   special = new Special({ ...this.baseStats });
   activeStatKey: SpecialKey | null = null;
+
+  constructor() {
+    // Met à jour la possibilité d'avancer selon la condition métier (canNext)
+    effect(() => {
+      this.wizardService.canNext.set(this.canNext);
+      this.wizardService.canSave.set(this.canNext);
+    });
+  }
 
   get activeInfo(): SpecialInfo | undefined {
     return this.specialData.find((s) => s.key === this.activeStatKey);
@@ -56,28 +67,16 @@ export class SpecialCreation {
     this.activeStatKey = statKey;
   }
 
-  nextStep() {
+  onSaveStep(): void {
     this.characterCreationService.character.special = this.special;
-    const route: string = `/terminal/creation/${this.characterCreationService.getNextStep()}`;
-    this.characterCreationService.goToNextStep();
-    this.router.navigate([route]);
   }
 
-  saveAndNextStep() {
-    this.characterCreationService.character.special = this.special;
-    this.characterCreationService.saveDraft().subscribe({
-      next: () => {
-        this.nextStep();
-      },
-      error: (err) => console.error(err),
-    });
+  get canNext() {
+    return this.characterCreationService.remainingSpecialPoint() === 0;
   }
 
-  previousStep() {
+  onPreviousStep(): void {
     this.characterCreationService.character.special = undefined;
     this.characterCreationService.resetRemainingSpecialPoints();
-    const route: string = `/terminal/creation/${this.characterCreationService.getPreviousStep()}`;
-    this.characterCreationService.goToPreviousStep();
-    this.router.navigate([route]);
   }
 }

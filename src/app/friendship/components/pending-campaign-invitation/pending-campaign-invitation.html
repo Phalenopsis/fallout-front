@@ -1,0 +1,76 @@
+<div class="pending-container">
+  <div class="pipboy-box invitations-container">
+    <div class="pipboy-header">
+      <span class="symbol">></span>
+      INVITATIONS DE CAMPAGNES ENTRANTES
+    </div>
+
+    @if (pendingInvitations().length === 0) {
+      <p class="empty-msg">AUCUNE INVITATION DE CAMPAGNE EN ATTENTE.</p>
+    } @else {
+      <ul class="pipboy-list">
+        @for (invitation of pendingInvitations(); track invitation.campaignCharacterId) {
+          <li
+            class="pipboy-list-item invitation-card"
+            [class.expanded]="expandedInviteId() === invitation.campaignCharacterId"
+          >
+            <!-- Informations de l'invitation -->
+            <div
+              class="invitation-header"
+              (click)="togglePreview(invitation)"
+              (keydown.enter)="togglePreview(invitation)"
+              tabindex="0"
+              role="button"
+            >
+              <div class="invitation-info">
+                <span class="toggle-icon">
+                  {{ expandedInviteId() === invitation.campaignCharacterId ? '[-]' : '[+]' }}
+                </span>
+
+                <div class="invitation-details">
+                  <span class="pipboy-name">
+                    {{ invitation.characterName || 'PERSONNAGE INCONNU' }}
+                  </span>
+
+                  <span class="pipboy-badge"> Campagne : {{ invitation.campaignName }} </span>
+
+                  <span class="pipboy-badge"> MJ : {{ invitation.ownerEmail }} </span>
+                </div>
+              </div>
+
+              <span class="invitation-status"> [ EN ATTENTE ] </span>
+            </div>
+
+            <!-- Prévisualisation du personnage -->
+            @if (expandedInviteId() === invitation.campaignCharacterId) {
+              <div class="preview-accordion" (click)="$event.stopPropagation()">
+                @if (isLoadingCharacter()) {
+                  <p class="empty-msg">INTERROGATION DU TERMINAL...</p>
+                } @else if (expandedCharacter(); as character) {
+                  <app-character-preview [character]="character" />
+                } @else {
+                  <p class="empty-msg warning">IMPOSSIBLE DE RÉCUPÉRER LE DOSSIER DU SUJET.</p>
+                }
+              </div>
+            }
+
+            <!-- Actions -->
+            <div class="actions">
+              <button type="button" class="btn btn-accept" (click)="onAccept(invitation)">
+                [ ACCEPTER ]
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary btn-decline"
+                (click)="onDecline(invitation)"
+              >
+                [ REFUSER ]
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

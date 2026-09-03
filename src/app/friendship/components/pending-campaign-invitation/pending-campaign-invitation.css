@@ -1,0 +1,132 @@
+/* ====================================
+   INVITATIONS DE CAMPAGNES
+   ==================================== */
+
+.invitations-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ------------------------------------
+   CARTE D'INVITATION
+   ------------------------------------ */
+
+.invitation-card {
+  cursor: default;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.invitation-card.expanded {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-color: var(--crt-glow);
+}
+
+/* ------------------------------------
+   EN-TÊTE
+   ------------------------------------ */
+
+.invitation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  cursor: pointer;
+}
+
+.invitation-header:hover {
+  color: var(--crt-glow);
+}
+
+.invitation-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.toggle-icon {
+  flex-shrink: 0;
+
+  color: var(--crt-glow);
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.invitation-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.invitation-status {
+  flex-shrink: 0;
+
+  color: var(--crt-glow);
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* ------------------------------------
+   PREVIEW
+   ------------------------------------ */
+
+.preview-accordion {
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  border-top: 1px dashed var(--crt-font-color-dim);
+
+  cursor: default;
+}
+
+/* ------------------------------------
+   ACTIONS
+   ------------------------------------ */
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  border-top: 1px dashed var(--crt-font-color-dim);
+}
+
+.btn-accept {
+  border-color: var(--crt-glow);
+}
+
+.btn-decline {
+  color: #ff6666;
+  border-color: #aa3333;
+}
+
+.btn-decline:hover {
+  color: #ff4444;
+  box-shadow: 0 0 6px rgba(255, 68, 68, 0.6);
+}
+
+/* ------------------------------------
+   MOBILE
+   ------------------------------------ */
+
+@media (max-width: 799px) {
+  .invitation-header {
+    align-items: flex-start;
+  }
+
+  .invitation-status {
+    font-size: 0.75rem;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+  }
+}

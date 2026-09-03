@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { CharacterShell } from './character-shell/character-shell';
+import { NotesContainer } from '../note/component/notes-container/notes-container';
+import { NoteType } from '../note/models/note-type.enum';
 
 export const CHARACTER_ROUTES: Routes = [
   {
@@ -39,21 +41,29 @@ export const CHARACTER_ROUTES: Routes = [
           { path: '', redirectTo: 'quests', pathMatch: 'full' },
           {
             path: 'quests',
-            loadComponent: () => import('./pages/data/quests/quests').then((m) => m.Quests),
+            component: NotesContainer,
+            data: { noteType: NoteType.QUEST },
+          },
+          {
+            path: 'locations',
+            component: NotesContainer,
+            data: { noteType: NoteType.LOCATION },
+          },
+          { path: 'npcs', component: NotesContainer, data: { noteType: NoteType.NPC } },
+          {
+            path: 'background',
+            component: NotesContainer,
+            data: { noteType: NoteType.BACKGROUND },
+          },
+          {
+            path: 'notes',
+            component: NotesContainer,
+            data: { noteType: NoteType.FREE_NOTE },
           },
           {
             path: 'reputation',
             loadComponent: () =>
               import('./pages/data/reputation/reputation').then((m) => m.Reputation),
-          },
-          {
-            path: 'background',
-            loadComponent: () =>
-              import('./pages/data/background/background').then((m) => m.Background),
-          },
-          {
-            path: 'notes',
-            loadComponent: () => import('./pages/data/notes/notes').then((m) => m.Notes),
           },
         ],
       },

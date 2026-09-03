@@ -31,6 +31,13 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
+        path: 'create-campaign',
+        loadComponent: () =>
+          import('./campaign/components/create-campaign/create-campaign.component').then(
+            (m) => m.CreateCampaignComponent,
+          ),
+      },
+      {
         path: 'creation',
         loadComponent: () =>
           import('./terminal/character-creation/character-creation/character-creation').then(
@@ -39,10 +46,15 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
           {
+            path: '',
+            redirectTo: 'name',
+            pathMatch: 'full',
+          },
+          {
             path: 'name',
             loadComponent: () =>
-              import('./terminal/character-creation/character-name-creation.component').then(
-                (m) => m.CharacterNameCreationTerminalComponent,
+              import('./terminal/character-creation/name-creation/name-creation').then(
+                (m) => m.NameCreation,
               ),
             canActivate: [authGuard],
           },
@@ -94,6 +106,17 @@ export const routes: Routes = [
   {
     path: 'character/:id',
     loadChildren: () => import('./character/character.routes').then((m) => m.CHARACTER_ROUTES),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'campaign/:id',
+    loadChildren: () => import('./campaign/campaign.routes').then((m) => m.CAMPAIGN_ROUTES),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'friendship',
+    loadChildren: () => import('./friendship/friend.routes').then((m) => m.FRIENDSHIP_ROUTES),
+    canActivate: [authGuard],
   },
 
   {

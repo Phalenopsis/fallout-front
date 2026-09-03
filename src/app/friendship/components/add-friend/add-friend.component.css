@@ -1,0 +1,151 @@
+/* ====================================
+   AJOUT D'AMI
+   ==================================== */
+
+/* ------------------------------------
+   FORMULAIRE
+   ------------------------------------ */
+
+.pipboy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ------------------------------------
+   LABEL
+   ------------------------------------ */
+
+.pipboy-label {
+  color: var(--crt-font-color);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------
+   GROUPE INPUT + BOUTON
+   ------------------------------------ */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ------------------------------------
+   INPUT
+   ------------------------------------ */
+
+.pipboy-input {
+  flex: 1;
+
+  box-sizing: border-box;
+
+  background-color: var(--crt-bg-2);
+  border: 1px solid var(--crt-font-color-dim);
+
+  color: var(--crt-font-color);
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1rem;
+
+  padding: 0.6rem 0.8rem;
+
+  outline: none;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pipboy-input::placeholder {
+  color: var(--crt-font-color-dim);
+  opacity: 0.6;
+}
+
+.pipboy-input:focus {
+  border-color: var(--crt-glow);
+  box-shadow: 0 0 6px var(--crt-glow);
+}
+
+.pipboy-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ------------------------------------
+   BOUTON DU FORMULAIRE
+   ------------------------------------ */
+
+.pipboy-form .btn {
+  width: 100%;
+  white-space: nowrap;
+}
+
+/* ------------------------------------
+   MESSAGES DE STATUT
+   ------------------------------------ */
+
+.pipboy-status {
+  margin-top: 1rem;
+  padding: 0.6rem 0.8rem;
+
+  border-left: 3px solid;
+
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  animation: blink-status 0.3s ease-in-out;
+}
+
+.status-success {
+  background-color: rgba(37, 255, 126, 0.08);
+  border-color: var(--crt-glow);
+  color: var(--crt-font-color);
+}
+
+.status-error {
+  background-color: rgba(255, 50, 50, 0.1);
+  border-color: #ff4444;
+  color: #ff6666;
+
+  text-shadow: 0 0 4px rgba(255, 68, 68, 0.6);
+}
+
+.status-icon {
+  margin-right: 0.4rem;
+  font-weight: bold;
+}
+
+/* ------------------------------------
+   ANIMATION
+   ------------------------------------ */
+
+@keyframes blink-status {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------
+   DESKTOP
+   ------------------------------------ */
+
+@media (min-width: 800px) {
+  .input-group {
+    flex-direction: row;
+  }
+
+  .pipboy-form .btn {
+    width: auto;
+  }
+}

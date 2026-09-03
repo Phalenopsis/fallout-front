@@ -1,0 +1,147 @@
+/* Layout & Boîtes PipBoy */
+.pipboy-box {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 1.25rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.pipboy-header {
+  font-size: 1.05rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--crt-font-color);
+  border-bottom: 1px dashed var(--crt-font-color-dim);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.pipboy-header .symbol {
+  color: var(--crt-glow);
+  margin-right: 0.3rem;
+}
+
+/* Listes et Cartes Unifiées */
+.pipboy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+.pipboy-card {
+  border: 1px solid var(--crt-font-color-dim);
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pipboy-card:hover,
+.pipboy-card.expanded {
+  border-color: var(--crt-glow);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-icon {
+  font-family: monospace;
+  color: var(--crt-glow);
+  font-weight: bold;
+}
+
+.char-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--crt-font-color);
+}
+
+.owner-tag {
+  font-size: 0.85rem;
+  color: var(--crt-font-color-dim);
+}
+
+/* Badges */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid currentColor;
+}
+
+.badge-active {
+  color: var(--crt-glow);
+}
+
+/* Accordéon de Prévisualisation */
+.preview-accordion {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--crt-font-color-dim);
+}
+
+/* Messages de statut */
+.status-msg {
+  font-size: 0.85rem;
+  color: var(--crt-font-color-dim);
+  font-style: italic;
+  text-shadow: 0 0 4px var(--crt-glow);
+}
+
+.status-msg.warning {
+  color: #ffaa00;
+  text-shadow: none;
+}
+
+/* Formulaires */
+.pipboy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pipboy-label {
+  font-size: 0.9rem;
+  color: var(--crt-font-color);
+  letter-spacing: 0.5px;
+}
+
+.pipboy-select {
+  background-color: var(--crt-bg-2);
+  color: var(--crt-font-color);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 0.6rem 0.8rem;
+  font-family: 'ShareTech-Regular', monospace;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.pipboy-select:focus {
+  border-color: var(--crt-glow);
+  box-shadow: 0 0 6px var(--crt-glow);
+}
+
+.pipboy-select option {
+  background-color: #111;
+  color: var(--crt-font-color);
+}

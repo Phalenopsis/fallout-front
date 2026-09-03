@@ -55,7 +55,6 @@ export class LoginTerminalComponent extends BaseTerminal {
           }),
         )
         .subscribe(() => {
-          console.log('Login successful');
           this.pushLine('> ACCESS GRANTED');
           this.pushLine('> LOADING SYSTEM...');
 
@@ -65,13 +64,10 @@ export class LoginTerminalComponent extends BaseTerminal {
   }
 
   private handleLoginError(err: HttpErrorResponse) {
-    console.log('Login failed', err.error);
     this.pushLine('> INCORRECT PASSWORD. TRY AGAIN.');
     this.passwordBuffer = '';
 
-    setTimeout(() => {
-      this.inputLocked.set(false);
-      this.promptLabel.set('ENTER PASSWORD: ');
-    }, 600);
+    this.inputLocked.set(false);
+    this.promptLabel.set('ENTER PASSWORD: ');
   }
 }

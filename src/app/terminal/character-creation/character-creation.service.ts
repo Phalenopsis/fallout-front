@@ -132,7 +132,6 @@ export class CharacterCreationService {
   saveCharacter(): void {
     this.saveDraft().subscribe({
       next: (savedCharacter) => {
-        console.log('Personnage sauvegardé avec succès :', savedCharacter);
         this.authService.refreshCurrentUser();
         this.reset();
         this.router.navigate([`/character/${savedCharacter.id}`]);

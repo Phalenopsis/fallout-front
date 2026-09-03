@@ -1,0 +1,24 @@
+<div class="name-creation-wrapper">
+  <h2>Identité du sujet</h2>
+  <p class="subtitle">
+    Veuillez renseigner le nom de votre personnage pour enregistrer la fiche matricule.
+  </p>
+
+  <div class="field-container">
+    <label for="character-name">Nom du Personnage</label>
+    <input
+      id="character-name"
+      type="text"
+      [ngModel]="characterName()"
+      (ngModelChange)="onNameChange($event)"
+      placeholder="Entrez un nom..."
+      maxlength="30"
+      autocomplete="off"
+      autofocus
+    />
+  </div>
+
+  @if (characterName().trim().length === 0) {
+    <p class="warning-text">Le nom du personnage est obligatoire pour poursuivre.</p>
+  }
+</div>
