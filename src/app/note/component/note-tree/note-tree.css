@@ -1,0 +1,210 @@
+.pipboy-tree-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-right: 1px solid var(--crt-font-color, #00ff66);
+  padding: 10px;
+  color: var(--crt-font-color, #00ff66);
+  user-select: none;
+}
+
+.tree-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.pipboy-btn {
+  background: transparent;
+  border: 1px solid var(--crt-font-color, #00ff66);
+  color: var(--crt-font-color, #00ff66);
+  padding: 4px 8px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--crt-font-color, #00ff66);
+    color: #000;
+  }
+}
+
+.new-folder-form {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+
+  input {
+    flex: 1;
+    background: black;
+    border: 1px solid var(--crt-font-color, #00ff66);
+    color: inherit;
+    padding: 4px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.pipboy-btn-sm {
+  background: var(--crt-font-color, #00ff66);
+  color: black;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tree-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  cursor: pointer;
+  border: 1px transparent dashed;
+
+  &:hover {
+    background-color: rgba(0, 255, 102, 0.15);
+  }
+
+  &.drag-over {
+    border-color: var(--crt-font-color, #00ff66);
+    background-color: rgba(0, 255, 102, 0.3);
+  }
+}
+
+.folder-children {
+  margin-left: 14px;
+  border-left: 1px dashed rgba(0, 255, 102, 0.3);
+  padding-left: 4px;
+}
+
+.add-subnote-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.note-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 255, 102, 0.15);
+  }
+
+  &.selected {
+    background-color: var(--crt-font-color, #00ff66);
+    color: #000;
+    font-weight: bold;
+
+    .shared-badge,
+    .unread-badge {
+      color: #000;
+    }
+  }
+
+  &.unread {
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+.shared-badge {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  margin-left: auto;
+}
+
+.unread-badge {
+  color: #ff3333;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/* ================================
+   ADAPTATION MOBILE PORTRAIT
+   ================================ */
+@media (max-width: 768px) and (orientation: portrait) {
+  .pipboy-tree-container {
+    border-right: none; /* Supression de la bordure verticale en plein écran */
+    padding: 12px 8px;
+  }
+
+  /* 1. Agrrandissement des zones de clic (Folders & Notes) */
+  .folder-header {
+    padding: 10px 8px; /* Passage à ~44px de hauteur globale */
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .note-row {
+    padding: 10px 8px; /* Facilite la sélection de la note au doigt */
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  /* 2. Élargissement de l'indentation de l'arborescence pour la clarté */
+  .folder-children {
+    margin-left: 18px;
+    padding-left: 8px;
+  }
+
+  /* 3. Boutons d'action principaux en haut */
+  .tree-actions {
+    gap: 10px;
+
+    .pipboy-btn {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* 4. Saisie rapide du nouveau dossier */
+  .new-folder-form {
+    input {
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    .pipboy-btn-sm {
+      padding: 0 16px;
+    }
+  }
+
+  /* 5. Bouton + à côté du nom de dossier */
+  .add-subnote-btn.pipboy-btn-touch {
+    opacity: 1; /* Toujours visible sur mobile (pas seulement au hover) */
+    border: 1px solid var(--crt-font-color, #00ff66);
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    background: rgba(0, 255, 102, 0.1);
+  }
+}

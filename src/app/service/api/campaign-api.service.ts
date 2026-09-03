@@ -50,12 +50,6 @@ export class CampaignApiService {
     });
   }
 
-  getPlayerCampaigns(): Observable<CampaignResponseDto[]> {
-    return this.http.get<CampaignResponseDto[]>(`${this.baseUrl}/player`, {
-      withCredentials: true,
-    });
-  }
-
   getPendingInvitations(): Observable<CampaignCharacterDto[]> {
     return this.http.get<CampaignCharacterDto[]>(`${this.baseUrl}/invitations/pending`, {
       withCredentials: true,

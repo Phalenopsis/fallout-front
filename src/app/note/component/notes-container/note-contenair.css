@@ -1,0 +1,221 @@
+.pipboy-notes-splitview {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  color: var(--crt-font-color, #00ff66);
+}
+
+.left-panel {
+  width: 320px;
+  min-width: 280px;
+  height: 100%;
+  border-right: 1px solid var(--crt-font-color, #00ff66);
+}
+
+.right-panel {
+  flex: 1;
+  height: 100%;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.pipboy-loader,
+.empty-state {
+  margin: auto;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.note-view-wrapper,
+.note-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 15px;
+}
+
+.note-header,
+.form-header {
+  border-bottom: 1px solid var(--crt-font-color, #00ff66);
+  padding-bottom: 10px;
+
+  .title-bar {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+
+    h2,
+    h3 {
+      margin: 0;
+    }
+    .note-directory {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+  }
+
+  .meta-bar {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    opacity: 0.8;
+  }
+
+  .action-bar,
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+
+.note-content-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.pipboy-btn {
+  background: transparent;
+  border: 1px solid var(--crt-font-color, #00ff66);
+  color: var(--crt-font-color, #00ff66);
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover,
+  &.primary {
+    background: var(--crt-font-color, #00ff66);
+    color: #000;
+  }
+
+  &.danger {
+    border-color: #ff3333;
+    color: #ff3333;
+
+    &:hover {
+      background: #ff3333;
+      color: #000;
+    }
+  }
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+}
+
+.editor-group {
+  flex: 1;
+}
+
+.pipboy-input {
+  background: black;
+  border: 1px solid var(--crt-font-color, #00ff66);
+  color: inherit;
+  padding: 6px;
+  outline: none;
+}
+
+.share-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px;
+  border: 1px dashed rgba(0, 255, 102, 0.3);
+}
+
+.checkbox-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ================================
+   REGLES DESKTOP PAR DEFAUT
+   ================================ */
+
+/* Le bouton retour est masque par défaut sur grand écran */
+.mobile-back-btn {
+  display: none;
+}
+
+/* ================================
+   ADAPTATION MOBILE PORTRAIT
+   ================================ */
+@media (max-width: 768px) and (orientation: portrait) {
+  /* Le bouton de retour devient visible sur mobile */
+  .mobile-back-btn {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* 1. PAR DÉFAUT (Aucune note choisie) :
+        L'arborescence prend tout l'écran, le panneau de droite est masqué */
+  .pipboy-notes-splitview {
+    .left-panel {
+      width: 100%;
+      min-width: 100%;
+      border-right: none;
+      display: block;
+    }
+
+    .right-panel {
+      display: none;
+    }
+  }
+
+  /* 2. MODE FORMULAIRE OU CONSULTATION DE NOTE :
+        On masque l'arbre et on affiche le panneau droit à 100% */
+  .pipboy-notes-splitview.show-right-panel {
+    .left-panel {
+      display: none;
+    }
+
+    .right-panel {
+      display: flex;
+      width: 100%;
+      padding: 10px;
+    }
+  }
+
+  /* Ajustements ergonomiques pour le contenu des notes sur petit écran */
+  .title-bar {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+
+    h2,
+    h3 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .action-bar,
+  .form-actions {
+    flex-wrap: wrap;
+
+    .pipboy-btn {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}

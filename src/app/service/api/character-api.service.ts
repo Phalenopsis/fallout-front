@@ -4,6 +4,7 @@ import { Character } from '../../character/models/character.class';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CharacterFromBackDTO } from '../../character/models/character-from-back.dto';
+import { CampaignResponseDto } from '../../campaign/models/campaign-response.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,6 @@ export class CharacterApiService {
   constructor(private http: HttpClient) {}
 
   saveCharacter(character: Character): Observable<CharacterFromBackDTO> {
-    console.log('character : ', character);
     return this.http.post<CharacterFromBackDTO>(`${this.baseUrl}`, character.maptoDto(), {
       withCredentials: true,
     });
@@ -35,6 +35,12 @@ export class CharacterApiService {
 
   getAvailableCharactersByFriend(friendId: number): Observable<CharacterFromBackDTO[]> {
     return this.http.get<CharacterFromBackDTO[]>(`${this.baseUrl}/friend/${friendId}/available`, {
+      withCredentials: true,
+    });
+  }
+
+  getCampaignForCharacter(characterId: number): Observable<CampaignResponseDto> {
+    return this.http.get<CampaignResponseDto>(`${this.baseUrl}/${characterId}/campaign`, {
       withCredentials: true,
     });
   }

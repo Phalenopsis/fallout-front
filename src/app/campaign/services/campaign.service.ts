@@ -20,12 +20,6 @@ export class CampaignService {
     });
   }
 
-  loadPlayerCampaigns(): void {
-    this.campaignApiService.getPlayerCampaigns().subscribe({
-      next: (campaigns) => this.playerCampaigns.set(campaigns),
-    });
-  }
-
   loadPendingInvitations(): void {
     this.campaignApiService.getPendingInvitations().subscribe({
       next: (invitations) => this.pendingInvitations.set(invitations),

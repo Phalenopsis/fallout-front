@@ -20,12 +20,9 @@ export class FriendshipService {
   }
 
   loadPendingRequests(): void {
-    this.friendshipApiService
-      .getPendingRequests()
-      .pipe(tap((qqch) => console.log(qqch)))
-      .subscribe({
-        next: (requests) => this.pendingRequests.set(requests),
-      });
+    this.friendshipApiService.getPendingRequests().subscribe({
+      next: (requests) => this.pendingRequests.set(requests),
+    });
   }
 
   sendFriendRequest(username: string) {

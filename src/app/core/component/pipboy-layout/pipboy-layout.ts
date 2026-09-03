@@ -79,7 +79,8 @@ export class PipboyLayoutComponent {
   private navigateToSubMenu(sub: SubMenuItem) {
     const activeMain = this.activeMainMenu;
     if (activeMain) {
-      this.router.navigate([...this.basePath(), activeMain.path, sub.path]);
+      const target = [...this.basePath(), activeMain.path, sub.path];
+      this.router.navigate(target);
     }
   }
 }

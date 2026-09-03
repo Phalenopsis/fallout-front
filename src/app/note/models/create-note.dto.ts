@@ -1,3 +1,4 @@
+import { NoteShareTargetDto } from './note-share-target.dto';
 import { NoteType } from './note-type.enum';
 
 export interface CreateNoteDto {
@@ -6,5 +7,6 @@ export interface CreateNoteDto {
   type: NoteType;
   campaignId: number | null;
   characterId: number | null;
-  shareWithEmails: string[];
+  shareTargets: NoteShareTargetDto[];
+  directory: string;
 }

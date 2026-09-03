@@ -11,7 +11,7 @@ export class CampaignStoreService {
 
   // States
   readonly campaign = signal<CampaignResponseDto | null>(null);
-  readonly characters = signal<CampaignCharacterDto[]>([]); // <- NOUVEAU
+  readonly characters = signal<CampaignCharacterDto[]>([]);
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
@@ -35,28 +35,7 @@ export class CampaignStoreService {
           this.campaign.set(found);
           this.isLoading.set(false);
           this.loadCampaignCharacters(campaignId);
-        } else {
-          // Si non trouvee dans le registre MJ, on cherche cote Joueurs
-          this.fetchPlayerCampaign(campaignId);
         }
-      },
-      error: (err) => {
-        this.error.set(err?.error?.message || 'Erreur lors du chargement de la campagne.');
-        this.isLoading.set(false);
-      },
-    });
-  }
-
-  private fetchPlayerCampaign(campaignId: number): void {
-    this.campaignApiService.getPlayerCampaigns().subscribe({
-      next: (campaigns) => {
-        const found = campaigns.find((c) => c.id === campaignId);
-        if (found) {
-          this.campaign.set(found);
-        } else {
-          this.error.set('Campagne introuvable ou accès non autorisé.');
-        }
-        this.isLoading.set(false);
       },
       error: (err) => {
         this.error.set(err?.error?.message || 'Erreur lors du chargement de la campagne.');

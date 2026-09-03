@@ -28,22 +28,13 @@ export class ProfilChoiceService extends ChoiceService {
     return combineLatest([
       this.getCurrentUser$(),
       this.getGmCampaigns$(),
-      this.getPlayerCampaigns$(),
       this.getPendingCampaignInvitations$(),
       this.getPendingFriendRequests$(),
     ]).pipe(
-      map(
-        ([user, gmCampaigns, playerCampaigns, pendingCampaignInvitations, pendingFriendRequests]) =>
-          this.buildChoices(
-            user,
-            gmCampaigns,
-            playerCampaigns,
-            pendingCampaignInvitations,
-            pendingFriendRequests,
-          ),
+      map(([user, gmCampaigns, pendingCampaignInvitations, pendingFriendRequests]) =>
+        this.buildChoices(user, gmCampaigns, pendingCampaignInvitations, pendingFriendRequests),
       ),
       catchError((err) => {
-        console.error('Impossible de charger les données du profil', err);
         return of(this.buildFallbackChoices());
       }),
       shareReplay(1),
@@ -62,10 +53,6 @@ export class ProfilChoiceService extends ChoiceService {
     return this.campaignApiService.getGmCampaigns().pipe(catchError(() => of([])));
   }
 
-  private getPlayerCampaigns$(): Observable<CampaignResponseDto[]> {
-    return this.campaignApiService.getPlayerCampaigns().pipe(catchError(() => of([])));
-  }
-
   private getPendingCampaignInvitations$(): Observable<CampaignCharacterDto[]> {
     return this.campaignApiService.getPendingInvitations().pipe(catchError(() => of([])));
   }
@@ -81,14 +68,13 @@ export class ProfilChoiceService extends ChoiceService {
   private buildChoices(
     user: UserDomainDTO | null,
     gmCampaigns: CampaignResponseDto[],
-    playerCampaigns: CampaignResponseDto[],
     pendingCampaignInvitations: CampaignCharacterDto[],
     pendingFriendRequests: FriendshipResponseDto[],
   ): ViewOption[] {
     const choices: ChoiceWithoutKey[] = [
       ...this.buildBaseChoices(pendingFriendRequests.length, pendingCampaignInvitations.length),
       ...this.buildCharacterChoices(user?.characters ?? []),
-      ...this.buildCampaignChoices(gmCampaigns, playerCampaigns),
+      ...this.buildCampaignChoices(gmCampaigns),
       this.buildLogoutChoice(),
     ];
 
@@ -139,17 +125,10 @@ export class ProfilChoiceService extends ChoiceService {
     ];
   }
 
-  private buildCampaignChoices(
-    gmCampaigns: CampaignResponseDto[],
-    playerCampaigns: CampaignResponseDto[],
-  ): ChoiceWithoutKey[] {
+  private buildCampaignChoices(gmCampaigns: CampaignResponseDto[]): ChoiceWithoutKey[] {
     return [
       ...gmCampaigns.map((campaign) => ({
         value: `[MJ] Campagne ${campaign.name}`,
-        link: `/campaign/${campaign.id}`,
-      })),
-      ...playerCampaigns.map((campaign) => ({
-        value: `Campagne ${campaign.name}`,
         link: `/campaign/${campaign.id}`,
       })),
     ];

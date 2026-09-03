@@ -7,9 +7,9 @@ import { PipboyLayoutComponent } from '../../core/component/pipboy-layout/pipboy
 @Component({
   selector: 'app-character-shell',
   standalone: true,
-  imports: [PipboyLayoutComponent], // On importe le nouveau composant
+  imports: [PipboyLayoutComponent],
   template: ` <app-pipboy-layout [menus]="menuConfig" [basePath]="basePath"> </app-pipboy-layout> `,
-  // Plus besoin de fichier CSS, tout est géré par l'enfant !
+  // Pas besoin de fichier CSS, tout est géré par l'enfant !
 })
 export class CharacterShell implements OnInit {
   private route = inject(ActivatedRoute);
@@ -61,5 +61,6 @@ export class CharacterShell implements OnInit {
     if (id) {
       this.characterStore.loadCharacter(id);
     }
+    this.basePath = ['/character', '' + id];
   }
 }
