@@ -1,0 +1,43 @@
+<div class="pipboy-editor-container" #editorContainer>
+  <!-- Barre d'outils / Statut (Optionnel, ex: rappel du mode de saisie) -->
+  <div class="editor-toolbar">
+    <span class="editor-hint">Saisissez '@' pour lier une note</span>
+  </div>
+
+  <!-- Zone de saisie principale -->
+  <textarea
+    #editorTextarea
+    class="pipboy-textarea"
+    [value]="content"
+    (input)="onInput($event)"
+    (keydown)="onKeyDown($event)"
+    (click)="checkAutocompleteTrigger()"
+    placeholder="Rédigez votre note ici..."
+    rows="10"
+  ></textarea>
+
+  <!-- Overlay / Popup d'autocomplétion @ -->
+  @if (showAutocomplete()) {
+    <div
+      class="autocomplete-overlay"
+      [style.top.px]="popupPosition().top"
+      [style.left.px]="popupPosition().left"
+    >
+      <div class="autocomplete-header">NOTES DISPONIBLES :</div>
+      <ul class="autocomplete-list">
+        @for (note of filteredNotes(); track note.id; let i = $index) {
+          <li
+            class="autocomplete-item"
+            [class.active]="i === selectedIndex()"
+            (click)="selectNoteLink(note)"
+          >
+            <span class="item-title">{{ note.title }}</span>
+            <span class="item-dir">[{{ note.directory || 'Racine' }}]</span>
+          </li>
+        } @empty {
+          <li class="autocomplete-empty">Aucune note trouvée</li>
+        }
+      </ul>
+    </div>
+  }
+</div>

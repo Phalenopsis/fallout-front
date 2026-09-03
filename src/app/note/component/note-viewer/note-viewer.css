@@ -1,0 +1,45 @@
+.pipboy-note-viewer {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.pipboy-link {
+  /* 1. Réinitialisation complète du bouton HTML natif */
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+
+  /* 2. Style visuel du lien Pip-Boy */
+  display: inline; /* Garantit qu'il s'insère parfaitement dans le fil du texte */
+  color: var(--pipboy-primary-color, #00ff66);
+  text-decoration: underline;
+  text-underline-offset: 3px; /* Aère le soulignement style écran CRT */
+  font-weight: bold;
+  padding: 0 2px;
+  margin: 0;
+  cursor: pointer;
+  vertical-align: baseline;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  /* 3. Effet survol / Focus tactile */
+  &:hover,
+  &:focus-visible {
+    background-color: var(--pipboy-primary-color, #00ff66);
+    color: #000;
+    text-shadow: none;
+    outline: none;
+  }
+}
+
+.raw-text {
+  color: inherit;
+}

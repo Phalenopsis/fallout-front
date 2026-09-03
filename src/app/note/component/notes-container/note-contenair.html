@@ -1,0 +1,155 @@
+<div
+  class="pipboy-notes-splitview"
+  [class.show-right-panel]="!!noteStore.activeNote() || mode() === 'CREATE' || mode() === 'EDIT'"
+>
+  <!-- PANNEAU GAUCHE : ARBORESCENCE -->
+  <aside class="left-panel">
+    <app-note-tree
+      [tree]="noteStore.currentDirectoryTree()"
+      [selectedNoteId]="noteStore.activeNote()?.id ?? null"
+      (noteSelect)="onSelectNoteSummary($event)"
+      (createNote)="openCreationForm($event)"
+      (moveNote)="onMoveNote($event)"
+    ></app-note-tree>
+  </aside>
+
+  <!-- PANNEAU DROIT : DETAIL / EDITION / CREATION -->
+  <main class="right-panel">
+    @if (noteStore.isLoadingDetail()) {
+      <div class="pipboy-loader">CHARGEMENT DES DONNÉES EN COURS...</div>
+    } @else {
+      @switch (mode()) {
+        @case ('VIEW') {
+          @if (noteStore.activeNote(); as note) {
+            <div class="note-view-wrapper">
+              <!-- Header Note -->
+              <header class="note-header">
+                <div class="title-bar">
+                  <!-- Bouton de retour spécifique au Mobile -->
+                  <button class="pipboy-btn mobile-back-btn" (click)="noteStore.clearActiveNote()">
+                    &lt; RETOUR
+                  </button>
+                  <h2>{{ note.title }}</h2>
+                  <span class="note-directory">[{{ note.directory || 'Racine' }}]</span>
+                </div>
+
+                <!-- Badges et Partages -->
+                <div class="meta-bar">
+                  <span class="owner-tag">
+                    {{ note.ownerNote ? 'PROPRIÉTAIRE : MOI' : 'NOTE REÇUE' }}
+                  </span>
+
+                  @if (note.sharedWith.length > 0) {
+                    <div class="shared-list">
+                      PARTAGÉE AVEC :
+                      @for (target of note.sharedWith; track target.id) {
+                        <span class="share-tag">
+                          {{ target.name }}
+                        </span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Barre d'actions Pip-boy -->
+                <div class="action-bar">
+                  @if (note.ownerNote) {
+                    <button class="pipboy-btn" (click)="openEditionForm()">ÉDITER</button>
+                  }
+                  <button class="pipboy-btn" (click)="onCopyNote(note.id)">COPIER</button>
+                  <button class="pipboy-btn danger" (click)="onDeleteNote(note.id, note.type)">
+                    {{ note.ownerNote ? 'SUPPRIMER' : 'MASQUER' }}
+                  </button>
+                </div>
+              </header>
+
+              <!-- Contenu avec liens cliquables -->
+              <section class="note-content-body">
+                <app-note-viewer
+                  [content]="note.content"
+                  (linkClick)="onInternalLinkClick($event)"
+                ></app-note-viewer>
+              </section>
+            </div>
+          } @else {
+            <div class="empty-state">
+              SÉLECTIONNEZ UNE NOTE DANS L'ARBORESCENCE OU CRÉEZ-EN UNE NOUVELLE.
+            </div>
+          }
+        }
+
+        @case ('EDIT') {
+          <ng-container *ngTemplateOutlet="noteFormTemplate"></ng-container>
+        }
+        @case ('CREATE') {
+          <ng-container *ngTemplateOutlet="noteFormTemplate"></ng-container>
+        }
+      }
+    }
+  </main>
+</div>
+
+<!-- TEMPLATE REUTILISABLE POUR LE FORMULAIRE (CREATE / EDIT) -->
+<ng-template #noteFormTemplate>
+  <div class="note-form-wrapper">
+    <header class="form-header">
+      <div class="title-bar">
+        <!-- Bouton de retour mobile sur formulaire si besoin de déselectionner -->
+        <button class="pipboy-btn mobile-back-btn" (click)="cancelForm()">&lt; RETOUR</button>
+        <h3>{{ mode() === 'CREATE' ? "CREATION D'UNE NOTE" : 'ÉDITION' }}</h3>
+      </div>
+      <div class="form-actions">
+        <button class="pipboy-btn primary" (click)="saveForm()">ENREGISTRER</button>
+        <button class="pipboy-btn" (click)="cancelForm()">ANNULER</button>
+      </div>
+    </header>
+
+    <div class="form-body">
+      <!-- Titre -->
+      <div class="form-group">
+        <label>TITRE :</label>
+        <input type="text" [(ngModel)]="formData.title" class="pipboy-input" />
+      </div>
+
+      <!-- Répertoire -->
+      <div class="form-group">
+        <label>REPERTOIRE (DOSSIER) :</label>
+        <input
+          type="text"
+          [(ngModel)]="formData.directory"
+          class="pipboy-input"
+          placeholder="ex: NPC/Sanctuary"
+        />
+      </div>
+
+      <!-- Gestion des Partages -->
+      <div class="form-group">
+        <label>PARTAGER AVEC :</label>
+        <div class="share-checkboxes">
+          @for (target of availableShareTargets(); track target.id) {
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [checked]="isTargetSelected(target)"
+                (change)="toggleShareTarget(target)"
+              />
+              {{ target.name }} ({{ target.type }})
+            </label>
+          } @empty {
+            <p>Aucune cible disponible.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Éditeur -->
+      <div class="form-group editor-group">
+        <label>CONTENU :</label>
+        <app-note-editor
+          [content]="formData.content"
+          [availableNotes]="noteStore.allSummaries()"
+          (contentChange)="formData.content = $event"
+        ></app-note-editor>
+      </div>
+    </div>
+  </div>
+</ng-template>

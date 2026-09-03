@@ -29,7 +29,6 @@ export class Character {
   }
 
   mapOrigin(originDesc: OrigineDescription): ORIGIN_VALUE {
-    console.log('in mapOrigin : ', ORIGIN_MAPPING[originDesc.nom as ORIGIN_KEY]);
     return ORIGIN_MAPPING[originDesc.nom as ORIGIN_KEY];
   }
 

@@ -1,0 +1,121 @@
+<div class="pipboy-tree-container">
+  <!-- Barre d'outils haut de l'arbre -->
+  <div class="tree-actions">
+    <button class="pipboy-btn" (click)="toggleNewFolderInput()">+ DOSSIER</button>
+    <button class="pipboy-btn primary" (click)="onCreateNoteInFolder('')">+ NOTE</button>
+  </div>
+
+  <!-- Saisie rapide pour créer un dossier racine -->
+  @if (showNewFolderInput()) {
+    <div class="new-folder-form">
+      <input
+        type="text"
+        [(ngModel)]="newFolderName"
+        placeholder="Nom du dossier..."
+        (keyup.enter)="createFolder('')"
+        (keyup.escape)="toggleNewFolderInput()"
+        #folderInput
+      />
+      <button class="pipboy-btn-sm" (click)="createFolder('')">OK</button>
+    </div>
+  }
+
+  <!-- Arbre des dossiers et notes -->
+  <div class="tree-content">
+    <ng-container
+      *ngTemplateOutlet="nodeTemplate; context: { node: tree, path: '' }"
+    ></ng-container>
+  </div>
+</div>
+
+<!-- RECURSIVE NODE TEMPLATE -->
+<ng-template #nodeTemplate let-node="node" let-path="path">
+  <!-- 1. Dossiers Enfants -->
+  @for (child of node.children; track child.fullPath) {
+    <div class="tree-folder-group">
+      <div
+        class="folder-header"
+        [class.drag-over]="dragOverPath() === child.fullPath"
+        (dragover)="onDragOver($event, child.fullPath)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event, child.fullPath)"
+        (click)="toggleFolder(child.fullPath)"
+      >
+        <span class="folder-icon">
+          @if (isFolderOpen(child.fullPath)) {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-folder2-open"
+              viewBox="0 1 16 12"
+            >
+              <path
+                d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7z"
+              />
+            </svg>
+          } @else {
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              class="bi bi-folder"
+              viewBox="0 1 16 12"
+            >
+              <path
+                d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z"
+              />
+            </svg>
+          }
+        </span>
+        <span class="folder-name">{{ child.name }}</span>
+
+        <button
+          class="add-subnote-btn pipboy-btn-touch"
+          title="Créer une note dans ce dossier"
+          (click)="$event.stopPropagation(); onCreateNoteInFolder(child.fullPath)"
+        >
+          + NOTE
+        </button>
+      </div>
+
+      <!-- Contenu du dossier déroulant -->
+      @if (isFolderOpen(child.fullPath)) {
+        <div class="folder-children">
+          <ng-container
+            *ngTemplateOutlet="nodeTemplate; context: { node: child, path: child.fullPath }"
+          ></ng-container>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- 2. Notes du dossier courant -->
+  @for (note of node.notes; track note.id) {
+    <div class="tree-note-item">
+      <div
+        class="note-row"
+        [class.selected]="selectedNoteId === note.id"
+        [class.unread]="!note.ownerNote && !note.read"
+        draggable="true"
+        (dragstart)="onDragStart($event, note)"
+        (click)="onSelectNote(note)"
+      >
+        <span class="note-bullet">--</span>
+        <span class="note-title">{{ note.title }}</span>
+
+        <!-- Badge si note reçue partagée -->
+        @if (!note.ownerNote) {
+          <span class="shared-badge" title="Note partagée"> [REÇUE] </span>
+        }
+
+        <!-- Badge Non Lue -->
+        @if (!note.ownerNote && !note.read) {
+          <span class="unread-badge"> [*] </span>
+        }
+      </div>
+    </div>
+  }
+</ng-template>
