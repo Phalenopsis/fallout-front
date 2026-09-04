@@ -65,7 +65,7 @@
 }
 
 .char-name {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: var(--crt-font-color);
 }
@@ -96,7 +96,7 @@
 /* Messages de statut */
 .status-msg {
   font-size: 0.85rem;
-  color: var(--crt-font-color-dim);
+  color: var(--crt-glow);
   font-style: italic;
   text-shadow: 0 0 4px var(--crt-glow);
 }
@@ -144,4 +144,43 @@
 .pipboy-select option {
   background-color: #111;
   color: var(--crt-font-color);
+}
+
+/* Alignement du générateur */
+.generator-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Boutons style Terminal Pip-Boy */
+.pipboy-btn {
+  background-color: transparent;
+  color: var(--crt-font-color);
+  border: 1px solid var(--crt-font-color-dim);
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.pipboy-btn:hover {
+  color: var(--crt-glow);
+  border-color: var(--crt-glow);
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 8px var(--crt-glow);
+}
+
+.pipboy-btn.btn-small {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
 }

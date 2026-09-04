@@ -1,0 +1,26 @@
+<div class="pipboy-box generator-container">
+  <div class="pipboy-header"><span class="symbol">></span> GENERATEUR DE NOMS SUPER-MUTANTS</div>
+
+  <div class="controls">
+    <button type="button" class="pipboy-btn" (click)="generate()">[ GENERER ]</button>
+  </div>
+
+  <ul class="pipboy-list name-list">
+    @for (name of names(); track $index) {
+      <li class="pipboy-card">
+        <div class="card-header-row">
+          <div class="card-info">
+            <span class="toggle-icon">></span>
+            <span class="char-name">{{ name }}</span>
+          </div>
+
+          <button type="button" class="pipboy-btn btn-small" (click)="selectName(name)">
+            [ VALIDER ]
+          </button>
+        </div>
+      </li>
+    } @empty {
+      <li class="status-msg">Cliquer sur "Générer"</li>
+    }
+  </ul>
+</div>
