@@ -28,6 +28,22 @@ export class CampaignShell implements OnInit {
       ],
     },
     {
+      label: 'DONNÉES',
+      path: 'data',
+      subMenus: [
+        { label: 'QUÊTES', path: 'quests' },
+        { label: 'LIEUX', path: 'locations' },
+        { label: 'PERSONNAGES', path: 'npcs' },
+        { label: 'BACKGROUND', path: 'background' },
+        { label: 'NOTES', path: 'notes' },
+      ],
+    },
+    {
+      label: 'OUTILS',
+      path: 'tools',
+      subMenus: [{ label: 'Générateur de noms', path: 'name-generator' }],
+    },
+    {
       label: 'ENCYCLOPÉDIE',
       path: 'lore',
       subMenus: [
